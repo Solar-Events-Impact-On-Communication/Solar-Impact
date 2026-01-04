@@ -1,3 +1,7 @@
+/* =========================================================
+   Solar Events — App.jsx
+   ========================================================= */
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import './App.css';
