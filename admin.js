@@ -23,10 +23,14 @@ const __dirname = path.dirname(__filename);
  */
 function getCaCert() {
   const fromEnv = process.env.DB_CA_CERT;
-  if (fromEnv && String(fromEnv).trim()) return String(fromEnv).trim();
 
+  // If provided via .env, convert \n into real newlines
+  if (fromEnv && fromEnv.trim()) {
+    return fromEnv.replace(/\\n/g, '\n');
+  }
+
+  // Fallback for local/dev environments
   const caCertPath = path.join(__dirname, 'ca-certificate.crt');
-  console.log('[ADMIN] Using CA cert file at:', caCertPath);
   return fs.readFileSync(caCertPath, 'utf8');
 }
 
@@ -110,8 +114,7 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     // 3) If user is_protected = 0 AND has a security question, enforce it
-    const requiresSecurity =
-      user.is_protected === 0 && user.security_question_id != null;
+    const requiresSecurity = user.is_protected === 0 && user.security_question_id != null;
 
     if (requiresSecurity) {
       // If no answer provided yet, tell the frontend to ask the question
@@ -125,10 +128,7 @@ app.post('/api/admin/login', async (req, res) => {
       }
 
       // If answer provided, compare with stored hash
-      const answerOk = await bcrypt.compare(
-        securityAnswer,
-        user.security_answer_hash || ''
-      );
+      const answerOk = await bcrypt.compare(securityAnswer, user.security_answer_hash || '');
 
       if (!answerOk) {
         return res.status(401).json({ error: 'Incorrect security answer.' });
@@ -316,10 +316,7 @@ app.delete('/api/admin/users/:id', async (req, res) => {
       });
     }
 
-    const [result] = await adminPool.query(
-      `DELETE FROM admin_users WHERE id = ?`,
-      [userId]
-    );
+    const [result] = await adminPool.query(`DELETE FROM admin_users WHERE id = ?`, [userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Admin user not found.' });
@@ -514,10 +511,7 @@ app.delete('/api/admin/events/:id', async (req, res) => {
   try {
     const eventId = req.params.id;
 
-    const [result] = await adminPool.query(
-      `DELETE FROM solar_events WHERE id = ?`,
-      [eventId]
-    );
+    const [result] = await adminPool.query(`DELETE FROM solar_events WHERE id = ?`, [eventId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Event not found.' });
@@ -605,10 +599,7 @@ app.delete('/api/admin/media/:id', async (req, res) => {
   try {
     const mediaId = req.params.id;
 
-    const [result] = await adminPool.query(
-      `DELETE FROM media_assets WHERE id = ?`,
-      [mediaId]
-    );
+    const [result] = await adminPool.query(`DELETE FROM media_assets WHERE id = ?`, [mediaId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Media asset not found.' });
@@ -699,10 +690,7 @@ app.delete('/api/admin/about/:id', async (req, res) => {
   try {
     const sectionId = req.params.id;
 
-    const [result] = await adminPool.query(
-      `DELETE FROM about_sections WHERE id = ?`,
-      [sectionId]
-    );
+    const [result] = await adminPool.query(`DELETE FROM about_sections WHERE id = ?`, [sectionId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'About section not found.' });
@@ -789,10 +777,7 @@ app.delete('/api/admin/team/:id', async (req, res) => {
   try {
     const memberId = req.params.id;
 
-    const [result] = await adminPool.query(
-      `DELETE FROM team_members WHERE id = ?`,
-      [memberId]
-    );
+    const [result] = await adminPool.query(`DELETE FROM team_members WHERE id = ?`, [memberId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Team member not found.' });

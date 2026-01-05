@@ -20,10 +20,14 @@ const __dirname = path.dirname(__filename);
  */
 function getCaCert() {
   const fromEnv = process.env.DB_CA_CERT;
-  if (fromEnv && String(fromEnv).trim()) return String(fromEnv).trim();
 
+  // If provided via .env, convert \n into real newlines
+  if (fromEnv && fromEnv.trim()) {
+    return fromEnv.replace(/\\n/g, '\n');
+  }
+
+  // Fallback for local/dev environments
   const caCertPath = path.join(__dirname, 'ca-certificate.crt');
-  console.log('[PUBLIC] Using CA cert file at:', caCertPath);
   return fs.readFileSync(caCertPath, 'utf8');
 }
 
