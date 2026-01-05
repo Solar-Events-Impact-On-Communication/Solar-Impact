@@ -1,4 +1,5 @@
-// database.js
+// database.js — Public read-only API (events, media, about, team)
+
 import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql2/promise';
@@ -9,29 +10,48 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-// ESM-friendly __dirname since "type": "module" is set
+// ESM-friendly __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// CA certificate is in the root and named ca-certificate.crt
-const caCertPath = path.join(__dirname, 'ca-certificate.crt');
-console.log('Using CA cert at:', caCertPath);
-const caCert = fs.readFileSync(caCertPath, 'utf8');
+/**
+ * Prefer DB_CA_CERT from env (best for cloud/server).
+ * Fall back to local ca-certificate.crt for dev.
+ */
+function getCaCert() {
+  const fromEnv = process.env.DB_CA_CERT;
+  if (fromEnv && String(fromEnv).trim()) return String(fromEnv).trim();
+
+  const caCertPath = path.join(__dirname, 'ca-certificate.crt');
+  console.log('[PUBLIC] Using CA cert file at:', caCertPath);
+  return fs.readFileSync(caCertPath, 'utf8');
+}
+
+/**
+ * CORS:
+ * - Default: allow all (matches your current behavior).
+ * - Optional: set CORS_ORIGIN to lock down.
+ */
+function buildCorsOptions() {
+  const origin = process.env.CORS_ORIGIN;
+  if (!origin) return undefined; // allow all
+  return { origin, credentials: true };
+}
 
 const app = express();
-app.use(cors());
+app.use(cors(buildCorsOptions()));
 app.use(express.json());
 
 // Connection pool with proper SSL using the CA
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT) || 25060,
-  user: process.env.DB_USER_PUBLIC,       // solar_public
+  user: process.env.DB_USER_PUBLIC, // solar_public
   password: process.env.DB_PASSWORD_PUBLIC,
   database: process.env.DB_NAME,
   ssl: {
-    ca: caCert,
-    rejectUnauthorized: true, // now safe because we trust the CA
+    ca: getCaCert(),
+    rejectUnauthorized: true,
   },
   connectionLimit: 10,
 });
@@ -59,7 +79,7 @@ app.get('/api/events', async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching events from DB:', err);
+    console.error('[PUBLIC] Error fetching events from DB:', err);
     res.status(500).json({ error: 'Failed to fetch events' });
   }
 });
@@ -83,14 +103,12 @@ app.get('/api/events/:id/media', async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching media assets:', err);
+    console.error('[PUBLIC] Error fetching media assets:', err);
     res.status(500).json({ error: 'Failed to fetch media assets' });
   }
 });
 
-//
-// 🔹 NEW: About page content
-//
+// About page content
 app.get('/api/about', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -104,14 +122,12 @@ app.get('/api/about', async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching about_sections:', err);
+    console.error('[PUBLIC] Error fetching about_sections:', err);
     res.status(500).json({ error: 'Failed to fetch about page content' });
   }
 });
 
-//
-// 🔹 NEW: Team members
-//
+// Team members
 app.get('/api/team', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -125,12 +141,12 @@ app.get('/api/team', async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching team_members:', err);
+    console.error('[PUBLIC] Error fetching team_members:', err);
     res.status(500).json({ error: 'Failed to fetch team members' });
   }
 });
 
-const PORT = 4000;
+const PORT = Number(process.env.PUBLIC_PORT) || 4000;
 app.listen(PORT, () => {
-  console.log(`API server listening on port ${PORT}`);
+  console.log(`Public API server listening on port ${PORT}`);
 });

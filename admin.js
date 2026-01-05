@@ -13,33 +13,47 @@ dotenv.config();
 
 const BCRYPT_ROUNDS = 12;
 
-async function hashIfProvided(value) {
-    if (!value) return null;
-    return bcrypt.hash(value, BCRYPT_ROUNDS);
-  }  
-
-// ESM-friendly __dirname since "type": "module" is set
+// ESM-friendly __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load CA Certificate (same as database.js)
-const caCertPath = path.join(__dirname, 'ca-certificate.crt');
-console.log('[ADMIN] Using CA cert at:', caCertPath);
-const caCert = fs.readFileSync(caCertPath, 'utf8');
+/**
+ * Prefer DB_CA_CERT from env (best for cloud/server).
+ * Fall back to local ca-certificate.crt for dev.
+ */
+function getCaCert() {
+  const fromEnv = process.env.DB_CA_CERT;
+  if (fromEnv && String(fromEnv).trim()) return String(fromEnv).trim();
+
+  const caCertPath = path.join(__dirname, 'ca-certificate.crt');
+  console.log('[ADMIN] Using CA cert file at:', caCertPath);
+  return fs.readFileSync(caCertPath, 'utf8');
+}
+
+/**
+ * CORS:
+ * - Default: allow all (matches your current behavior).
+ * - Optional: set CORS_ORIGIN to lock down (e.g., https://your-vercel-app.vercel.app)
+ */
+function buildCorsOptions() {
+  const origin = process.env.CORS_ORIGIN;
+  if (!origin) return undefined; // allow all
+  return { origin, credentials: true };
+}
 
 const app = express();
-app.use(cors());           // later you can restrict to your frontend origin
+app.use(cors(buildCorsOptions()));
 app.use(express.json());
 
 // Admin connection pool — uses limited admin user from the SAME .env
 const adminPool = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT) || 25060,
-  user: process.env.DB_USER_ADMIN,        // solar_admin_app
+  user: process.env.DB_USER_ADMIN, // solar_admin_app
   password: process.env.DB_PASSWORD_ADMIN,
-  database: process.env.DB_NAME,          // e.g. defaultdb
+  database: process.env.DB_NAME, // e.g. defaultdb
   ssl: {
-    ca: caCert,
+    ca: getCaCert(),
     rejectUnauthorized: true,
   },
   connectionLimit: 5,
@@ -62,9 +76,7 @@ app.post('/api/admin/login', async (req, res) => {
     const { username, password, securityAnswer } = req.body || {};
 
     if (!username || !password) {
-      return res
-        .status(400)
-        .json({ error: 'Username and password are required.' });
+      return res.status(400).json({ error: 'Username and password are required.' });
     }
 
     // 1) Look up user + optional security question
@@ -86,9 +98,7 @@ app.post('/api/admin/login', async (req, res) => {
     );
 
     if (!rows.length) {
-      return res
-        .status(401)
-        .json({ error: 'Invalid username or password.' });
+      return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
     const user = rows[0];
@@ -96,9 +106,7 @@ app.post('/api/admin/login', async (req, res) => {
     // 2) Check password first
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match) {
-      return res
-        .status(401)
-        .json({ error: 'Invalid username or password.' });
+      return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
     // 3) If user is_protected = 0 AND has a security question, enforce it
@@ -123,23 +131,21 @@ app.post('/api/admin/login', async (req, res) => {
       );
 
       if (!answerOk) {
-        return res
-          .status(401)
-          .json({ error: 'Incorrect security answer.' });
+        return res.status(401).json({ error: 'Incorrect security answer.' });
       }
     }
 
     // 4) All checks passed → success
     res.json({
-        success: true,
-        user: {
-            id: user.id,
-            username: user.username,
-            is_protected: !!user.is_protected,
-            securityQuestionId: user.security_question_id || null, // <-- as in your original
-            requiresSecurityAnswer: false,
-        },
-    });  
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        is_protected: !!user.is_protected,
+        securityQuestionId: user.security_question_id || null,
+        requiresSecurityAnswer: false,
+      },
+    });
   } catch (err) {
     console.error('[ADMIN] Login error:', err);
     res.status(500).json({ error: 'Login failed due to a server error.' });
@@ -148,7 +154,6 @@ app.post('/api/admin/login', async (req, res) => {
 
 /**
  * GET /api/admin/security-questions
- * Optional helper for future "forgot password" flow.
  */
 app.get('/api/admin/security-questions', async (req, res) => {
   try {
@@ -166,289 +171,235 @@ app.get('/api/admin/security-questions', async (req, res) => {
 
 /**
  * GET /api/admin/users
- * List all admin accounts (super admin UI)
+ * List all admin accounts
  */
 app.get('/api/admin/users', async (req, res) => {
-    try {
-      const [rows] = await adminPool.query(
-        `SELECT 
-           id,
-           username,
-           is_protected,
-           security_question_id
-         FROM admin_users
-         ORDER BY username ASC`
-      );
-  
-      res.json(rows);
-    } catch (err) {
-      console.error('[ADMIN] Error fetching admin users:', err);
-      res.status(500).json({ error: 'Failed to fetch admin users' });
-    }
-  });
-  
-  
+  try {
+    const [rows] = await adminPool.query(
+      `SELECT 
+         id,
+         username,
+         is_protected,
+         security_question_id
+       FROM admin_users
+       ORDER BY username ASC`
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error('[ADMIN] Error fetching admin users:', err);
+    res.status(500).json({ error: 'Failed to fetch admin users' });
+  }
+});
+
 // Create a new admin account
 app.post('/api/admin/users', async (req, res) => {
-    try {
-      const {
-        username,
-        password,
-        securityQuestionId,
-        securityAnswer,
-      } = req.body || {};
-  
-      if (!username || !password) {
-        return res
-          .status(400)
-          .json({ error: 'Username and password are required.' });
-      }
-  
-      const ROUNDS = 12;
-      const passwordHash = await bcrypt.hash(password.trim(), ROUNDS);
-  
-      let answerHash = null;
-      if (securityAnswer && securityAnswer.trim()) {
-        answerHash = await bcrypt.hash(securityAnswer.trim(), ROUNDS);
-      }
-  
-      const [result] = await adminPool.query(
-        `INSERT INTO admin_users
-           (username, password_hash, is_protected, security_question_id, security_answer_hash)
-         VALUES (?, ?, 0, ?, ?)`,
-        [
-          username.trim(),
-          passwordHash,
-          securityQuestionId || null,
-          answerHash,
-        ]
-      );
-  
-      res.status(201).json({ success: true, id: result.insertId });
-    } catch (err) {
-      console.error('[ADMIN] Error creating admin user:', err);
-      res.status(500).json({ error: 'Failed to create admin user.' });
+  try {
+    const { username, password, securityQuestionId, securityAnswer } = req.body || {};
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required.' });
     }
-  });
-  
+
+    const passwordHash = await bcrypt.hash(password.trim(), BCRYPT_ROUNDS);
+
+    let answerHash = null;
+    if (securityAnswer && securityAnswer.trim()) {
+      answerHash = await bcrypt.hash(securityAnswer.trim(), BCRYPT_ROUNDS);
+    }
+
+    const [result] = await adminPool.query(
+      `INSERT INTO admin_users
+         (username, password_hash, is_protected, security_question_id, security_answer_hash)
+       VALUES (?, ?, 0, ?, ?)`,
+      [username.trim(), passwordHash, securityQuestionId || null, answerHash]
+    );
+
+    res.status(201).json({ success: true, id: result.insertId });
+  } catch (err) {
+    console.error('[ADMIN] Error creating admin user:', err);
+    res.status(500).json({ error: 'Failed to create admin user.' });
+  }
+});
 
 /**
  * PUT /api/admin/users/:id
- * Update an existing admin user
- * Body: { password?, securityQuestionId?, securityAnswer? }
- * - username is NOT editable here.
- * - protected accounts (is_protected = 1) cannot be changed.
+ * Update an existing admin user (protected accounts cannot be edited)
  */
 app.put('/api/admin/users/:id', async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const {
-        password,
-        securityQuestionId,
-        securityAnswer,
-      } = req.body || {};
-  
-      // 1) Look up the account
-      const [existingRows] = await adminPool.query(
-        `SELECT is_protected FROM admin_users WHERE id = ?`,
-        [userId]
-      );
-  
-      if (!existingRows.length) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      // 2) Block edits to protected accounts
-      if (existingRows[0].is_protected === 1) {
-        return res
-          .status(403)
-          .json({ error: 'This account is protected and cannot be edited.' });
-      }
-  
-      // 3) Build dynamic UPDATE statement
-      const fields = [];
-      const values = [];
-  
-      if (password && password.trim()) {
-        const ROUNDS = 12;
-        const passwordHash = await bcrypt.hash(password.trim(), ROUNDS);
-        fields.push('password_hash = ?');
-        values.push(passwordHash);
-      }
-  
-      if (typeof securityQuestionId !== 'undefined') {
-        fields.push('security_question_id = ?');
-        // allow null / '' to clear
-        values.push(securityQuestionId || null);
-      }
-  
-      if (securityAnswer && securityAnswer.trim()) {
-        const ROUNDS = 12;
-        const answerHash = await bcrypt.hash(securityAnswer.trim(), ROUNDS);
-        fields.push('security_answer_hash = ?');
-        values.push(answerHash);
-      }
-  
-      if (!fields.length) {
-        return res
-          .status(400)
-          .json({ error: 'No changes provided to update this user.' });
-      }
-  
-      values.push(userId);
-  
-      const [result] = await adminPool.query(
-        `UPDATE admin_users
-           SET ${fields.join(', ')}
-         WHERE id = ?`,
-        values
-      );
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      res.json({ success: true });
-    } catch (err) {
-      console.error('[ADMIN] Error updating admin user:', err);
-      res.status(500).json({ error: 'Failed to update admin user.' });
-    }
-  });
-  
-  /**
-   * DELETE /api/admin/users/:id
-   * Delete an admin user
-   * - protected accounts (is_protected = 1) cannot be deleted.
-   */
-  app.delete('/api/admin/users/:id', async (req, res) => {
-    try {
-      const userId = req.params.id;
-  
-      // 1) Look up the account
-      const [existingRows] = await adminPool.query(
-        `SELECT is_protected FROM admin_users WHERE id = ?`,
-        [userId]
-      );
-  
-      if (!existingRows.length) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      // 2) Block delete for protected accounts
-      if (existingRows[0].is_protected === 1) {
-        return res
-          .status(403)
-          .json({ error: 'This account is protected and cannot be deleted.' });
-      }
-  
-      const [result] = await adminPool.query(
-        `DELETE FROM admin_users WHERE id = ?`,
-        [userId]
-      );
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      res.json({ success: true });
-    } catch (err) {
-      console.error('[ADMIN] Error deleting admin user:', err);
-      res.status(500).json({ error: 'Failed to delete admin user.' });
-    }
-  });  
+  try {
+    const userId = req.params.id;
+    const { password, securityQuestionId, securityAnswer } = req.body || {};
 
-  /**
- * PUT /api/admin/profile
- * Update the *current* admin's password and/or security question/answer.
- *
- * For now, expects:
- *   { userId, password?, securityQuestionId?, securityAnswer? }
- *
- * (Later you can replace userId with a real session / JWT.)
- */
-app.put('/api/admin/profile', async (req, res) => {
-    try {
-      const {
-        userId,
-        password,
-        securityQuestionId,
-        securityAnswer,
-      } = req.body || {};
-  
-      if (!userId) {
-        return res.status(400).json({ error: 'userId is required.' });
-      }
-  
-      // Look up the account (optional: reuse the protected logic)
-      const [existingRows] = await adminPool.query(
-        `SELECT is_protected FROM admin_users WHERE id = ?`,
-        [userId]
-      );
-  
-      if (!existingRows.length) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      // If you want to block edits to protected accounts here too:
-      // if (existingRows[0].is_protected === 1) {
-      //   return res
-      //     .status(403)
-      //     .json({ error: 'This account is protected and cannot be edited.' });
-      // }
-  
-      const fields = [];
-      const values = [];
-  
-      if (password && password.trim()) {
-        const passwordHash = await bcrypt.hash(password.trim(), BCRYPT_ROUNDS);
-        fields.push('password_hash = ?');
-        values.push(passwordHash);
-      }
-  
-      if (typeof securityQuestionId !== 'undefined') {
-        fields.push('security_question_id = ?');
-        values.push(securityQuestionId || null); // allow clearing
-      }
-  
-      if (securityAnswer && securityAnswer.trim()) {
-        const answerHash = await bcrypt.hash(securityAnswer.trim(), BCRYPT_ROUNDS);
-        fields.push('security_answer_hash = ?');
-        values.push(answerHash);
-      }
-  
-      if (!fields.length) {
-        return res
-          .status(400)
-          .json({ error: 'No profile changes provided.' });
-      }
-  
-      values.push(userId);
-  
-      const [result] = await adminPool.query(
-        `UPDATE admin_users
-           SET ${fields.join(', ')}
-         WHERE id = ?`,
-        values
-      );
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: 'Admin user not found.' });
-      }
-  
-      res.json({ success: true });
-    } catch (err) {
-      console.error('[ADMIN] Error updating profile:', err);
-      res.status(500).json({ error: 'Failed to update profile.' });
+    // 1) Look up the account
+    const [existingRows] = await adminPool.query(
+      `SELECT is_protected FROM admin_users WHERE id = ?`,
+      [userId]
+    );
+
+    if (!existingRows.length) {
+      return res.status(404).json({ error: 'Admin user not found.' });
     }
-  });
-  
-  
-// ---------------------- Event CRUD (solar_events) ----------------------
+
+    // 2) Block edits to protected accounts
+    if (existingRows[0].is_protected === 1) {
+      return res.status(403).json({
+        error: 'This account is protected and cannot be edited.',
+      });
+    }
+
+    // 3) Build dynamic UPDATE statement
+    const fields = [];
+    const values = [];
+
+    if (password && password.trim()) {
+      const passwordHash = await bcrypt.hash(password.trim(), BCRYPT_ROUNDS);
+      fields.push('password_hash = ?');
+      values.push(passwordHash);
+    }
+
+    if (typeof securityQuestionId !== 'undefined') {
+      fields.push('security_question_id = ?');
+      values.push(securityQuestionId || null);
+    }
+
+    if (securityAnswer && securityAnswer.trim()) {
+      const answerHash = await bcrypt.hash(securityAnswer.trim(), BCRYPT_ROUNDS);
+      fields.push('security_answer_hash = ?');
+      values.push(answerHash);
+    }
+
+    if (!fields.length) {
+      return res.status(400).json({ error: 'No changes provided to update this user.' });
+    }
+
+    values.push(userId);
+
+    const [result] = await adminPool.query(
+      `UPDATE admin_users
+         SET ${fields.join(', ')}
+       WHERE id = ?`,
+      values
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Admin user not found.' });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[ADMIN] Error updating admin user:', err);
+    res.status(500).json({ error: 'Failed to update admin user.' });
+  }
+});
 
 /**
- * GET /api/admin/events
- * List all events (for admin table view)
+ * DELETE /api/admin/users/:id
+ * Delete an admin user (protected accounts cannot be deleted)
  */
+app.delete('/api/admin/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const [existingRows] = await adminPool.query(
+      `SELECT is_protected FROM admin_users WHERE id = ?`,
+      [userId]
+    );
+
+    if (!existingRows.length) {
+      return res.status(404).json({ error: 'Admin user not found.' });
+    }
+
+    if (existingRows[0].is_protected === 1) {
+      return res.status(403).json({
+        error: 'This account is protected and cannot be deleted.',
+      });
+    }
+
+    const [result] = await adminPool.query(
+      `DELETE FROM admin_users WHERE id = ?`,
+      [userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Admin user not found.' });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[ADMIN] Error deleting admin user:', err);
+    res.status(500).json({ error: 'Failed to delete admin user.' });
+  }
+});
+
+/**
+ * PUT /api/admin/profile
+ * Update the *current* admin's password and/or security question/answer.
+ * Expects: { userId, password?, securityQuestionId?, securityAnswer? }
+ */
+app.put('/api/admin/profile', async (req, res) => {
+  try {
+    const { userId, password, securityQuestionId, securityAnswer } = req.body || {};
+
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required.' });
+    }
+
+    const [existingRows] = await adminPool.query(
+      `SELECT is_protected FROM admin_users WHERE id = ?`,
+      [userId]
+    );
+
+    if (!existingRows.length) {
+      return res.status(404).json({ error: 'Admin user not found.' });
+    }
+
+    const fields = [];
+    const values = [];
+
+    if (password && password.trim()) {
+      const passwordHash = await bcrypt.hash(password.trim(), BCRYPT_ROUNDS);
+      fields.push('password_hash = ?');
+      values.push(passwordHash);
+    }
+
+    if (typeof securityQuestionId !== 'undefined') {
+      fields.push('security_question_id = ?');
+      values.push(securityQuestionId || null);
+    }
+
+    if (securityAnswer && securityAnswer.trim()) {
+      const answerHash = await bcrypt.hash(securityAnswer.trim(), BCRYPT_ROUNDS);
+      fields.push('security_answer_hash = ?');
+      values.push(answerHash);
+    }
+
+    if (!fields.length) {
+      return res.status(400).json({ error: 'No profile changes provided.' });
+    }
+
+    values.push(userId);
+
+    const [result] = await adminPool.query(
+      `UPDATE admin_users
+         SET ${fields.join(', ')}
+       WHERE id = ?`,
+      values
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Admin user not found.' });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[ADMIN] Error updating profile:', err);
+    res.status(500).json({ error: 'Failed to update profile.' });
+  }
+});
+
+// ---------------------- Event CRUD (solar_events) ----------------------
+
 app.get('/api/admin/events', async (req, res) => {
   try {
     const [rows] = await adminPool.query(
@@ -471,11 +422,6 @@ app.get('/api/admin/events', async (req, res) => {
   }
 });
 
-/**
- * POST /api/admin/events
- * Create a new event
- * Body: { event_date, event_type, location, title, short_description, summary, impact_on_communication }
- */
 app.post('/api/admin/events', async (req, res) => {
   try {
     const {
@@ -489,9 +435,7 @@ app.post('/api/admin/events', async (req, res) => {
     } = req.body || {};
 
     if (!event_date || !title) {
-      return res
-        .status(400)
-        .json({ error: 'event_date and title are required.' });
+      return res.status(400).json({ error: 'event_date and title are required.' });
     }
 
     const [result] = await adminPool.query(
@@ -516,10 +460,6 @@ app.post('/api/admin/events', async (req, res) => {
   }
 });
 
-/**
- * PUT /api/admin/events/:id
- * Update an existing event
- */
 app.put('/api/admin/events/:id', async (req, res) => {
   try {
     const eventId = req.params.id;
@@ -534,9 +474,7 @@ app.put('/api/admin/events/:id', async (req, res) => {
     } = req.body || {};
 
     if (!event_date || !title) {
-      return res
-        .status(400)
-        .json({ error: 'event_date and title are required.' });
+      return res.status(400).json({ error: 'event_date and title are required.' });
     }
 
     const [result] = await adminPool.query(
@@ -572,10 +510,6 @@ app.put('/api/admin/events/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/admin/events/:id
- * Delete an event
- */
 app.delete('/api/admin/events/:id', async (req, res) => {
   try {
     const eventId = req.params.id;
@@ -598,10 +532,6 @@ app.delete('/api/admin/events/:id', async (req, res) => {
 
 // ---------------------- Media CRUD (media_assets) ----------------------
 
-/**
- * GET /api/admin/events/:eventId/media
- * List all media assets for a specific event (admin view)
- */
 app.get('/api/admin/events/:eventId/media', async (req, res) => {
   try {
     const eventId = req.params.eventId;
@@ -621,11 +551,6 @@ app.get('/api/admin/events/:eventId/media', async (req, res) => {
   }
 });
 
-/**
- * POST /api/admin/events/:eventId/media
- * Create a media asset for a specific event
- * Body: { url, caption }
- */
 app.post('/api/admin/events/:eventId/media', async (req, res) => {
   try {
     const eventId = req.params.eventId;
@@ -648,11 +573,6 @@ app.post('/api/admin/events/:eventId/media', async (req, res) => {
   }
 });
 
-/**
- * PUT /api/admin/media/:id
- * Update a media asset by its id
- * Body: { url, caption }
- */
 app.put('/api/admin/media/:id', async (req, res) => {
   try {
     const mediaId = req.params.id;
@@ -681,10 +601,6 @@ app.put('/api/admin/media/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/admin/media/:id
- * Delete a media asset by its id
- */
 app.delete('/api/admin/media/:id', async (req, res) => {
   try {
     const mediaId = req.params.id;
@@ -707,10 +623,6 @@ app.delete('/api/admin/media/:id', async (req, res) => {
 
 // ---------------------- About Page CRUD (about_sections) ---------------
 
-/**
- * GET /api/admin/about
- * List all about page sections
- */
 app.get('/api/admin/about', async (req, res) => {
   try {
     const [rows] = await adminPool.query(
@@ -729,11 +641,6 @@ app.get('/api/admin/about', async (req, res) => {
   }
 });
 
-/**
- * POST /api/admin/about
- * Create a new about section
- * Body: { display_order, title, text }
- */
 app.post('/api/admin/about', async (req, res) => {
   try {
     const { display_order, title, text } = req.body || {};
@@ -757,11 +664,6 @@ app.post('/api/admin/about', async (req, res) => {
   }
 });
 
-/**
- * PUT /api/admin/about/:id
- * Update an about section
- * Body: { display_order, title, text }
- */
 app.put('/api/admin/about/:id', async (req, res) => {
   try {
     const sectionId = req.params.id;
@@ -793,10 +695,6 @@ app.put('/api/admin/about/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/admin/about/:id
- * Delete an about section
- */
 app.delete('/api/admin/about/:id', async (req, res) => {
   try {
     const sectionId = req.params.id;
@@ -819,10 +717,6 @@ app.delete('/api/admin/about/:id', async (req, res) => {
 
 // ---------------------- Team Members CRUD (team_members) ---------------
 
-/**
- * GET /api/admin/team
- * List all team members
- */
 app.get('/api/admin/team', async (req, res) => {
   try {
     const [rows] = await adminPool.query(
@@ -841,19 +735,12 @@ app.get('/api/admin/team', async (req, res) => {
   }
 });
 
-/**
- * POST /api/admin/team
- * Create a new team member
- * Body: { name, role, image_url? }
- */
 app.post('/api/admin/team', async (req, res) => {
   try {
     const { name, role, image_url } = req.body || {};
 
     if (!name || !role) {
-      return res
-        .status(400)
-        .json({ error: 'name and role are required.' });
+      return res.status(400).json({ error: 'name and role are required.' });
     }
 
     const [result] = await adminPool.query(
@@ -869,20 +756,13 @@ app.post('/api/admin/team', async (req, res) => {
   }
 });
 
-/**
- * PUT /api/admin/team/:id
- * Update a team member
- * Body: { name, role, image_url? }
- */
 app.put('/api/admin/team/:id', async (req, res) => {
   try {
     const memberId = req.params.id;
     const { name, role, image_url } = req.body || {};
 
     if (!name || !role) {
-      return res
-        .status(400)
-        .json({ error: 'name and role are required.' });
+      return res.status(400).json({ error: 'name and role are required.' });
     }
 
     const [result] = await adminPool.query(
@@ -905,10 +785,6 @@ app.put('/api/admin/team/:id', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/admin/team/:id
- * Delete a team member
- */
 app.delete('/api/admin/team/:id', async (req, res) => {
   try {
     const memberId = req.params.id;
@@ -931,7 +807,7 @@ app.delete('/api/admin/team/:id', async (req, res) => {
 
 // -----------------------------------------------------------------------
 
-const PORT = process.env.ADMIN_PORT || 4001;
+const PORT = Number(process.env.ADMIN_PORT) || 4001;
 app.listen(PORT, () => {
   console.log(`Admin Auth + Admin API listening on port ${PORT}`);
 });
