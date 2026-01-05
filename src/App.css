@@ -2273,6 +2273,60 @@ button:focus-visible {
 }
 
 /* =========================================================
+   Admin Team – New member photo preview chip
+   ========================================================= */
+
+.admin-new-member-photo-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  /* keep it compact inside the grid column */
+  min-width: 0;
+  max-width: 100%;
+  padding: 6px 10px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+
+  /* prevents any child overflow from painting outside */
+  overflow: hidden;
+}
+
+.admin-new-member-photo-chip img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+
+  border-radius: 50%;
+  object-fit: cover;
+
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  display: block;
+}
+
+.admin-new-member-photo-chip span {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  font-size: 0.85rem;
+  color: rgba(245, 247, 255, 0.92);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* keep Remove button from stretching the chip */
+.admin-new-member-photo-chip .admin-team-remove-button {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* =========================================================
    Avatar crop modal
    ========================================================= */
 
