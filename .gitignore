@@ -39,3 +39,7 @@ Thumbs.db
 
 *.crt
 ca-certificate.crt
+
+# Backend (moved to separate repo)
+api/
+lib/

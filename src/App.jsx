@@ -1206,6 +1206,9 @@ function AdminView() {
   const [mediaUploadBusy, setMediaUploadBusy] = useState(false);
   const [mediaUploadError, setMediaUploadError] = useState('');
 
+  const [createMediaUploading, setCreateMediaUploading] = useState(false);
+  const [createMediaUploadingText, setCreateMediaUploadingText] = useState('');
+
   // Add-article modal state
   const [addArticleOpen, setAddArticleOpen] = useState(false);
   const [addArticleCaption, setAddArticleCaption] = useState('');
@@ -1743,6 +1746,7 @@ function AdminView() {
   const [showAccountPassword, setShowAccountPassword] = useState(false);
   const [showAccountAnswer, setShowAccountAnswer] = useState(false);
   const [accountSaving, setAccountSaving] = useState(false);
+  const [accountDeleting, setAccountDeleting] = useState(false);
   const [accountModalError, setAccountModalError] = useState('');
   const [accountValidationAttempted, setAccountValidationAttempted] = useState(false);
 
@@ -1997,9 +2001,16 @@ function AdminView() {
 
         const createdId = data?.id;
 
-        // upload queued articles
+        // upload queued articles (CREATE)
         if (createdId && createQueuedMedia.length) {
-          for (const m of createQueuedMedia) {
+          setCreateMediaUploading(true);
+
+          for (let i = 0; i < createQueuedMedia.length; i++) {
+            const m = createQueuedMedia[i];
+            setCreateMediaUploadingText(
+              `Uploading article image ${i + 1} of ${createQueuedMedia.length}…`
+            );
+
             const fd = new FormData();
             fd.append('file', m.file);
             fd.append('caption', (m.caption || '').trim());
@@ -2032,26 +2043,15 @@ function AdminView() {
 
           setCreateQueuedMedia([]);
           setCreateMediaIndex(0);
+
+          setCreateMediaUploading(false);
+          setCreateMediaUploadingText('');
         }
 
         const rows = await loadAdminEvents(); // returns array of updated loader
 
-        if (createdId) {
-          setIsCreatingEvent(false);
-
-          const createdRow = Array.isArray(rows)
-            ? rows.find((e) => String(e.id) === String(createdId))
-            : null;
-
-          if (createdRow) {
-            await openEventModal(createdRow); // loads media + fills form
-          } else {
-            closeEventModal();
-          }
-        } else {
-          closeEventModal();
-        }
-
+        await loadAdminEvents(); // refresh table
+        closeEventModal(); // close modal and return to list
         return;
       }
 
@@ -2083,6 +2083,8 @@ function AdminView() {
       alert(err.message || 'Failed to save event. Please try again.');
     } finally {
       setEventSaving(false);
+      setCreateMediaUploading(false);
+      setCreateMediaUploadingText('');
     }
   };
 
@@ -2724,6 +2726,7 @@ function AdminView() {
     try {
       setAccountModalError('');
       setAccountSaving(true);
+      setAccountDeleting(true);
 
       const res = await fetch(`${ADMIN_API_BASE}/api/admin/users/${target.id}`, {
         method: 'DELETE',
@@ -2746,6 +2749,7 @@ function AdminView() {
       setAccountModalError('An unexpected error occurred while deleting.');
     } finally {
       setAccountSaving(false);
+      setAccountDeleting(false);
     }
   };
 
@@ -2762,6 +2766,11 @@ function AdminView() {
 
     if (!username || !password) {
       setError('Username and password are required.');
+      return;
+    }
+
+    if (needsSecurity && !String(securityAnswer || '').trim()) {
+      setError('Security answer is required.');
       return;
     }
 
@@ -2783,13 +2792,21 @@ function AdminView() {
       const data = await res.json();
 
       if (!res.ok) {
-        if (data.requiresSecurityAnswer) {
+        if (data?.requiresSecurityAnswer) {
           setNeedsSecurity(true);
           setSecurityQuestion(data.securityQuestionText || 'Please answer your security question.');
-          setError('');
-        } else {
-          setError(data.error || 'Login failed.');
+
+          if (needsSecurity) {
+            setError(data?.error || 'Incorrect security answer.');
+          } else {
+            setError('');
+          }
+
+          setLoading(false);
+          return;
         }
+
+        setError(data?.error || 'Login failed.');
         setLoading(false);
         return;
       }
@@ -2842,9 +2859,13 @@ function AdminView() {
                 <label>
                   <span>{securityQuestion}</span>
                   <input
+                    type="password"
                     className="input"
                     value={securityAnswer}
-                    onChange={(e) => setSecurityAnswer(e.target.value)}
+                    onChange={(e) => {
+                      setSecurityAnswer(e.target.value);
+                      if (error) setError('');
+                    }}
                   />
                 </label>
               )}
@@ -4297,9 +4318,11 @@ function AdminView() {
 
       {/* ---- GLOBAL SAVE / UPLOAD BLOCKER ---- */}
       {(eventSaving ||
+        createMediaUploading ||
         accountSaving ||
         profileSaving ||
         aboutSaving ||
+        accountDeleting ||
         teamBlocking ||
         mediaUploadBusy ||
         mediaDeleteBusy ||
@@ -4314,17 +4337,21 @@ function AdminView() {
                   ? 'Deleting article…'
                   : mediaUploadBusy
                     ? 'Uploading article…'
-                    : eventSaving
-                      ? 'Saving event…'
-                      : teamBlocking
-                        ? teamBlockingText || 'Working on team updates…'
-                        : accountSaving
-                          ? 'Saving account changes…'
-                          : profileSaving
-                            ? 'Updating your profile…'
-                            : aboutSaving
-                              ? 'Saving About page…'
-                              : 'Working…'}
+                    : createMediaUploading
+                      ? createMediaUploadingText || 'Uploading article image…'
+                      : eventSaving
+                        ? 'Saving event…'
+                        : teamBlocking
+                          ? teamBlockingText || 'Working on team updates…'
+                          : accountDeleting
+                            ? 'Deleting Account'
+                            : accountSaving
+                              ? 'Saving account changes…'
+                              : profileSaving
+                                ? 'Updating your profile…'
+                                : aboutSaving
+                                  ? 'Saving About page…'
+                                  : 'Working…'}
             </div>
           </div>
         </div>
