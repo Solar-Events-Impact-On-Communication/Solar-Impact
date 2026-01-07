@@ -1,11 +1,19 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/admin/:path*",
-      "destination": "https://api.solarimpacts.org/api/admin/:path*"
+      "src": "/api/admin/(.*)",
+      "dest": "https://api.solarimpacts.org/api/admin/$1"
     },
-    { "source": "/api/:path*", "destination": "https://api.solarimpacts.org/api/:path*" },
-
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "https://api.solarimpacts.org/api/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
