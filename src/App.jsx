@@ -34,6 +34,12 @@ class ErrorBoundary extends React.Component {
 
 /* --- Helpers for DB events --- */
 
+function joinUrl(base, path) {
+  const b = String(base || '').replace(/\/+$/, '');
+  const p = String(path || '').replace(/^\/+/, '');
+  return b ? `${b}/${p}` : `/${p}`;
+}
+
 const MONTH_NAMES = [
   'January',
   'February',
@@ -132,7 +138,7 @@ function sortEventsByDate(events) {
 }
 
 // Base URLs (Vercel uses env vars; local/dev can fall back to same-origin)
-const API_BASE = import.meta.env.VITE_PUBLIC_API_BASE || '';
+const API_BASE = '';
 const ADMIN_API_BASE = import.meta.env.VITE_ADMIN_API_BASE || '';
 
 /* === App === */
@@ -208,7 +214,7 @@ function App() {
       try {
         setLoadingEvents(true);
         setEventsError('');
-        const res = await fetch(`${API_BASE}/api/events`);
+        const res = await fetch(joinUrl(API_BASE, 'api/events'));
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }
@@ -2778,7 +2784,7 @@ function AdminView() {
         body.securityAnswer = securityAnswer;
       }
 
-      const res = await fetch(`${ADMIN_API_BASE}/api/admin/login`, {
+      const res = await fetch(joinUrl(ADMIN_API_BASE, 'api/admin/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
