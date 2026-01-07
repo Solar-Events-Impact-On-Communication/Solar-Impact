@@ -131,13 +131,9 @@ function sortEventsByDate(events) {
   });
 }
 
-// For local dev: your API servers
-//const API_BASE = 'http://localhost:4000';     // public events API
-//const ADMIN_API_BASE = 'http://localhost:4001'; // admin API
-
-// Use same-origin API routes (Vercel serverless at /api/*)
-const API_BASE = '';
-const ADMIN_API_BASE = '';
+// Base URLs (Vercel uses env vars; local/dev can fall back to same-origin)
+const API_BASE = import.meta.env.VITE_PUBLIC_API_BASE || '';
+const ADMIN_API_BASE = import.meta.env.VITE_ADMIN_API_BASE || '';
 
 /* === App === */
 
