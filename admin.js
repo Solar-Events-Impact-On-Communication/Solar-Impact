@@ -8,6 +8,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
+import multer from 'multer';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 dotenv.config();
 
@@ -45,9 +47,65 @@ function buildCorsOptions() {
   return { origin, credentials: true };
 }
 
+/* ---------------------- Upload helpers (DigitalOcean Spaces) ---------------------- */
+
+function stripTrailingSlashes(s) {
+  return String(s || '').replace(/\/+$/, '');
+}
+
+function buildSpacesClient() {
+  const { SPACES_REGION, SPACES_ENDPOINT, SPACES_KEY, SPACES_SECRET } = process.env;
+
+  if (!SPACES_REGION || !SPACES_ENDPOINT || !SPACES_KEY || !SPACES_SECRET) {
+    throw new Error(
+      'Missing Spaces env vars. Required: SPACES_REGION, SPACES_ENDPOINT, SPACES_KEY, SPACES_SECRET'
+    );
+  }
+
+  return new S3Client({
+    region: SPACES_REGION,
+    endpoint: SPACES_ENDPOINT,
+    credentials: { accessKeyId: SPACES_KEY, secretAccessKey: SPACES_SECRET },
+  });
+}
+
+function requireSpacesBucketAndPublicBase() {
+  const bucket = process.env.SPACES_BUCKET;
+  const publicBase = process.env.SPACES_ORIGIN_URL; // e.g. https://<bucket>.<region>.cdn.digitaloceanspaces.com
+
+  if (!bucket || !publicBase) {
+    throw new Error('Missing SPACES_BUCKET and/or SPACES_ORIGIN_URL in env.');
+  }
+
+  return { bucket, publicBase: stripTrailingSlashes(publicBase) };
+}
+
+function guessImageExt(mime) {
+  if (mime === 'image/png') return 'png';
+  if (mime === 'image/webp') return 'webp';
+  if (mime === 'image/jpeg' || mime === 'image/jpg') return 'jpg';
+  return 'jpg';
+}
+
+function randomHex(len = 10) {
+  return Array.from({ length: len }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+}
+
+/**
+ * Multer for multipart uploads (event media)
+ * - memory storage is fine for <= ~10MB
+ */
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 12 * 1024 * 1024 }, // 12MB
+});
+
 const app = express();
 app.use(cors(buildCorsOptions()));
-app.use(express.json());
+
+// IMPORTANT: allow base64 JSON payloads for team photo uploads
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Admin connection pool — uses limited admin user from the SAME .env
 const adminPool = mysql.createPool({
@@ -545,11 +603,50 @@ app.get('/api/admin/events/:eventId/media', async (req, res) => {
   }
 });
 
-app.post('/api/admin/events/:eventId/media', async (req, res) => {
+/**
+ * POST /api/admin/events/:eventId/media
+ * Supports BOTH:
+ *  1) JSON body: { url, caption }  (old behavior)
+ *  2) multipart/form-data: file=<image>, caption=<optional>  (NEW upload behavior)
+ */
+app.post('/api/admin/events/:eventId/media', upload.single('file'), async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    const { url, caption } = req.body || {};
 
+    // NEW: multipart upload path
+    if (req.file) {
+      const spaces = buildSpacesClient();
+      const { bucket, publicBase } = requireSpacesBucketAndPublicBase();
+
+      const caption = (req.body?.caption || '').trim() || null;
+      const mime = req.file.mimetype || 'image/jpeg';
+      const ext = guessImageExt(mime);
+
+      const key = `event-media/${eventId}/${Date.now()}-${randomHex(12)}.${ext}`;
+
+      await spaces.send(
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: key,
+          Body: req.file.buffer,
+          ContentType: mime,
+          ACL: 'public-read',
+        })
+      );
+
+      const url = `${publicBase}/${key}`;
+
+      const [result] = await adminPool.query(
+        `INSERT INTO media_assets (event_id, url, caption)
+         VALUES (?, ?, ?)`,
+        [eventId, url, caption]
+      );
+
+      return res.status(201).json({ success: true, id: result.insertId, url });
+    }
+
+    // Old JSON url path
+    const { url, caption } = req.body || {};
     if (!url) {
       return res.status(400).json({ error: 'url is required.' });
     }
@@ -787,6 +884,113 @@ app.delete('/api/admin/team/:id', async (req, res) => {
   } catch (err) {
     console.error('[ADMIN] Error deleting team member:', err);
     res.status(500).json({ error: 'Failed to delete team member' });
+  }
+});
+
+/**
+ * POST /api/admin/team/:id/photo
+ * Body: { imageData: "data:image/png;base64,..." }
+ * Uploads to Spaces and updates team_members.image_url
+ */
+app.post('/api/admin/team/:id/photo', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const { imageData } = req.body || {};
+
+    if (!imageData) {
+      return res.status(400).json({ error: 'imageData is required.' });
+    }
+
+    const match = String(imageData).match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+    if (!match) {
+      return res.status(400).json({ error: 'Invalid imageData format.' });
+    }
+
+    const mime = match[1];
+    const base64 = match[2];
+    const buffer = Buffer.from(base64, 'base64');
+
+    const spaces = buildSpacesClient();
+    const { bucket, publicBase } = requireSpacesBucketAndPublicBase();
+
+    const ext = guessImageExt(mime);
+    const key = `team/member-${memberId}-${Date.now()}-${randomHex(10)}.${ext}`;
+
+    await spaces.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: mime,
+        ACL: 'public-read',
+      })
+    );
+
+    const url = `${publicBase}/${key}`;
+
+    const [result] = await adminPool.query(`UPDATE team_members SET image_url = ? WHERE id = ?`, [
+      url,
+      memberId,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Team member not found.' });
+    }
+
+    res.json({ success: true, image_url: url });
+  } catch (err) {
+    console.error('[ADMIN] Error uploading team photo:', err);
+    res.status(500).json({ error: 'Failed to upload team photo.' });
+  }
+});
+
+/**
+ * DELETE /api/admin/team/:id/photo
+ * Clears team_members.image_url
+ * (Optional) tries to delete previous object from Spaces if it matches SPACES_ORIGIN_URL
+ */
+app.delete('/api/admin/team/:id/photo', async (req, res) => {
+  try {
+    const memberId = req.params.id;
+
+    // fetch current url so we can attempt delete
+    const [rows] = await adminPool.query(`SELECT image_url FROM team_members WHERE id = ?`, [
+      memberId,
+    ]);
+
+    if (!rows.length) {
+      return res.status(404).json({ error: 'Team member not found.' });
+    }
+
+    const currentUrl = rows[0].image_url || null;
+
+    // clear DB first (so UI reflects removal even if Spaces delete fails)
+    await adminPool.query(`UPDATE team_members SET image_url = NULL WHERE id = ?`, [memberId]);
+
+    // attempt to delete object in Spaces only if we can infer a key
+    try {
+      if (currentUrl) {
+        const { bucket, publicBase } = requireSpacesBucketAndPublicBase();
+        const base = stripTrailingSlashes(publicBase);
+
+        if (String(currentUrl).startsWith(base + '/')) {
+          const key = String(currentUrl).slice((base + '/').length);
+          const spaces = buildSpacesClient();
+          await spaces.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+        }
+      }
+    } catch (deleteErr) {
+      console.warn(
+        '[ADMIN] Warning: failed to delete old Spaces object:',
+        deleteErr?.message || deleteErr
+      );
+      // not fatal
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[ADMIN] Error removing team photo:', err);
+    res.status(500).json({ error: 'Failed to remove team photo.' });
   }
 });
 
