@@ -4,6 +4,8 @@
       "source": "/api/admin/:path*",
       "destination": "https://api.solarimpacts.org/api/admin/:path*"
     },
-    { "source": "/api/:path*", "destination": "https://api.solarimpacts.org/api/:path*" }
+    { "source": "/api/:path*", "destination": "https://api.solarimpacts.org/api/:path*" },
+
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
