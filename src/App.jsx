@@ -182,7 +182,7 @@ function App() {
       const innerWidth = inner.clientWidth;
 
       // Required space for single-row layout
-      const required = brand.offsetWidth + gap + menu.offsetWidth + gap + yearWidth;
+      const required = menu.offsetWidth + gap + brand.offsetWidth + gap + yearWidth;
 
       setTopbarStacked(required > innerWidth);
     }
@@ -501,91 +501,91 @@ function App() {
     <div className="app">
       <header className={`topbar ${topbarStacked ? 'topbar--stacked' : ''}`}>
         <div ref={topbarInnerRef} className="topbar-inner">
-          {/* Row 1: brand (always) */}
+          {/* BRAND */}
           <button
             ref={brandRef}
-            className="brand brand-button"
+            className="brand brand-button topbar-brand"
             onClick={() => handleNavClick('home')}
             type="button"
           >
             SOLAR EVENTS
           </button>
 
-          {/* Row 2 group (in wide layout, CSS keeps this on the same row) */}
-          <div className="topbar-row2">
-            {/* MENU */}
-            <div ref={menuRef} className="topbar-menu">
-              <button
-                ref={menuButtonRef}
-                className={`menu-button ${menuOpen ? 'is-open' : ''}`}
-                onClick={() => {
-                  if (!menuOpen) setShowYearPicker(false);
-                  setMenuOpen(!menuOpen);
-                }}
-                aria-label="Toggle menu"
-                type="button"
-              >
-                <span className="menu-icon">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-                <span className="menu-text">MENU</span>
-              </button>
-            </div>
-
-            {/* YEAR TOOLS (home only, but we still need a measurable element for the ref) */}
-            {view === 'home' ? (
-              <form
-                ref={(el) => {
-                  yearSearchRef.current = el; // keep your click-outside logic working
-                  yearToolsRef.current = el; // enable stacked-width measuring
-                }}
-                className="year-search"
-                onSubmit={handleYearSearchSubmit}
-                noValidate
-              >
-                <input
-                  type="text"
-                  name="year"
-                  className="year-search-input"
-                  placeholder="YEAR"
-                  inputMode="numeric"
-                  maxLength={4}
-                  value={yearQuery}
-                  onFocus={() => {
-                    if (menuOpen) setMenuOpen(false);
-                  }}
-                  onChange={(e) => {
-                    const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
-                    setYearQuery(cleaned);
-                  }}
-                />
-
-                <button className="year-search-button" type="submit">
-                  Search
-                </button>
-
-                <button
-                  className="year-search-browse"
-                  type="button"
-                  onClick={() => {
-                    if (menuOpen) setMenuOpen(false);
-                    setShowYearPicker((prev) => !prev);
-                  }}
-                  aria-expanded={showYearPicker}
-                  title="Browse timeline years by decade"
-                >
-                  Browse
-                </button>
-
-                {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
-              </form>
-            ) : (
-              // IMPORTANT: keep a real element for measurement when not on home
-              <div ref={yearToolsRef} style={{ width: 0, height: 0, overflow: 'hidden' }} />
-            )}
+          {/* MENU */}
+          <div ref={menuRef} className="topbar-menu topbar-menu--slot">
+            <button
+              ref={menuButtonRef}
+              className={`menu-button ${menuOpen ? 'is-open' : ''}`}
+              onClick={() => {
+                if (!menuOpen) setShowYearPicker(false);
+                setMenuOpen(!menuOpen);
+              }}
+              aria-label="Toggle menu"
+              type="button"
+            >
+              <span className="menu-icon">
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className="menu-text">MENU</span>
+            </button>
           </div>
+
+          {/* YEAR TOOLS */}
+          {view === 'home' ? (
+            <form
+              ref={(el) => {
+                yearSearchRef.current = el; // click-outside logic
+                yearToolsRef.current = el; // width measurement
+              }}
+              className="year-search topbar-year--slot"
+              onSubmit={handleYearSearchSubmit}
+              noValidate
+            >
+              <input
+                type="text"
+                name="year"
+                className="year-search-input"
+                placeholder="YEAR"
+                inputMode="numeric"
+                maxLength={4}
+                value={yearQuery}
+                onFocus={() => {
+                  if (menuOpen) setMenuOpen(false);
+                }}
+                onChange={(e) => {
+                  const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
+                  setYearQuery(cleaned);
+                }}
+              />
+
+              <button className="year-search-button" type="submit">
+                Search
+              </button>
+
+              <button
+                className="year-search-browse"
+                type="button"
+                onClick={() => {
+                  if (menuOpen) setMenuOpen(false);
+                  setShowYearPicker((prev) => !prev);
+                }}
+                aria-expanded={showYearPicker}
+                title="Browse timeline years by decade"
+              >
+                Browse
+              </button>
+
+              {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
+            </form>
+          ) : (
+            <div
+              ref={yearToolsRef}
+              className="topbar-year--slot"
+              style={{ width: 0, height: 0, overflow: 'hidden' }}
+            />
+          )}
         </div>
       </header>
 
