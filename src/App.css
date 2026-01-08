@@ -4101,7 +4101,7 @@ video {
 
 /* Brand/title: move DOWN 5px */
 .topbar-inner .brand {
-  transform: translateY(5px) !important;
+  transform: translateY(20px) !important;
 }
 
 /* Menu button: move UP 5px */
@@ -4111,5 +4111,5 @@ video {
 
 /* Year + Search + Browse: move RIGHT 5px */
 .year-search {
-  transform: translateX(5px) !important;
+  transform: translateX(20px) !important;
 }
