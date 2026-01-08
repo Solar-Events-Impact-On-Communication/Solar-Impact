@@ -4113,3 +4113,42 @@ video {
 .year-search {
   transform: translateX(30px) !important;
 }
+
+/* =========================================================
+   TOPBAR HEIGHT REDUCTION (tight but not cramped)
+   ========================================================= */
+
+/* Reduce vertical padding of the bar itself */
+.topbar {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* Tighten brand row */
+.topbar-inner .brand {
+  line-height: 1.1 !important;
+  margin-bottom: 4px !important; /* less space before controls row */
+}
+
+/* Controls row tighter vertically */
+.topbar-row--controls,
+.topbar-tools-row {
+  align-items: center !important;
+}
+
+/* Reduce MENU button height slightly */
+.menu-button {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  line-height: 1 !important;
+}
+
+/* Normalize pill heights so they don’t inflate the bar */
+.year-search-input,
+.year-search-button,
+.year-search-browse {
+  height: 34px !important; /* was ~38px */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
