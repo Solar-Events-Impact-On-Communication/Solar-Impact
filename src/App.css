@@ -3693,3 +3693,161 @@ video {
 .year-search-input {
   transform: none;
 }
+
+/* =========================================================
+   TOPBAR — SINGLE SOURCE OF TRUTH (wide = 1 row, narrow = 2 rows)
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+/* 0) Kill old assumptions that break layout */
+.topbar .menu-button {
+  position: static !important; /* overrides earlier absolute */
+  left: auto !important;
+}
+
+/* 1) The bar itself */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+
+  /* IMPORTANT: stop using the old 3-col grid */
+  display: block !important;
+
+  padding: 18px 28px;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* 2) Inner layout: brand, menu, year are siblings */
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0; /* allow shrinking */
+}
+
+/* 3) Brand centered in available space */
+.topbar-brand,
+.brand {
+  flex: 1 1 auto;
+  reflects: unset; /* harmless no-op if ignored */
+  text-align: center;
+  justify-self: unset;
+  white-space: nowrap;
+}
+
+/* 4) Menu stays on the left */
+.topbar-menu--slot,
+.topbar-menu {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Make sure MENU button is vertically centered and doesn’t inflate height */
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  margin: 0;
+  line-height: 1;
+}
+
+.menu-icon {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* 5) Year tools stay on the right */
+.topbar-year--slot,
+.year-search {
+  flex: 0 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* Make input shrink instead of colliding into MENU */
+.year-search-input {
+  width: auto !important; /* override your later width:100% */
+  flex: 0 1 220px; /* prefers 220px but can shrink */
+  min-width: 110px;
+  max-width: min(260px, 40vw);
+}
+
+/* Keep buttons compact */
+.year-search-button,
+.year-search-browse {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Optional: make all controls same height for perfect alignment */
+.year-search-input,
+.year-search-button,
+.year-search-browse {
+  height: 38px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   STACKED MODE (when your JS adds .topbar--stacked)
+   Title row 1, MENU left + YEAR right on row 2
+   ========================================================= */
+
+.topbar--stacked .topbar-inner {
+  flex-wrap: wrap;
+}
+
+/* force brand full-width row 1 */
+.topbar--stacked .topbar-brand,
+.topbar--stacked .brand {
+  flex: 1 1 100%;
+  text-align: center;
+  order: 1;
+}
+
+/* row 2: menu left */
+.topbar--stacked .topbar-menu--slot,
+.topbar--stacked .topbar-menu {
+  order: 2;
+}
+
+/* row 2: year right */
+.topbar--stacked .topbar-year--slot,
+.topbar--stacked .year-search {
+  order: 3;
+  margin-left: auto;
+}
+
+/* =========================================================
+   Small screens: reduce padding / allow tighter year input
+   ========================================================= */
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 14px 14px;
+  }
+
+  .year-search-input {
+    flex-basis: 170px;
+    max-width: 45vw;
+    min-width: 90px;
+  }
+
+  .year-search-button,
+  .year-search-browse {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
