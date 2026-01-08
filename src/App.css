@@ -4527,3 +4527,196 @@ video {
   white-space: nowrap;
   padding: 6px 14px;
 }
+
+/* =========================================================
+   FINAL OVERRIDES — TOPBAR / TIMELINE / NAV / ADMIN INPUTS
+   Paste at very bottom of App.css
+   ========================================================= */
+
+/* --- Topbar height vars --- */
+:root {
+  --topbar-h: 74px; /* desktop */
+  --topbar-h-stacked: 112px; /* 2-row mode */
+}
+
+/* App content should start below fixed topbar */
+.app {
+  padding-top: var(--topbar-h) !important;
+}
+
+/* ---------------------------
+   TOPBAR: 1-row desktop layout
+   menu | title | year picker
+---------------------------- */
+.topbar {
+  z-index: 50;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  grid-template-rows: auto !important;
+  align-items: center;
+  padding: 12px 18px !important;
+  min-height: var(--topbar-h);
+}
+
+/* menu button must NOT be absolute (absolute is what caused “extra lines/overlap”) */
+.topbar .menu-button {
+  position: static !important;
+  grid-column: 1;
+  justify-self: start;
+  padding: 4px 6px;
+}
+
+/* centered title */
+.topbar .brand {
+  grid-column: 2;
+  justify-self: center;
+  text-align: center;
+  margin: 0;
+}
+
+/* year picker right */
+.topbar .year-search {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: min(520px, 48vw);
+  padding: 0 !important;
+}
+
+/* IMPORTANT: scope the small input ONLY to the TOPBAR */
+.topbar .year-search-input {
+  width: clamp(7ch, 10vw, 12ch) !important; /* feels like a 4-digit box */
+  max-width: none !important;
+  min-width: 0 !important;
+  text-align: left;
+}
+
+/* keep buttons from forcing wrap */
+.topbar .year-search-button,
+.topbar .year-search-browse {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* ---------------------------
+   TOPBAR: 2-row stacked layout
+   Row 1: title centered
+   Row 2: menu left + year picker right
+---------------------------- */
+@media (max-width: 720px) {
+  .app {
+    padding-top: var(--topbar-h-stacked) !important;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: auto auto !important;
+    row-gap: 10px;
+    padding: 12px 12px !important;
+    min-height: var(--topbar-h-stacked);
+  }
+
+  /* Row 1: title centered across both columns */
+  .topbar .brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  /* Row 2: menu left */
+  .topbar .menu-button {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  /* Row 2: year picker right */
+  .topbar .year-search {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+    max-width: 100%;
+    gap: 6px;
+  }
+
+  /* slightly smaller controls as window shrinks */
+  .topbar .menu-text {
+    font-size: clamp(0.85rem, 3.2vw, 1rem);
+  }
+
+  .topbar .year-search-input {
+    width: clamp(7ch, 32vw, 12ch) !important;
+    font-size: clamp(0.85rem, 3.2vw, 1rem);
+    padding: 6px 10px;
+  }
+
+  .topbar .year-search-button,
+  .topbar .year-search-browse {
+    font-size: clamp(0.78rem, 3vw, 0.95rem);
+    padding: 6px 10px;
+  }
+}
+
+/* ---------------------------
+   NAV DRAWER: do NOT extend to bottom
+   - stays under topbar
+   - auto height up to viewport
+---------------------------- */
+.nav-drawer {
+  top: var(--topbar-h) !important;
+  height: auto !important; /* key: shrink to content */
+  max-height: calc(100dvh - var(--topbar-h) - 16px) !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  overflow-y: auto;
+  border-bottom-right-radius: 18px;
+}
+
+@media (max-width: 720px) {
+  .nav-drawer {
+    top: var(--topbar-h-stacked) !important;
+    max-height: calc(100dvh - var(--topbar-h-stacked) - 16px) !important;
+  }
+}
+
+/* ---------------------------
+   TIMELINE: remove extra top padding + stop header overlap
+---------------------------- */
+.timeline-screen {
+  padding-top: 24px !important; /* was too big */
+}
+
+/* sticky header is what causes “title/description overlapping timeline items” */
+.timeline-header {
+  position: static !important; /* disables sticky overlap */
+  top: auto !important;
+  margin-bottom: 22px !important;
+}
+
+/* ---------------------------
+   ADMIN: restore year input sizing (topbar input rules were affecting it)
+---------------------------- */
+.admin-year-label input.year-search-input,
+.admin-year-search input.year-search-input {
+  width: 160px !important;
+  max-width: none !important;
+}
+
+/* ---------------------------
+   ADMIN TEAM: new-member “Remove” button should be white
+   (text change is JSX — see below)
+---------------------------- */
+.admin-new-member-photo-chip .admin-team-remove-button {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.admin-new-member-photo-chip .admin-team-remove-button:hover {
+  background: #ff3b3b !important;
+  border-color: #ff3b3b !important;
+  color: #ffffff !important;
+}
