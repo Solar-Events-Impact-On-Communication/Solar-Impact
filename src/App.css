@@ -3416,3 +3416,86 @@ video {
     row-gap: 10px;
   }
 }
+
+/* =========================================================
+   Topbar controls row fixes (menu + year tools)
+   ========================================================= */
+
+/* Ensure menu participates in the controls row (not absolute) */
+.topbar-row--controls .menu-button {
+  position: static; /* overrides earlier position:absolute */
+  left: auto;
+  display: inline-flex;
+  align-items: center; /* vertical center */
+  gap: 10px;
+  padding: 4px 8px;
+  margin: 0;
+}
+
+/* Controls row: keep menu + year tools inline and centered */
+.topbar-row--controls {
+  align-items: center; /* vertical center for both sides */
+}
+
+/* Right cluster: keep the whole year area right-justified */
+.topbar-year-tools {
+  margin-left: auto;
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Make year search row behave nicely (no wrapping unless necessary) */
+.topbar-year-tools .year-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: nowrap; /* prevent odd wrapping */
+  min-width: 0;
+  max-width: 100%;
+  padding: 0; /* override the later .year-search { padding: 0 10px; } if needed */
+}
+
+/* IMPORTANT: stop the input from becoming full-width on small screens */
+.topbar-year-tools .year-search-input {
+  width: clamp(88px, 18vw, 170px); /* responsive but bounded */
+  max-width: 170px;
+  flex: 0 1 auto;
+}
+
+/* Buttons should not force the row wider */
+.topbar-year-tools .year-search-button,
+.topbar-year-tools .year-search-browse {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Tighter mobile behavior */
+@media (max-width: 520px) {
+  .topbar-row--controls {
+    gap: 10px;
+  }
+
+  .topbar-year-tools .year-search {
+    gap: 6px;
+  }
+
+  .topbar-year-tools .year-search-input {
+    width: 110px; /* small, predictable */
+    max-width: 110px;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar-year-tools .year-search-input {
+    width: 92px;
+    max-width: 92px;
+  }
+
+  /* Optional: slightly smaller buttons on very narrow screens */
+  .topbar-year-tools .year-search-button,
+  .topbar-year-tools .year-search-browse {
+    padding: 6px 10px;
+  }
+}
