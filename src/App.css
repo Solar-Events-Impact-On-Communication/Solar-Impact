@@ -3934,3 +3934,8 @@ video {
   width: 100%;
   max-width: 260px;
 }
+
+.year-search-input--compact {
+  width: 84px; /* or 72px / 96px */
+  padding: 8px 10px;
+}

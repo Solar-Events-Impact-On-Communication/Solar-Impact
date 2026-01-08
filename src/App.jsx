@@ -511,81 +511,80 @@ function App() {
             SOLAR EVENTS
           </button>
 
-          {/* MENU */}
-          <div ref={menuRef} className="topbar-menu topbar-menu--slot">
-            <button
-              ref={menuButtonRef}
-              className={`menu-button ${menuOpen ? 'is-open' : ''}`}
-              onClick={() => {
-                if (!menuOpen) setShowYearPicker(false);
-                setMenuOpen(!menuOpen);
-              }}
-              aria-label="Toggle menu"
-              type="button"
-            >
-              <span className="menu-icon">
-                <span />
-                <span />
-                <span />
-              </span>
-              <span className="menu-text">MENU</span>
-            </button>
-          </div>
-
-          {/* YEAR TOOLS */}
-          {view === 'home' ? (
-            <form
-              ref={(el) => {
-                yearSearchRef.current = el; // click-outside logic
-                yearToolsRef.current = el; // width measurement
-              }}
-              className="year-search topbar-year--slot"
-              onSubmit={handleYearSearchSubmit}
-              noValidate
-            >
-              <input
-                type="text"
-                name="year"
-                className="year-search-input"
-                placeholder="YEAR"
-                inputMode="numeric"
-                maxLength={4}
-                value={yearQuery}
-                onFocus={() => {
-                  if (menuOpen) setMenuOpen(false);
-                }}
-                onChange={(e) => {
-                  const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
-                  setYearQuery(cleaned);
-                }}
-              />
-
-              <button className="year-search-button" type="submit">
-                Search
-              </button>
-
+          {/* CONTROLS ROW (MENU + YEAR) */}
+          <div className={`topbar-controls ${topbarStacked ? 'topbar-controls--stacked' : ''}`}>
+            {/* MENU */}
+            <div ref={menuRef} className="topbar-menu">
               <button
-                className="year-search-browse"
-                type="button"
+                ref={menuButtonRef}
+                className={`menu-button ${menuOpen ? 'is-open' : ''}`}
                 onClick={() => {
-                  if (menuOpen) setMenuOpen(false);
-                  setShowYearPicker((prev) => !prev);
+                  if (!menuOpen) setShowYearPicker(false);
+                  setMenuOpen(!menuOpen);
                 }}
-                aria-expanded={showYearPicker}
-                title="Browse timeline years by decade"
+                aria-label="Toggle menu"
+                type="button"
               >
-                Browse
+                <span className="menu-icon">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+                <span className="menu-text">MENU</span>
               </button>
+            </div>
 
-              {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
-            </form>
-          ) : (
-            <div
-              ref={yearToolsRef}
-              className="topbar-year--slot"
-              style={{ width: 0, height: 0, overflow: 'hidden' }}
-            />
-          )}
+            {/* YEAR TOOLS */}
+            {view === 'home' ? (
+              <form
+                ref={(el) => {
+                  yearSearchRef.current = el; // click-outside logic
+                  yearToolsRef.current = el; // width measurement
+                }}
+                className="year-search"
+                onSubmit={handleYearSearchSubmit}
+                noValidate
+              >
+                <input
+                  type="text"
+                  name="year"
+                  className="year-search-input year-search-input--compact"
+                  placeholder="YEAR"
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={yearQuery}
+                  onFocus={() => {
+                    if (menuOpen) setMenuOpen(false);
+                  }}
+                  onChange={(e) => {
+                    const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
+                    setYearQuery(cleaned);
+                  }}
+                />
+
+                <button className="year-search-button" type="submit">
+                  Search
+                </button>
+
+                <button
+                  className="year-search-browse"
+                  type="button"
+                  onClick={() => {
+                    if (menuOpen) setMenuOpen(false);
+                    setShowYearPicker((prev) => !prev);
+                  }}
+                  aria-expanded={showYearPicker}
+                  title="Browse timeline years by decade"
+                >
+                  Browse
+                </button>
+
+                {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
+              </form>
+            ) : (
+              <div ref={yearToolsRef} style={{ width: 0, height: 0, overflow: 'hidden' }} />
+            )}
+          </div>
         </div>
       </header>
 
