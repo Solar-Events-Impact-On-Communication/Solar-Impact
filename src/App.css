@@ -4181,3 +4181,30 @@ video {
 .topbar {
   border-bottom: none !important;
 }
+
+/* =========================================================
+   TOPBAR: keep it BLACK, but visually shorter (no moving content)
+   ========================================================= */
+
+/* Keep the bar black */
+.topbar {
+  background: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 18px !important; /* keep your existing content position */
+  padding-bottom: 18px !important;
+  overflow: hidden; /* this is what "shrinks" the visible box */
+}
+
+/* Reduce visible height by clipping the bar background area.
+   We do it by limiting the bar’s own height but keeping your inner layout from shifting. */
+.topbar {
+  height: 64px; /* <-- shrink the bar box */
+  display: flex;
+  align-items: center; /* keeps content centered in the shorter bar */
+}
+
+/* If your layout is column-based (brand above controls), keep it */
+.topbar-inner {
+  width: 100%;
+}
