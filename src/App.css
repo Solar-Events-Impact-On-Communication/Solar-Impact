@@ -3851,3 +3851,86 @@ video {
     font-size: 0.85rem;
   }
 }
+
+/* =========================================================
+   TOPBAR — stop year tools dropping under MENU
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+/* Controls row MUST stay a single row (menu left, year right) */
+.topbar-row--controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important; /* key: no wrapping into 3rd row */
+  gap: 12px !important;
+  min-width: 0;
+}
+
+/* Menu must participate in layout (not absolute) */
+.topbar-row--controls .menu-button {
+  position: static !important;
+  left: auto !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+/* Right-side cluster must NOT claim full width */
+.topbar-row--controls .topbar-year-tools {
+  flex: 0 1 auto !important;
+  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  min-width: 0 !important;
+}
+
+/* Year search must be inline, NOT width:100% */
+.topbar-row--controls .year-search {
+  width: auto !important; /* overrides your width:100% rule */
+  max-width: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap !important; /* keeps input + buttons on one line */
+  gap: 8px !important;
+  padding: 0 !important; /* overrides later padding: 0 10px */
+}
+
+/* Input must NOT be full-width */
+.topbar-row--controls .year-search-input {
+  width: 10ch !important; /* stable year-sized width */
+  max-width: 10ch !important;
+  min-width: 10ch !important;
+  flex: 0 0 auto !important;
+  transform: none !important; /* removes any previous nudges */
+}
+
+/* Buttons stay compact */
+.topbar-row--controls .year-search-button,
+.topbar-row--controls .year-search-browse {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+/* Small screens: slightly tighter */
+@media (max-width: 520px) {
+  .topbar-row--controls .year-search-input {
+    width: 9ch !important;
+    max-width: 9ch !important;
+    min-width: 9ch !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .year-search {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+}
+
+.year-search-input {
+  width: 100%;
+  max-width: 260px;
+}
