@@ -3939,3 +3939,40 @@ video {
   width: 84px; /* or 72px / 96px */
   padding: 8px 10px;
 }
+
+/* Topbar layout */
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap; /* allow stacking */
+}
+
+/* Brand always first row */
+.topbar-brand {
+  flex: 0 0 auto;
+}
+
+/* Tools row holds MENU + YEAR */
+.topbar-tools-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto; /* pushes tools to the right on wide screens */
+  flex: 0 0 auto;
+}
+
+/* Stacked: tools row becomes full width row 2 */
+.topbar--stacked .topbar-tools-row {
+  flex: 1 0 100%;
+  margin-left: 0;
+  justify-content: space-between; /* menu left, year right */
+  margin-top: 10px;
+}
+
+/* Make the YEAR input smaller */
+.year-search-input {
+  width: 90px;
+  max-width: 90px;
+  padding: 8px 10px;
+}

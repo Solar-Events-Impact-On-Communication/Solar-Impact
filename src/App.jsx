@@ -162,27 +162,21 @@ function App() {
   const brandRef = useRef(null);
   const menuRef = useRef(null);
   const yearToolsRef = useRef(null);
+  const toolsRowRef = useRef(null);
 
   useEffect(() => {
     function computeStacked() {
       const inner = topbarInnerRef.current;
       const brand = brandRef.current;
-      const menu = menuRef.current;
-      const year = yearToolsRef.current;
+      const toolsRow = toolsRowRef.current;
 
-      if (!inner || !brand || !menu || !year) return;
+      if (!inner || !brand || !toolsRow) return;
 
-      // If year tools are not visible (e.g., not home view), they may be 0 width — that's fine.
-      const yearWidth = year.offsetWidth || 0;
-
-      // Match your CSS spacing between blocks (update if your gap differs)
-      const gap = 16;
-
-      // Available space
+      const gap = 16; // match your CSS gap
       const innerWidth = inner.clientWidth;
 
-      // Required space for single-row layout
-      const required = menu.offsetWidth + gap + brand.offsetWidth + gap + yearWidth;
+      // Single-row needs: BRAND + gap + (MENU+YEAR ROW)
+      const required = brand.offsetWidth + gap + toolsRow.offsetWidth;
 
       setTopbarStacked(required > innerWidth);
     }
@@ -195,6 +189,7 @@ function App() {
     if (brandRef.current) ro.observe(brandRef.current);
     if (menuRef.current) ro.observe(menuRef.current);
     if (yearToolsRef.current) ro.observe(yearToolsRef.current);
+    if (toolsRowRef.current) ro.observe(toolsRowRef.current);
 
     window.addEventListener('resize', computeStacked);
 
@@ -511,8 +506,8 @@ function App() {
             SOLAR EVENTS
           </button>
 
-          {/* CONTROLS ROW (MENU + YEAR) */}
-          <div className={`topbar-controls ${topbarStacked ? 'topbar-controls--stacked' : ''}`}>
+          {/* TOOLS ROW (MENU + YEAR) */}
+          <div ref={toolsRowRef} className="topbar-tools-row">
             {/* MENU */}
             <div ref={menuRef} className="topbar-menu">
               <button
@@ -539,7 +534,7 @@ function App() {
               <form
                 ref={(el) => {
                   yearSearchRef.current = el; // click-outside logic
-                  yearToolsRef.current = el; // width measurement
+                  yearToolsRef.current = el; // keep if you want, but toolsRow is what matters now
                 }}
                 className="year-search"
                 onSubmit={handleYearSearchSubmit}
@@ -548,7 +543,7 @@ function App() {
                 <input
                   type="text"
                   name="year"
-                  className="year-search-input year-search-input--compact"
+                  className="year-search-input"
                   placeholder="YEAR"
                   inputMode="numeric"
                   maxLength={4}
@@ -582,7 +577,11 @@ function App() {
                 {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
               </form>
             ) : (
-              <div ref={yearToolsRef} style={{ width: 0, height: 0, overflow: 'hidden' }} />
+              <div
+                ref={yearToolsRef}
+                style={{ width: 0, height: 0, overflow: 'hidden' }}
+                aria-hidden="true"
+              />
             )}
           </div>
         </div>
