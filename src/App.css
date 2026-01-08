@@ -1844,21 +1844,6 @@ button:focus-visible {
 }
 
 @media (max-width: 768px) {
-  .topbar {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 16px;
-  }
-
-  .year-search {
-    position: static;
-    transform: none;
-    width: 100%;
-    justify-content: center;
-    margin-top: 8px;
-  }
-
   .timeline-screen {
     padding: 32px 0 80px 72px;
   }
@@ -1894,13 +1879,6 @@ button:focus-visible {
   .admin-header-actions {
     justify-self: center;
   }
-
-  .topbar {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    justify-content: initial;
-  }
 }
 
 @media (max-width: 640px) {
@@ -1926,13 +1904,6 @@ button:focus-visible {
 }
 
 @media (max-width: 780px) {
-  .topbar {
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 10px;
-    padding: 14px 14px;
-  }
-
   .brand {
     grid-column: 1 / -1;
     justify-self: center;
@@ -4067,13 +4038,6 @@ button:focus-visible {
    ========================================================= */
 
 @media (max-width: 780px) {
-  .topbar {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 10px;
-    padding: 14px 14px;
-  }
-
   .brand {
     justify-self: center;
   }
@@ -4217,16 +4181,6 @@ video {
    1) TOPBAR (mobile): MENU + brand stacked left, search right
    ------------------------- */
 @media (max-width: 780px) {
-  .topbar {
-    /* Force the layout you want (overrides earlier conflicting @media blocks) */
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    row-gap: 8px;
-    align-items: start;
-    padding: 12px 14px;
-  }
-
   .menu-button {
     grid-column: 1;
     grid-row: 1;
@@ -4405,15 +4359,6 @@ video {
       Row 2: MENU left, Search right (inline with each other).
    ------------------------- */
 @media (max-width: 780px) {
-  .topbar {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 10px;
-    align-items: center;
-    padding: 12px 14px;
-  }
-
   .brand {
     grid-column: 1 / -1;
     grid-row: 1;
@@ -4589,18 +4534,6 @@ video {
    Title centered above Menu + Search row
 --------------------------------- */
 @media (max-width: 780px) {
-  .topbar {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-rows: auto auto !important;
-    grid-template-areas:
-      'brand brand'
-      'menu  search' !important;
-    row-gap: 10px !important;
-    align-items: center !important;
-    justify-items: stretch !important;
-  }
-
   /* Ensure title is centered on its own row */
   .brand,
   .brand-button {
@@ -4774,4 +4707,67 @@ video {
     width: 100% !important;
     max-width: none !important;
   }
+}
+
+/* =========================================================
+   TOPBAR — single row: menu (left) | title (center) | year-search (right)
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+.topbar {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  grid-template-rows: 1fr !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+}
+
+/* Left */
+.topbar .menu-button {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+/* Center */
+.topbar .brand,
+.topbar .brand-button {
+  grid-column: 2 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+/* Right */
+.topbar .year-search {
+  grid-column: 3 !important;
+  justify-self: end !important;
+  align-self: center !important;
+
+  /* critical: prevents it from acting like a full-width block */
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: inline-flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Keep the input reasonably sized in the topbar */
+.topbar .year-search-input {
+  width: 10ch !important;
+  max-width: 10ch !important;
+}
+
+/* Make sure buttons don't wrap / stretch */
+.topbar .year-search-button,
+.topbar .year-search-browse {
+  white-space: nowrap !important;
+  width: auto !important;
 }
