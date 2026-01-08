@@ -458,7 +458,6 @@ function App() {
             ref={menuButtonRef}
             className={`menu-button ${menuOpen ? 'is-open' : ''}`}
             onClick={() => {
-              // close the year picker if menu is opened
               if (!menuOpen) setShowYearPicker(false);
               setMenuOpen(!menuOpen);
             }}
@@ -3034,6 +3033,7 @@ function AdminView() {
                       placeholder="YYYY"
                       inputMode="numeric"
                       maxLength={4}
+                      pattern="\d{4}"
                       value={adminYearQuery}
                       onChange={(e) => {
                         const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
@@ -3776,7 +3776,7 @@ function AdminView() {
                           }
                         }}
                       >
-                        Remove
+                        Remove Photo
                       </button>
                     </div>
                   )}
