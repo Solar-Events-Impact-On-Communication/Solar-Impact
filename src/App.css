@@ -3587,3 +3587,62 @@ video {
     font-size: 0.8rem;
   }
 }
+
+/* =========================================================
+   TOPBAR polish — 4-digit year width + perfect alignment
+   (paste at very bottom)
+   ========================================================= */
+
+/* Keep menu + year tools on the SAME centered row */
+.topbar-row--controls {
+  align-items: center;
+}
+
+/* Make sure menu is not absolute and vertically centered */
+.topbar-row--controls .menu-button {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1; /* helps remove "off" vertical feel */
+  padding: 6px 8px;
+}
+
+/* Ensure the right side is a tight inline row */
+.topbar-year-tools,
+.year-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* 4-digit input sizing */
+.year-search-input {
+  flex: 0 0 auto; /* do NOT stretch */
+  width: 8.2ch; /* ~4 digits + padding room */
+  min-width: 8.2ch;
+  max-width: 8.2ch;
+  text-align: left; /* keep placeholder nice */
+}
+
+/* Optional: slightly tighten buttons so the row feels balanced */
+.year-search-button,
+.year-search-browse {
+  padding: 6px 12px;
+  line-height: 1;
+}
+
+/* If the input looks a hair low compared to the buttons, nudge it */
+.year-search-input {
+  margin-top: 0; /* safety */
+  transform: translateY(-1px);
+}
+
+/* If needed on very narrow widths, allow the input to shrink a bit */
+@media (max-width: 420px) {
+  .year-search-input {
+    width: 7.2ch;
+    min-width: 7.2ch;
+    max-width: 7.2ch;
+  }
+}
