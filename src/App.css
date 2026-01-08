@@ -46,6 +46,11 @@
 /* =========================================================
    App Shell
    ========================================================= */
+
+:root {
+  --topbar-h: 74px;
+  --topbar-h-stacked: 112px;
+}
 .app {
   min-height: 100vh;
   width: 100%;
@@ -60,7 +65,7 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  padding-top: 50px;
+  padding-top: var(--topbar-h);
 }
 
 .topbar {
@@ -72,7 +77,7 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 18px 28px;
+  padding: 12px 18px;
   background: rgba(0, 0, 0, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -163,6 +168,12 @@
   color: #fff;
 }
 
+/* Keep menu button in the topbar grid (prevents overlap) */
+.topbar .menu-button {
+  position: static;
+  left: auto;
+}
+
 .menu-icon {
   display: flex;
   flex-direction: column;
@@ -187,7 +198,7 @@
   left: 0;
   width: 380px;
   max-width: 80vw;
-  padding-top: 64px;
+  padding-top: calc(var(--topbar-h) + 12px);
   padding-bottom: 10px;
   background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(6px);
@@ -232,13 +243,13 @@
 .timeline-screen {
   position: relative;
   min-height: calc(100vh - 120px);
-  padding: 50px 40px 64px 70px;
+  padding: 28px 40px 64px 70px;
   box-sizing: border-box;
 }
 
 .timeline-header {
   position: sticky;
-  top: 50px;
+  top: calc(var(--topbar-h) + 10px);
   z-index: 5;
   margin-bottom: 48px;
 }
@@ -808,6 +819,8 @@
 
 .admin-year-search {
   display: inline-flex;
+  flex-wrap: nowrap;
+
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
@@ -1461,6 +1474,16 @@ button:focus-visible {
   font-size: clamp(0.9rem, 1vw, 1rem);
 }
 
+/* Scope sizing to the TOPBAR so admin year search stays aligned */
+.topbar .year-search-input {
+  width: clamp(7ch, 10vw, 12ch);
+  max-width: none;
+}
+.topbar .year-search-button,
+.topbar .year-search-browse {
+  white-space: nowrap;
+}
+
 .year-search-input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
@@ -1837,7 +1860,7 @@ button:focus-visible {
   }
 
   .timeline-screen {
-    padding: 50px 0 80px 72px;
+    padding: 32px 0 80px 72px;
   }
 
   .timeline-header {
@@ -1870,6 +1893,13 @@ button:focus-visible {
   .admin-tabs,
   .admin-header-actions {
     justify-self: center;
+  }
+
+  .topbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: initial;
   }
 }
 
@@ -1917,6 +1947,35 @@ button:focus-visible {
 
   .year-search-input {
     width: min(180px, 40vw);
+  }
+
+  :root {
+    --topbar-h: var(--topbar-h-stacked);
+  }
+
+  .topbar {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+  }
+  .menu-button {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+  .year-search {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+    width: auto;
+    max-width: 100%;
+    flex-wrap: nowrap;
   }
 }
 
@@ -2554,7 +2613,7 @@ button:focus-visible {
     color 0.18s ease,
     border-color 0.18s ease;
   flex: 0 1 auto;
-  max-width: 140px;
+  max-width: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4093,5 +4152,57 @@ video {
   select,
   textarea {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 780px) {
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 12px);
+  }
+}
+
+/* Admin year picker: keep input + buttons inline and aligned */
+.admin-year-search {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button,
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button {
+  white-space: nowrap;
+}
+
+.admin-year-label input.year-search-input {
+  height: 38px;
+}
+
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* New-member photo chip: keep Remove button inside the pill */
+.admin-new-member-photo-chip {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.admin-new-member-photo-chip .admin-team-remove-button {
+  flex: 0 0 auto;
+  max-width: 100%;
+  padding: 6px 12px;
+}
+
+@media (max-width: 520px) {
+  .admin-new-member-photo-chip {
+    flex-wrap: wrap; /* allow button to drop to next line instead of overflowing */
+  }
+  .admin-new-member-photo-chip .admin-team-remove-button {
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
