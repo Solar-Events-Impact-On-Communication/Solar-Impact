@@ -4392,3 +4392,189 @@ video {
     border-radius: 20px;
   }
 }
+
+/* =========================================================
+   FINAL OVERRIDES (append at very bottom)
+   - fixes: TOPBAR mobile layout (title centered above),
+            admin year input width (4 digits),
+            admin team add-member sizing + wrapping
+   ========================================================= */
+
+/* -------------------------
+   1) TOPBAR (mobile): Title centered on row 1.
+      Row 2: MENU left, Search right (inline with each other).
+   ------------------------- */
+@media (max-width: 780px) {
+  .topbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+    align-items: center;
+    padding: 12px 14px;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+    text-align: center;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .menu-button {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    align-self: center;
+  }
+
+  .year-search {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+    align-self: center;
+
+    width: auto;
+    max-width: none;
+    padding: 0;
+    flex-wrap: nowrap;
+  }
+
+  /* Keep search controls from wrapping/cutting off */
+  .year-search-input,
+  .year-search-button,
+  .year-search-browse {
+    white-space: nowrap;
+  }
+}
+
+/* -------------------------
+   2) ADMIN EVENTS: Year input should look like 4 digits, not huge
+   ------------------------- */
+
+/* Only target the Admin events year field (avoid touching public topbar) */
+.admin-year-label input.year-search-input {
+  width: 6ch !important; /* fits "YYYY" comfortably */
+  max-width: 8ch !important; /* hard cap */
+  text-align: left;
+}
+
+/* Make the buttons not inflate and keep consistent height */
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button {
+  height: 38px;
+  padding: 6px 14px;
+  line-height: 1;
+}
+
+/* Prevent the admin year search from stretching weirdly */
+.admin-year-search {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .admin-year-label {
+    width: 100%;
+  }
+  .admin-year-label input.year-search-input {
+    width: 8ch !important;
+    max-width: 10ch !important;
+  }
+  .admin-year-search .year-search-button,
+  .admin-year-search .year-search-browse-button {
+    flex: 1 1 calc(50% - 6px);
+  }
+}
+
+/* -------------------------
+   3) ADMIN TEAM: Add New Member row sizing + wrapping (no tiny controls)
+   ------------------------- */
+
+/* Base: keep add-row usable */
+.admin-team-add-row {
+  align-items: center;
+}
+
+/* Inputs inside the add row: consistent height + full usable width */
+.admin-team-add-row input.input,
+.admin-team-add-row input,
+.admin-team-add-row select,
+.admin-team-add-row button {
+  height: 40px;
+  box-sizing: border-box;
+}
+
+/* Make the Add Member button not shrink weirdly */
+.admin-team-add-row button,
+.admin-team-add-row .admin-add-button,
+.admin-team-add-row .admin-team-add-button {
+  min-width: 140px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Layout behavior by screen size */
+@media (max-width: 900px) {
+  /* 2-column stack: fields flow nicely */
+  .admin-team-add-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* put the action button full-width on its own row */
+  .admin-team-add-row > :last-child {
+    grid-column: 1 / -1;
+    justify-self: end;
+    width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  /* single column on small phones */
+  .admin-team-add-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .admin-team-add-row > * {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* button full width on mobile */
+  .admin-team-add-row > :last-child {
+    justify-self: stretch;
+  }
+
+  .admin-team-add-row button {
+    width: 100%;
+  }
+}
+
+/* Also stop team row action buttons from overflowing on small screens */
+@media (max-width: 780px) {
+  .admin-team-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .admin-team-actions {
+    width: 100%;
+  }
+
+  .admin-team-photo-upload,
+  .admin-team-remove-button {
+    width: 100%;
+    min-width: 0;
+  }
+}
