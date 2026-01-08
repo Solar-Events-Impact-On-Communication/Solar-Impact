@@ -3646,3 +3646,50 @@ video {
     max-width: 7.2ch;
   }
 }
+
+/* =========================================================
+   FINAL TOPBAR ALIGNMENT — menu inline with year controls
+   ========================================================= */
+
+/* Lock the controls row to a single vertical center */
+.topbar-row--controls {
+  display: flex;
+  align-items: center; /* THIS is the key */
+}
+
+/* Menu button: ensure it shares the same center line */
+.topbar-row--controls .menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Menu icon bars must not add extra height */
+.menu-icon {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Year tools cluster — same vertical center */
+.topbar-year-tools,
+.year-search {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Normalize all pill controls to the same height */
+.year-search-input,
+.year-search-button,
+.year-search-browse {
+  height: 38px; /* same visual height */
+  box-sizing: border-box;
+}
+
+/* Remove any residual vertical nudges */
+.year-search-input {
+  transform: none;
+}
