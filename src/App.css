@@ -3655,22 +3655,38 @@ video {
 }
 
 /* =========================================================
-   Under 900px: prevent topbar overlap (Timeline + Nav Drawer)
+   MOBILE TOPBAR HEIGHT VARS + FIX OVERLAPS (Timeline + Nav)
    ========================================================= */
 
+/* Define these so var() always works */
+:root {
+  --topbar-h: 50px; /* your original .app padding-top */
+  --topbar-h-stacked: 96px; /* stacked 2-row topbar height */
+}
+
 @media (max-width: 900px) {
-  /* 1) Timeline: make sticky header clear the stacked topbar */
+  /* Ensure the page content starts BELOW the stacked topbar */
+  .app {
+    padding-top: var(--topbar-h-stacked) !important;
+  }
+
+  /* Timeline sticky header must stick BELOW the stacked topbar */
   .timeline-header {
-    top: calc(var(--topbar-h-stacked) + 14px) !important;
+    top: var(--topbar-h-stacked) !important;
   }
 
-  /* Add a little extra breathing room at the top of the timeline screen */
+  /* Do NOT add extra top padding to timeline-screen (it already has 50px) */
   .timeline-screen {
-    padding-top: 24px !important;
+    padding-top: 50px !important; /* keep your original intent */
   }
 
-  /* 2) Slide-out nav: push menu contents below the stacked topbar */
+  /* Slide-out nav content must start below the stacked topbar */
   .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 16px) !important;
+    padding-top: var(--topbar-h-stacked) !important;
+  }
+
+  /* Optional: your scroll indicator uses a fixed "top: 90px" — bump it down on mobile */
+  .scroll-indicator--top {
+    top: calc(var(--topbar-h-stacked) + 12px) !important;
   }
 }
