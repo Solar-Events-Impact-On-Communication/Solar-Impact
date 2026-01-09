@@ -3439,3 +3439,100 @@ video {
 .topbar--stacked .year-search {
   margin-left: 0;
 }
+
+/* =========================================================
+   TOPBAR — Year input sizing + right padding
+   ========================================================= */
+
+/* Slight padding from right edge of window */
+.topbar {
+  padding-right: 24px; /* was effectively tighter before */
+}
+
+/* Year input: sized for 4 digits */
+.year-search input,
+.year-search input[type='text'],
+.year-search input[type='number'] {
+  width: 5.5ch; /* perfect for YYYY */
+  min-width: 5.5ch;
+  max-width: 6ch;
+
+  text-align: center; /* makes years feel intentional */
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* =========================================================
+   TOPBAR — Default (WIDE = single row)
+   ========================================================= */
+
+.topbar-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Row with menu left + tools right */
+.topbar-tools-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Menu participates in layout */
+.menu-button {
+  position: static;
+  transform: none;
+}
+
+/* Brand centered in the bar */
+.topbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* Right-side tools */
+.year-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* =========================================================
+   TOPBAR — Narrow screens (STACKED = 2 rows)
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .topbar-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  /* Brand becomes first row */
+  .topbar-brand {
+    position: static;
+    transform: none;
+    align-self: center;
+    text-align: center;
+  }
+
+  /* Controls row is second row */
+  .topbar-tools-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .year-search {
+    margin-left: 0;
+  }
+
+  /* Make sure content clears taller topbar */
+  .app {
+    padding-top: var(--topbar-h-stacked);
+  }
+}
