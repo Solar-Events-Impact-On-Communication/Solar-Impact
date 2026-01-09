@@ -3348,7 +3348,7 @@ video {
 /* Topbar height variables used for layout offsets */
 :root {
   --topbar-h: 64px; /* wide single-row height (approx) */
-  --topbar-h-stacked: 92px; /* narrow two-row height (approx) */
+  --topbar-h-stacked: 74px; /* narrow two-row height (approx) */
 }
 
 /* App content should always start below the fixed topbar */
@@ -3471,24 +3471,30 @@ video {
     padding-right: 8px !important; /* slight breathing room */
   }
 
-  /* Timeline: reduce top gap + shift left slightly + add space under description */
+  /* Timeline: reduce top gap + shift left (title/desc + rail) + add space under description */
   .timeline-screen {
-    /* was 50px top in base; cut in half */
-    padding-top: 24px !important;
+    /* Extra space ABOVE the title (in addition to .app padding-top). Make this small. */
+    padding-top: 12px !important;
 
-    /* base left is 70px (or 72px at <=768); shift left by ~10px */
-    padding-left: 60px !important;
+    /* You asked for ~15px left padding on mobile */
+    padding-left: 15px !important;
 
-    /* keep your right/bottom as-is unless you want to adjust */
-    padding-right: 24px !important;
+    /* Keep a little right/bottom breathing room */
+    padding-right: 16px !important;
     padding-bottom: 64px !important;
+  }
+
+  /* Bring the rail left to match the new padding */
+  .timeline-rail {
+    margin-left: 28px !important;
+    padding-right: 16px !important;
   }
 
   .timeline-header {
     top: var(--topbar-h-stacked) !important;
 
     /* add a bit more room between description and first year/timeline */
-    margin-bottom: 88px !important;
+    margin-bottom: 104px !important;
   }
 
   /* Nav drawer content should start below the stacked topbar */
