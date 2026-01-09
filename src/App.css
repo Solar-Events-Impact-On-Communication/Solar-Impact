@@ -3536,3 +3536,120 @@ video {
     padding-top: var(--topbar-h-stacked);
   }
 }
+
+/* =========================================================
+   TOPBAR — HARD OVERRIDES (fix grid conflict + pill shape + responsive switch)
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+/* 1) Kill the old grid layout completely */
+.topbar {
+  display: block !important; /* overrides earlier display:grid */
+  padding: 12px 24px 12px 18px !important; /* extra right padding */
+}
+
+/* 2) WIDE DEFAULT = single row */
+.topbar-inner {
+  position: relative;
+  width: 100%;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+/* Row: MENU left, year tools right */
+.topbar-tools-row {
+  width: 100%;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between !important;
+  gap: 12px;
+}
+
+/* MENU must be in normal flow */
+.menu-button {
+  position: static !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* Brand centered on the bar in wide mode */
+.topbar-brand {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  white-space: nowrap;
+}
+
+/* Right side: hug the right edge and never "center" itself */
+.year-search {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  max-width: none !important; /* overrides earlier max-width rules */
+}
+
+/* 3) Year input: narrow + pill again */
+.year-search-input,
+.year-search input,
+.year-search input[type='text'],
+.year-search input[type='number'] {
+  width: 5.5ch !important;
+  min-width: 5.5ch !important;
+  max-width: 6ch !important;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 999px !important; /* restores ellipse/pill */
+}
+
+/* 4) NARROW = stacked (2 rows) */
+@media (max-width: 900px) {
+  .topbar-inner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .topbar-brand {
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    align-self: center !important;
+    text-align: center !important;
+  }
+
+  .topbar-tools-row {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .year-search {
+    margin-left: 0 !important; /* space-between handles alignment */
+  }
+
+  .app {
+    padding-top: var(--topbar-h-stacked);
+  }
+}
+
+/* 5) If your JS still leaves .topbar--stacked on at wide widths,
+      force wide layout anyway. */
+@media (min-width: 901px) {
+  .topbar--stacked .topbar-inner {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+  .topbar--stacked .topbar-brand {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  .topbar--stacked .year-search {
+    margin-left: auto !important;
+  }
+}
