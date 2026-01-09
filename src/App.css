@@ -3339,88 +3339,81 @@ video {
 }
 
 /* =========================================================
-   TOPBAR + MOBILE LAYOUT — CONSOLIDATED (single source of truth)
+   TOPBAR + MOBILE (<900px) — single source of truth
+   - Wide: single row (menu left / brand centered / year tools right)
+   - Narrow: 2 rows (brand centered on row 1, menu left + year tools right on row 2)
+   - Fixes timeline overlap + removes excessive top gap on small screens
    ========================================================= */
 
-/* Heights used by app padding + sticky offsets
-   NOTE: stacked height must be >= actual stacked topbar height,
-   otherwise the sticky timeline header will tuck under the topbar.
-*/
+/* Topbar height variables used for layout offsets */
 :root {
-  --topbar-h: 50px; /* single-row topbar height */
-  --topbar-h-stacked: 110px; /* two-row topbar height (<=900px) */
+  --topbar-h: 64px; /* wide single-row height (approx) */
+  --topbar-h-stacked: 92px; /* narrow two-row height (approx) */
 }
 
-/* Base topbar shell */
+/* App content should always start below the fixed topbar */
+.app {
+  padding-top: var(--topbar-h);
+}
+
+/* Make the fixed topbar not fight grid rules defined earlier */
 .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-
-  /* IMPORTANT: override early grid-based topbar */
-  display: block !important;
-
-  background: rgba(0, 0, 0, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-
-  /* Slight extra right padding so the year/tools don't kiss the edge */
-  padding: 12px 24px 12px 18px !important;
+  display: block !important; /* let inner handle layout */
+  padding: 10px 18px !important; /* compact */
+  height: auto !important;
 }
 
-/* WIDE (default): single row
-   - MENU hard-left (in normal flow)
-   - YEAR/TOOLS hard-right
-   - BRAND centered via absolute positioning
-*/
+/* WIDE DEFAULT (>=901px): single row */
 .topbar-inner {
-  position: relative;
-  width: 100%;
+  width: 100% !important;
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
+  gap: 16px !important;
+  position: relative; /* anchor absolute centered brand */
 }
 
-.topbar-tools-row {
-  width: 100%;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px;
-}
-
-/* MENU must participate in layout (NOT absolute) */
-.menu-button {
-  position: static !important;
-  left: auto !important;
-  transform: none !important;
-  margin: 0 !important;
-}
-
-/* BRAND centered in the bar (wide mode) */
+/* Brand centered on the bar */
 .topbar-brand {
   position: absolute !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
+  margin: 0 !important;
   white-space: nowrap;
-  text-align: center;
-  margin: 0;
 }
 
-/* Right side hugs the right edge */
+/* Tools row spans full width: menu hard-left, year tools hard-right */
+.topbar-tools-row {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Menu stays left and participates normally */
+.topbar-menu {
+  flex: 0 0 auto;
+}
+
+.menu-button {
+  position: static !important;
+  margin: 0 !important;
+}
+
+/* Year tools: hug the right edge with a tiny right padding */
 .year-search {
   margin-left: auto !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 8px;
+  gap: 8px !important;
   flex-wrap: nowrap !important;
-  max-width: none !important;
+  padding-right: 6px; /* slight breathing room from window edge */
 }
 
-/* Year input: 4-digit sized + pill */
+/* Year input: compact 4-digit pill */
 .year-search-input,
 .year-search input,
 .year-search input[type='text'],
@@ -3428,22 +3421,28 @@ video {
   width: 5.5ch !important;
   min-width: 5.5ch !important;
   max-width: 6ch !important;
-  text-align: center !important;
+  text-align: center;
   padding-left: 10px !important;
   padding-right: 10px !important;
   border-radius: 999px !important;
 }
 
-/* ===========================
-   MOBILE (<= 900px): stacked
-   Row 1: brand centered
-   Row 2: menu left, tools right
+/* Keep buttons pill-shaped and vertically centered */
+.year-search-button,
+.year-search-browse {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  border-radius: 999px !important;
+  height: 36px !important;
+  line-height: 1 !important;
+}
 
-   Also: prevent overlap with sticky timeline header + nav drawer
-   and reduce the giant top gap (without bringing overlap back).
-   =========================== */
+/* -------------------------
+   NARROW (<900px): stacked 2 rows
+   ------------------------- */
 @media (max-width: 900px) {
-  /* App content must clear the taller stacked topbar */
   .app {
     padding-top: var(--topbar-h-stacked) !important;
   }
@@ -3454,12 +3453,12 @@ video {
     gap: 8px !important;
   }
 
-  /* Brand becomes normal flow in stacked mode */
   .topbar-brand {
     position: static !important;
     left: auto !important;
     transform: none !important;
     align-self: center !important;
+    text-align: center !important;
   }
 
   .topbar-tools-row {
@@ -3467,41 +3466,31 @@ video {
     justify-content: space-between !important;
   }
 
-  /* In stacked mode, space-between does the pushing */
   .year-search {
-    margin-left: 0 !important;
+    margin-left: 0 !important; /* space-between handles it */
+    padding-right: 8px !important; /* slight breathing room */
   }
 
-  /* Slide-out nav: push its contents below the stacked topbar */
-  .nav-drawer {
-    padding-top: var(--topbar-h-stacked) !important;
+  /* Timeline: fix overlap + reduce "giant" top gap on small screens */
+  .timeline-screen {
+    /* reduce top padding (it was 50px) so the header doesn't start too low */
+    padding: 24px 24px 64px 52px !important; /* also shifts left a bit */
+    min-height: calc(100vh - var(--topbar-h-stacked)) !important;
   }
 
-  /* Timeline sticky header must stick below stacked topbar */
+  /* Sticky header should stick below the stacked topbar */
   .timeline-header {
     top: var(--topbar-h-stacked) !important;
-    margin-bottom: 64px !important; /* breathing room under description */
+    margin-bottom: 56px !important; /* adds space BETWEEN description and timeline */
   }
 
-  /* Reduce the "giant top gap" ABOVE the title:
-     keep app padding (topbar clearance) but shrink timeline-screen top padding. */
-  .timeline-screen {
-    /* top, right, bottom, left */
-    padding: 14px 16px 80px 50px !important;
-  }
-
-  /* Keep the rail aligned with new left padding */
-  .timeline-rail {
-    margin-left: 42px !important;
-  }
-
-  /* If you show the scroll indicator on mobile, keep it under the taller topbar */
-  .scroll-indicator--top {
-    top: calc(var(--topbar-h-stacked) + 12px) !important;
+  /* Nav drawer content should start below the stacked topbar */
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 10px) !important;
   }
 }
 
-/* Ensure wide screens use single-row even if JS leaves .topbar--stacked on */
+/* Ensure any lingering stacked class doesn't break wide layout */
 @media (min-width: 901px) {
   .topbar--stacked .topbar-inner {
     flex-direction: row !important;
@@ -3511,8 +3500,5 @@ video {
     position: absolute !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-  }
-  .topbar--stacked .year-search {
-    margin-left: auto !important;
   }
 }
