@@ -3653,3 +3653,24 @@ video {
     margin-left: auto !important;
   }
 }
+
+/* =========================================================
+   Under 900px: prevent topbar overlap (Timeline + Nav Drawer)
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* 1) Timeline: make sticky header clear the stacked topbar */
+  .timeline-header {
+    top: calc(var(--topbar-h-stacked) + 14px) !important;
+  }
+
+  /* Add a little extra breathing room at the top of the timeline screen */
+  .timeline-screen {
+    padding-top: 24px !important;
+  }
+
+  /* 2) Slide-out nav: push menu contents below the stacked topbar */
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 16px) !important;
+  }
+}
