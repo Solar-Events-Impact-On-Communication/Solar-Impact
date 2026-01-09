@@ -3720,7 +3720,7 @@ video {
 @media (max-width: 900px) {
   /* Shift entire timeline block slightly left */
   .timeline-screen {
-    padding-left: 48px !important; /* was 70px */
+    padding-left: 25px !important; /* was 70px */
     padding-right: 16px !important;
   }
 
@@ -3733,5 +3733,14 @@ video {
   .timeline-header h1,
   .timeline-header p {
     max-width: 90%;
+  }
+}
+
+/* =========================================================
+   MOBILE (<= 900px): reduce the top gap above the Timeline title
+   ========================================================= */
+@media (max-width: 900px) {
+  .timeline-screen {
+    padding-top: 24px !important; /* was 50px (too large combined with stacked topbar) */
   }
 }
