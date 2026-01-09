@@ -3712,3 +3712,26 @@ video {
     margin-top: 6px !important;
   }
 }
+
+/* =========================================================
+   MOBILE (<= 900px): space below description + shift left
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* Shift entire timeline block slightly left */
+  .timeline-screen {
+    padding-left: 48px !important; /* was 70px */
+    padding-right: 16px !important;
+  }
+
+  /* Add space BETWEEN description and the timeline */
+  .timeline-header {
+    margin-bottom: 64px !important; /* was 48px */
+  }
+
+  /* Optional: tighten header text alignment on mobile */
+  .timeline-header h1,
+  .timeline-header p {
+    max-width: 90%;
+  }
+}
