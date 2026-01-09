@@ -3496,3 +3496,36 @@ video {
   box-sizing: border-box !important;
   border-radius: 999px !important; /* pill/ellipse */
 }
+
+/* =========================================================
+   TOPBAR — force YEAR/Search/Browse further RIGHT
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+/* Make the controls row use the full width and push ends apart */
+.topbar-row--controls,
+.topbar-tools-row {
+  width: 100% !important;
+  justify-content: space-between !important; /* menu left, year tools right */
+}
+
+/* If your year tools wrapper exists, ensure it hugs the right */
+.topbar-year-tools {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+/* THIS is the important one: push the actual right cluster to the edge */
+.topbar-row--controls .year-search,
+.topbar-tools-row .year-search,
+.topbar .year-search {
+  margin-left: auto !important; /* takes remaining space, pushes right */
+  justify-content: flex-end !important;
+  padding-right: 30px !important; /* <-- increase this to move further right */
+  transform: none !important; /* avoid fighting earlier transforms */
+}
+
+/* Optional: if you want it EVEN closer to the window edge, bump topbar padding */
+.topbar {
+  padding-right: 18px !important; /* adjust if you want more/less edge spacing */
+}
