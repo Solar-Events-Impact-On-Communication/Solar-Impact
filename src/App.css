@@ -3521,7 +3521,7 @@ video {
 .topbar .year-search {
   margin-left: auto !important; /* takes remaining space, pushes right */
   justify-content: flex-end !important;
-  padding-right: 30px !important; /* <-- increase this to move further right */
+  padding-right: 70px !important; /* <-- increase this to move further right */
   transform: none !important; /* avoid fighting earlier transforms */
 }
 
