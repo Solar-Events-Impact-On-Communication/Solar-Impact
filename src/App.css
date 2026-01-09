@@ -3359,6 +3359,104 @@ video {
 }
 
 /* =========================================================
+   TOPBAR — FIX (2-row layout + shorter bar + no wrapping)
+   Paste at VERY BOTTOM of App.css
+   ========================================================= */
+
+/* Keep bar black, but shorter */
+.topbar {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  padding: 10px 18px !important; /* shorter vertically */
+  height: auto !important; /* undo any height hacks */
+  min-height: 0 !important;
+  display: block !important; /* undo any grid/flex forced earlier */
+}
+
+/* Keep your existing 2-row structure (brand row, controls row) */
+.topbar-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 6px !important; /* tighter gap = shorter bar */
+}
+
+/* Brand: tiny nudge down */
+.topbar-inner .brand {
+  margin: 0 !important;
+  transform: translateY(5px) !important;
+}
+
+/* Controls row: menu left, year tools right (single line) */
+.topbar-tools-row,
+.topbar-row--controls {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important; /* KEY: no extra wrap row */
+  gap: 12px !important;
+}
+
+/* Menu: participate in layout and nudge up */
+.menu-button {
+  position: static !important;
+  left: auto !important;
+  margin: 0 !important;
+  transform: translateY(-5px) !important;
+}
+
+/* Right cluster: keep YEAR + buttons inline and push slightly right */
+.topbar-year-tools {
+  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  min-width: 0 !important;
+  transform: translateX(5px) !important;
+}
+
+/* Stop older mobile rules from making year-search full-width / wrapping */
+.topbar-year-tools .year-search {
+  width: auto !important;
+  max-width: none !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important; /* KEY: input + buttons stay on same line */
+}
+
+/* Make the year input compact so it doesn't force wrapping */
+.topbar-year-tools .year-search-input,
+.year-search-input {
+  width: 8.5ch !important;
+  max-width: 8.5ch !important;
+  min-width: 8.5ch !important;
+  flex: 0 0 auto !important;
+}
+
+/* Ensure buttons don't wrap */
+.topbar-year-tools .year-search-button,
+.topbar-year-tools .year-search-browse,
+.year-search-button,
+.year-search-browse {
+  white-space: nowrap !important;
+  flex: 0 0 auto !important;
+}
+
+/* Optional: uniform control heights to reduce perceived bar height */
+.year-search-input,
+.year-search-button,
+.year-search-browse {
+  height: 34px !important;
+  box-sizing: border-box !important;
+}
+
+/* =========================================================
    TOPBAR — requested micro-adjustments
    Paste at VERY BOTTOM of App.css
    ========================================================= */
