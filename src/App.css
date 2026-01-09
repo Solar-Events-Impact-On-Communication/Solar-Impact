@@ -3471,16 +3471,24 @@ video {
     padding-right: 8px !important; /* slight breathing room */
   }
 
-  @media (max-width: 900px) {
-    .timeline-screen {
-      padding-top: 8px !important; /* less space above title */
-      padding-left: 10px !important; /* shifted left */
-    }
+  /* Timeline: reduce top gap + shift left slightly + add space under description */
+  .timeline-screen {
+    /* was 50px top in base; cut in half */
+    padding-top: 24px !important;
 
-    .timeline-header {
-      top: var(--topbar-h-stacked) !important;
-      margin-bottom: 104px !important; /* more space under description */
-    }
+    /* base left is 70px (or 72px at <=768); shift left by ~10px */
+    padding-left: 60px !important;
+
+    /* keep your right/bottom as-is unless you want to adjust */
+    padding-right: 24px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .timeline-header {
+    top: var(--topbar-h-stacked) !important;
+
+    /* add a bit more room between description and first year/timeline */
+    margin-bottom: 88px !important;
   }
 
   /* Nav drawer content should start below the stacked topbar */
