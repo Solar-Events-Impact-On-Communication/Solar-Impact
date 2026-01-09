@@ -3472,7 +3472,7 @@ video {
 .topbar-year-tools,
 .topbar-row--controls .topbar-year-tools,
 .topbar-tools-row .topbar-year-tools {
-  transform: translateX(30px) !important;
+  transform: translateX(60px) !important;
 }
 
 /* YEAR input should be an ellipse (pill) */
