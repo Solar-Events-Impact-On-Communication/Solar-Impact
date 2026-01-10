@@ -3625,3 +3625,74 @@ video {
 .topbar--stacked .topbar-tools-row {
   justify-content: space-between;
 }
+
+/* =========================================================
+   TOPBAR — FINAL LAYOUT RULES (timeline vs other pages)
+   - Timeline (home): 2 rows when needed, with YEAR tools on the right
+   - Other pages: brand centered + menu centered (no right-side gap)
+   This block intentionally overrides earlier topbar hacks.
+   ========================================================= */
+
+.topbar {
+  padding: 10px 0 !important; /* removes the “mystery” right gap */
+  height: auto !important;
+}
+
+.topbar-inner {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 16px !important; /* safe edge padding */
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important; /* brand row + tools row */
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+/* BRAND always centered */
+.topbar-brand {
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+/* Tools row: full width */
+.topbar-tools-row {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+}
+
+/* Home (timeline): menu left, year tools right */
+.topbar--timeline .topbar-tools-row {
+  justify-content: space-between !important;
+}
+
+/* Non-home pages: menu centered (only thing in the tools row) */
+.topbar--simple .topbar-tools-row {
+  justify-content: center !important;
+}
+
+/* Stop any old “push right” hacks that create empty space */
+.topbar .year-search,
+.topbar .topbar-year-tools {
+  transform: none !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* YEAR tools should hug the right on timeline */
+.topbar--timeline .year-search {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+/* Year picker popover: keep it tight to the right edge of the YEAR tools */
+.year-search-popover {
+  right: 0 !important;
+  max-width: min(320px, calc(100vw - 32px)) !important;
+  box-sizing: border-box !important;
+}

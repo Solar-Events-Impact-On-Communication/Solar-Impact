@@ -515,7 +515,10 @@ function App() {
           </button>
 
           {/* TOOLS ROW (MENU + YEAR) */}
-          <div ref={toolsRowRef} className="topbar-tools-row">
+          <div
+            ref={toolsRowRef}
+            className={`topbar-tools-row ${view === 'home' ? 'topbar-tools-row--timeline' : 'topbar-tools-row--simple'}`}
+          >
             {/* MENU */}
             <div ref={menuRef} className="topbar-menu">
               <button
