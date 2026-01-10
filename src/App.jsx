@@ -574,7 +574,43 @@ function App() {
                   Browse
                 </button>
 
-                {showYearPicker && <div className="year-search-popover">{/* unchanged */}</div>}
+                {showYearPicker && (
+                  <div className="year-search-popover">
+                    <div className="year-search-popover-section">
+                      <div className="year-search-popover-label">Decades</div>
+                      <div className="year-search-decade-list">
+                        {DECADES.map((d) => (
+                          <button
+                            key={d}
+                            type="button"
+                            className={
+                              'year-search-decade ' + (pickerDecade === d ? 'is-active' : '')
+                            }
+                            onClick={() => setPickerDecade(d)}
+                          >
+                            {d}s
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="year-search-popover-section">
+                      <div className="year-search-popover-label">Years</div>
+                      <div className="year-search-year-list">
+                        {YEARS.filter((y) => Math.floor(y / 10) * 10 === pickerDecade).map((y) => (
+                          <button
+                            key={y}
+                            type="button"
+                            className="year-search-year"
+                            onClick={() => handleYearPickerSelect(y)}
+                          >
+                            {y}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </form>
             ) : (
               <div
@@ -868,6 +904,7 @@ function TimelineYearRow({ year, events, isExpanded, onToggle, onOpenEvent }) {
             <button key={ev.id} className="timeline-year-event" onClick={() => onOpenEvent(ev)}>
               <div className="timeline-year-event-date">{ev.date}</div>
               {ev.type && <div className="timeline-year-event-type">{ev.type}</div>}
+              {ev.location && <div className="timeline-year-event-location">{ev.location}</div>}
               <div className="timeline-year-event-title">{ev.title}</div>
               {ev.shortDescription && (
                 <div className="timeline-year-event-description">{ev.shortDescription}</div>

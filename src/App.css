@@ -336,6 +336,14 @@ TABLE OF CONTENTS
   color: rgba(255, 230, 180, 0.95);
   margin-top: 2px;
 }
+
+.timeline-year-event-location {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(220, 230, 255, 0.9);
+  margin-top: 2px;
+}
+
 .timeline-year-event-title {
   font-size: 1rem;
   font-weight: 700;
@@ -3281,6 +3289,32 @@ Additional Fixes
 ========================================================= */
 
 @media (max-width: 900px) {
+  /* Keep the timeline header closer to the topbar on small screens */
+  .timeline-header {
+    margin-bottom: 24px;
+  }
+
+  /* Give the timeline more usable horizontal space */
+  .timeline-rail {
+    margin-left: 24px;
+    padding-right: 16px;
+  }
+
+  .timeline-row {
+    padding: 18px 16px 18px 34px; /* top/right/bottom/left */
+    margin-bottom: 20px;
+  }
+
+  .timeline-year-events {
+    padding-left: 10px;
+  }
+
+  .timeline-year-event {
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  /* Event details modal/cards */
   .timeline-event-card,
   .timeline-card,
   .event-card,
@@ -3288,6 +3322,7 @@ Additional Fixes
     width: calc(100vw - 60px);
     max-width: 100%;
   }
+}
 }
 @media (max-width: 520px) {
   .timeline-event-card,
