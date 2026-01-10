@@ -166,6 +166,12 @@ function App() {
 
   useEffect(() => {
     function computeStacked() {
+      // Only the homepage has the year tools, so only the homepage should ever stack.
+      if (view !== 'home') {
+        setTopbarStacked(false);
+        return;
+      }
+
       const inner = topbarInnerRef.current;
       const brand = brandRef.current;
       const toolsRow = toolsRowRef.current;
@@ -175,9 +181,7 @@ function App() {
       const gap = 16; // match your CSS gap
       const innerWidth = inner.clientWidth;
 
-      // Single-row needs: BRAND + gap + (MENU+YEAR ROW)
       const required = brand.offsetWidth + gap + toolsRow.offsetWidth;
-
       setTopbarStacked(required > innerWidth);
     }
 
@@ -494,7 +498,11 @@ function App() {
 
   return (
     <div className="app">
-      <header className={`topbar ${topbarStacked ? 'topbar--stacked' : ''}`}>
+      <header
+        className={`topbar ${view === 'home' ? 'topbar--timeline' : ''} ${
+          view === 'home' && topbarStacked ? 'topbar--stacked' : ''
+        }`}
+      >
         <div ref={topbarInnerRef} className="topbar-inner">
           {/* BRAND */}
           <button

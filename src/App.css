@@ -1261,8 +1261,12 @@ button:focus-visible {
   position: absolute;
   top: 120%;
   right: 0;
-  min-width: 260px;
-  max-width: 320px;
+
+  /* ✅ shrink to content instead of a big fixed rectangle */
+  width: max-content;
+  min-width: 0;
+  max-width: min(92vw, 320px);
+
   padding: 12px 12px 10px;
   border-radius: 16px;
   background: rgba(4, 6, 18, 0.98);
@@ -3323,7 +3327,7 @@ Additional Fixes
     max-width: 100%;
   }
 }
-}
+
 @media (max-width: 520px) {
   .timeline-event-card,
   .timeline-card,
@@ -3396,16 +3400,6 @@ video {
   display: block !important; /* let inner handle layout */
   padding: 10px 18px !important; /* compact */
   height: auto !important;
-}
-
-/* WIDE DEFAULT (>=901px): single row */
-.topbar-inner {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 16px !important;
-  position: relative; /* anchor absolute centered brand */
 }
 
 /* Brand centered on the bar */
@@ -3482,12 +3476,6 @@ video {
     padding-top: var(--topbar-h-stacked) !important;
   }
 
-  .topbar-inner {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-  }
-
   .topbar-brand {
     position: static !important;
     left: auto !important;
@@ -3549,4 +3537,91 @@ video {
     left: 50% !important;
     transform: translateX(-50%) !important;
   }
+}
+
+/* =========================================================
+   TOPBAR — single-row by default, 2-row only when .topbar--stacked
+   Works for all pages; stacking only activates on home via App.jsx
+   ========================================================= */
+
+.topbar {
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 10px 18px;
+}
+
+/* Base (single-row behavior) */
+.topbar-inner {
+  position: relative; /* allows centered brand */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 54px; /* keeps vertical centering consistent */
+}
+
+/* Center the brand in the bar (single-row) */
+.topbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+/* Tools row spans full width: menu hard-left, year tools hard-right */
+.topbar-tools-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Keep the year/search/browse aligned right */
+.year-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  padding-right: 6px; /* slight right padding so it’s not hugging the edge */
+}
+
+/* Year input: 4-digit compact pill */
+.year-search-input {
+  width: 6ch;
+  min-width: 6ch;
+  max-width: 6ch;
+  border-radius: 999px;
+}
+
+/* Buttons stay pill-like */
+.year-search-button,
+.year-search-browse {
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* =========================
+   Stacked (2-row) only when .topbar--stacked
+   ========================= */
+
+.topbar--stacked .topbar-inner {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-height: unset;
+}
+
+/* In stacked mode, brand becomes normal flow (row 1) */
+.topbar--stacked .topbar-brand {
+  position: static;
+  transform: none;
+  align-self: center;
+}
+
+/* Controls row (row 2): menu left, year tools right */
+.topbar--stacked .topbar-tools-row {
+  justify-content: space-between;
 }
