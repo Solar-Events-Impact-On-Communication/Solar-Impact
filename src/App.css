@@ -3704,28 +3704,47 @@ video {
 }
 
 /* =========================================================
-   Patch: Mobile (<900px) year input + timeline event card sizing
-   (This block intentionally lives at the end of the file so it wins.)
+   Mobile (<=900px) — Expanded timeline event card MUST fit viewport
    ========================================================= */
 @media (max-width: 900px) {
-  /* Ensure expanded event cards never overflow the viewport width */
-  .timeline-year-events {
-    width: 100%;
-    max-width: 100%;
-    padding-right: 0;
-    margin-right: 0;
-    box-sizing: border-box;
+  /* Give the rail a little less "reserved" space on the right */
+  .timeline-rail {
+    padding-right: 12px !important; /* was 24px */
+    box-sizing: border-box !important;
   }
 
-  .timeline-year-event {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  /* Make sure the year row itself isn't creating overflow */
+  .timeline-row.timeline-row--year {
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Expanded container should respect the available width */
+  .timeline-row.is-expanded .timeline-year-events {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    /* keep the dashed border but avoid pushing content wider */
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* The actual dark box */
+  .timeline-row.is-expanded .timeline-year-event {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    /* THIS is the key: prevents 100% + padding overflow */
+    box-sizing: border-box !important;
+
+    /* prevent long text from forcing width */
+    overflow: hidden !important;
   }
 }
 
 @media (max-width: 900px) {
-  /* Prevent YEAR input from collapsing while keeping it compact */
   .year-search {
     flex-wrap: nowrap !important;
     align-items: center;
@@ -3735,11 +3754,11 @@ video {
   .year-search input,
   .year-search input[type='text'],
   .year-search input[type='number'] {
-    width: 80px !important; /* fits 4 digits comfortably */
+    width: 80px !important;
     min-width: 80px !important;
-    max-width: 120 px !important;
+    max-width: 80px !important;
 
-    flex: 0 0 120px !important; /* stops flex from shrinking it */
+    flex: 0 0 80px !important;
     flex-shrink: 0 !important;
   }
 }
