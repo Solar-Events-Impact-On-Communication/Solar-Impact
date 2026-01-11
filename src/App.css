@@ -3398,7 +3398,7 @@ video {
 /* Make the fixed topbar not fight grid rules defined earlier */
 .topbar {
   display: block !important; /* let inner handle layout */
-  padding: 10px 18px !important; /* compact */
+  padding: 10px 18px 8px !important; /* compact */
   height: auto !important;
 }
 
@@ -3549,7 +3549,7 @@ video {
   background: rgba(0, 0, 0, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: 12px 18px; /* give a touch of breathing room on the right edge */
+  padding: 10px 18px 8px; /* tighter bottom padding */
 }
 
 /* Single-row by default (>= 901px) */
