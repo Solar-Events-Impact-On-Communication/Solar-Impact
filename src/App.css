@@ -3903,3 +3903,15 @@ video {
     line-height: 1.15 !important;
   }
 }
+
+/* =========================================================
+   MOBILE (<=900px): Topbar "SOLAR EVENTS" spacing + size
+   ========================================================= */
+@media (max-width: 900px) {
+  .topbar-title,
+  .topbar-brand {
+    font-size: 1.15rem !important; /* increase size slightly */
+    margin-bottom: 6px !important; /* subtle gap when stacked */
+    line-height: 1.2 !important;
+  }
+}
