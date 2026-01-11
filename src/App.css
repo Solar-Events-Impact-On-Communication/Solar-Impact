@@ -4225,3 +4225,27 @@ video {
     padding-top: calc(var(--topbar-h-stacked) + 10px) !important;
   }
 }
+
+/* =========================================================
+   FIX: Mobile drawer has extra top padding on non-home pages
+   - Base .nav-drawer uses padding-top: 64px (too tall on mobile single-row topbar)
+   - Keep stacked home/timeline behavior using --topbar-h-stacked
+   ========================================================= */
+
+@media (max-width: 900px) {
+  :root {
+    /* Actual single-row topbar height on mobile (non-stacked) */
+    --topbar-h-mobile: 52px;
+  }
+
+  /* Non-home pages (topbar not stacked): reduce the drawer’s internal top padding */
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h-mobile) + 8px) !important;
+  }
+
+  /* Home/timeline (stacked header): keep the taller offset */
+  .topbar.topbar--stacked ~ .nav-drawer,
+  .topbar--stacked ~ .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 8px) !important;
+  }
+}
