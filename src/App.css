@@ -3841,7 +3841,7 @@ video {
   /* 1) Reduce the giant gap between topbar and Timeline header */
   .timeline-screen {
     /* was effectively 50px+ on mobile; shrink it hard */
-    padding-top: 14px !important;
+    padding-top: 20px !important;
     /* you said you want ~15px left */
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -3856,7 +3856,7 @@ video {
 
   /* 3) Bring back space between description and the actual timeline rail */
   .timeline-rail {
-    margin-top: 16px !important; /* this is the missing “breathing room” */
+    margin-top: 20px !important; /* this is the missing “breathing room” */
     padding-right: 0 !important; /* prevents “fake right gap” inside rail */
   }
 
