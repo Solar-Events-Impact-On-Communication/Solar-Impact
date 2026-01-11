@@ -3786,3 +3786,31 @@ video {
     transform: none !important;
   }
 }
+
+/* =========================================================
+   FIX: Reduce “gap under topbar” (Timeline + About/Admin)
+   This is NOT topbar padding — it’s page padding.
+   Paste at VERY BOTTOM so it wins.
+   ========================================================= */
+
+/* 1) Timeline page: remove the extra top padding that creates the big gap */
+.timeline-screen {
+  /* was: padding: 50px 40px 64px 70px; */
+  padding-top: 14px !important; /* small breathing room below topbar */
+}
+
+/* Optional: if you want the Timeline header a touch closer still */
+.timeline-header {
+  margin-top: 0 !important;
+}
+
+/* 2) About (and Admin) pages: reduce the huge built-in top padding */
+.main--about {
+  /* was: padding: 80px 10px 48px; */
+  padding-top: 24px !important;
+}
+
+.main--admin {
+  /* was: padding: 80px 28px 48px; */
+  padding-top: 24px !important;
+}
