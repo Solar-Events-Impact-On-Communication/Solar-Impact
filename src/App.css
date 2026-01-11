@@ -4295,3 +4295,48 @@ video {
     top: auto !important;
   }
 }
+
+/* =========================================================
+   PATCH: Non-home (<900px) topbar should stay SINGLE ROW
+   - Menu left
+   - Brand centered
+   (Home uses .topbar--stacked; this targets everything else.)
+   ========================================================= */
+@media (max-width: 900px) {
+  .topbar:not(.topbar--stacked) .topbar-inner {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr;
+    align-items: center;
+    column-gap: 14px;
+  }
+
+  /* Let children participate in the grid directly */
+  .topbar:not(.topbar--stacked) .topbar-tools-row {
+    display: contents !important;
+  }
+
+  .topbar:not(.topbar--stacked) .menu-button {
+    grid-column: 1;
+    justify-self: start;
+    position: static !important;
+  }
+
+  .topbar:not(.topbar--stacked) .topbar-brand {
+    grid-column: 2;
+    justify-self: center;
+    text-align: center;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  /* If a right-side control exists (e.g., year/search on some views), pin it right */
+  .topbar:not(.topbar--stacked) .year-search,
+  .topbar:not(.topbar--stacked) .topbar-right,
+  .topbar:not(.topbar--stacked) .topbar-actions {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
