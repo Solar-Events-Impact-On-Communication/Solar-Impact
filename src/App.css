@@ -4295,48 +4295,56 @@ video {
     top: auto !important;
   }
 }
-
 /* =========================================================
-   PATCH: Non-home (<900px) topbar should stay SINGLE ROW
-   - Menu left
-   - Brand centered
-   (Home uses .topbar--stacked; this targets everything else.)
+   PATCH: Non-home topbar on mobile should stay single-row
+   - Keeps MENU left + brand centered
+   - Prevents any older "force column" rules from stacking it
+   - Safe: only applies when NOT .topbar--stacked
    ========================================================= */
+
+/* Always keep non-stacked topbar as a single row (all widths) */
+.topbar:not(.topbar--stacked) .topbar-inner {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+}
+
+/* MENU stays left; right side is empty on non-home pages (tools hidden in JSX) */
+.topbar:not(.topbar--stacked) .topbar-tools-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Center the brand/title (works even when tools are hidden) */
+.topbar:not(.topbar--stacked) .topbar-brand {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+  text-align: center !important;
+  pointer-events: none; /* keep menu clicks reliable */
+}
+
+/* Make sure menu isn't pushed to the right by any order rules */
+.topbar:not(.topbar--stacked) .topbar-left,
+.topbar:not(.topbar--stacked) .menu-btn {
+  order: 0 !important;
+  justify-self: flex-start !important;
+  margin-right: auto !important;
+}
+
+/* Mobile (<900px): explicitly prevent stacking on non-home pages */
 @media (max-width: 900px) {
+  .topbar:not(.topbar--stacked) {
+    height: var(--topbar-h, 74px) !important;
+    padding-bottom: 0 !important;
+  }
+
   .topbar:not(.topbar--stacked) .topbar-inner {
-    display: grid !important;
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: 1fr;
-    align-items: center;
-    column-gap: 14px;
-  }
-
-  /* Let children participate in the grid directly */
-  .topbar:not(.topbar--stacked) .topbar-tools-row {
-    display: contents !important;
-  }
-
-  .topbar:not(.topbar--stacked) .menu-button {
-    grid-column: 1;
-    justify-self: start;
-    position: static !important;
-  }
-
-  .topbar:not(.topbar--stacked) .topbar-brand {
-    grid-column: 2;
-    justify-self: center;
-    text-align: center;
-    position: static !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-  }
-
-  /* If a right-side control exists (e.g., year/search on some views), pin it right */
-  .topbar:not(.topbar--stacked) .year-search,
-  .topbar:not(.topbar--stacked) .topbar-right,
-  .topbar:not(.topbar--stacked) .topbar-actions {
-    grid-column: 3;
-    justify-self: end;
+    height: var(--topbar-h, 74px) !important;
   }
 }
