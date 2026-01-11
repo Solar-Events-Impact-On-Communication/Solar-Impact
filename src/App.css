@@ -3398,7 +3398,7 @@ video {
 /* Make the fixed topbar not fight grid rules defined earlier */
 .topbar {
   display: block !important; /* let inner handle layout */
-  padding: 10px 18px !important; /* compact */
+  padding: 10px 18px 8px !important; /* compact */
   height: auto !important;
 }
 
@@ -3549,7 +3549,7 @@ video {
   background: rgba(0, 0, 0, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: 12px 18px; /* give a touch of breathing room on the right edge */
+  padding: 10px 18px 8px; /* tighter bottom padding */
 }
 
 /* Single-row by default (>= 901px) */
@@ -3704,69 +3704,293 @@ video {
 }
 
 /* =========================================================
-   Patch: Mobile (<900px) year input + timeline event card sizing
-   (This block intentionally lives at the end of the file so it wins.)
+   Mobile (<=900px) — Expanded timeline event card MUST fit viewport
    ========================================================= */
 @media (max-width: 900px) {
-  /* YEAR input was getting too narrow ("YE"). Keep it compact but readable. */
-  .year-search-input {
-    width: 120px !important;
-    min-width: 120px !important;
-    max-width: 120px !important;
+  /* Give the rail a little less "reserved" space on the right */
+  .timeline-rail {
+    padding-right: 12px !important; /* was 24px */
+    box-sizing: border-box !important;
   }
 
-  /* Ensure expanded event cards never overflow the viewport width */
-  .timeline-year-events {
-    width: 100%;
-    max-width: 100%;
-    padding-right: 0;
-    margin-right: 0;
+  /* Make sure the year row itself isn't creating overflow */
+  .timeline-row.timeline-row--year {
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Expanded container should respect the available width */
+  .timeline-row.is-expanded .timeline-year-events {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    /* keep the dashed border but avoid pushing content wider */
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* The actual dark box */
+  .timeline-row.is-expanded .timeline-year-event {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    /* THIS is the key: prevents 100% + padding overflow */
+    box-sizing: border-box !important;
+
+    /* prevent long text from forcing width */
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .year-search {
+    flex-wrap: nowrap !important;
+    align-items: center;
+  }
+
+  .year-search-input,
+  .year-search input,
+  .year-search input[type='text'],
+  .year-search input[type='number'] {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+
+    flex: 0 0 80px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+/* =========================================================
+   Patch: Reduce TOPBAR bottom padding (mobile only)
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Reduce the bar's overall vertical padding (especially bottom) */
+  .topbar {
+    padding: 8px 14px 4px !important; /* top | left/right | bottom */
+  }
+
+  /* Reduce the vertical space between brand row and controls row */
+  .topbar-inner {
+    gap: 3px !important;
+  }
+
+  /* Remove extra “nudges” that make the bar feel taller */
+  .topbar-inner .brand {
+    transform: none !important;
+  }
+
+  .menu-button {
+    transform: none !important;
+  }
+}
+
+/* =========================================================
+   FIX: Reduce “gap under topbar” (Timeline + About/Admin)
+   This is NOT topbar padding — it’s page padding.
+   Paste at VERY BOTTOM so it wins.
+   ========================================================= */
+
+/* 1) Timeline page: remove the extra top padding that creates the big gap */
+.timeline-screen {
+  /* was: padding: 50px 40px 64px 70px; */
+  padding-top: 14px !important; /* small breathing room below topbar */
+}
+
+/* Optional: if you want the Timeline header a touch closer still */
+.timeline-header {
+  margin-top: 0 !important;
+}
+
+/* 2) About (and Admin) pages: reduce the huge built-in top padding */
+.main--about {
+  /* was: padding: 80px 10px 48px; */
+  padding-top: 24px !important;
+}
+
+.main--admin {
+  /* was: padding: 80px 28px 48px; */
+  padding-top: 24px !important;
+}
+
+/* =========================================================
+   Patch: Reduce "gap" below topbar (Timeline header spacing)
+   Target: Mobile/tablet <= 900px
+   ========================================================= */
+@media (max-width: 900px) {
+  /* The big gap is coming from timeline-screen padding-top (was 50px). */
+  .timeline-screen {
+    padding-top: 18px !important; /* ↓ shrink gap under topbar */
+    padding-right: 16px !important;
+    padding-bottom: 56px !important;
+    padding-left: 60px !important; /* keeps rail off the edge, while still more-left than 70px */
     box-sizing: border-box;
   }
 
-  .timeline-year-event {
-    width: 100%;
-    max-width: 100%;
+  /* Don't "reserve" extra space with sticky offset on small screens */
+  .timeline-header {
+    top: 0 !important;
+    margin-bottom: 34px !important; /* restore a bit of space between description and the rail */
+  }
+
+  /* Keep the rail from creating extra right-side space */
+  .timeline-rail {
+    padding-right: 4px !important;
     box-sizing: border-box;
   }
 }
 
 /* =========================================================
-   Browse selector (Decades/Years) — sizing + 6-per-row + no right gap
+   FINAL PATCH (mobile <=900px): tighter LEFT padding (8px base)
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Main timeline container */
+  .timeline-screen {
+    padding-left: 8px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Vertical rail + dots */
+  .timeline-rail {
+    margin-left: 16px !important; /* reduced proportionally from 22px */
+    padding-right: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Timeline rows (years + event cards) */
+  .timeline-row {
+    padding-left: 28px !important; /* reduced proportionally from 34px */
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* =========================================================
+   MOBILE (<=900px): Keep Browse popover inside the viewport
+   ========================================================= */
+@media (max-width: 900px) {
+  .year-search-popover {
+    position: fixed !important; /* anchor to viewport */
+    left: 8px !important;
+    right: 8px !important;
+    top: 76px !important; /* adjust if needed based on your topbar */
+    width: auto !important;
+
+    max-width: none !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  /* Ensure the pill rows wrap instead of forcing width */
+  .year-search-decade-list,
+  .year-search-year-list {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+/* =========================================================
+   MOBILE (<=900px): Timeline title size
+   ========================================================= */
+@media (max-width: 900px) {
+  .timeline-header h1 {
+    font-size: 2.4rem !important; /* increase size */
+    line-height: 1.15 !important;
+  }
+}
+
+/* =========================================================
+   MOBILE (<=900px): Topbar "SOLAR EVENTS" spacing + size
+   ========================================================= */
+@media (max-width: 900px) {
+  .topbar-title,
+  .topbar-brand {
+    font-size: 1.15rem !important; /* increase size slightly */
+    margin-bottom: 6px !important; /* subtle gap when stacked */
+    line-height: 1.2 !important;
+  }
+}
+
+/* =========================================================
+   BROWSE POPOVER (Decades/Years) — sizing + 6-per-row max
+   Patch block (append-only): safe overrides for current CSS
    ========================================================= */
 
-/* Slight top padding inside the panel (both desktop + mobile) */
+/* 1) Popover: add slight top padding + remove desktop "right gap" */
 .year-search-popover {
-  padding-top: 14px !important;
+  /* match the tighter mobile feel while staying anchored to the year tools */
+  right: 8px !important;
+  left: auto !important;
+
+  /* a touch more breathing room at the top */
+  padding-top: 16px !important;
+
+  /* keep it from becoming a huge rectangle */
+  width: auto !important;
+  max-width: min(92vw, 520px) !important;
+
+  box-sizing: border-box !important;
 }
 
-/* 6 bubbles per row max (desktop + mobile). Grid auto-wraps to new rows. */
+/* 2) Bubble rows: max 6 per row (desktop can’t exceed 6; mobile can be fewer) */
 .year-search-decade-list,
 .year-search-year-list {
+  /* Use a grid that wraps naturally */
   display: grid !important;
   grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+
+  /* sizing + spacing */
   gap: 10px !important;
+
+  /* cap the row width so you never get more than 6 pills per row */
+  max-width: calc((6 * 96px) + (5 * 10px)) !important;
   width: 100% !important;
+
+  /* prevent weird overflow */
   box-sizing: border-box !important;
 }
 
-/* Bigger bubbles + bigger text */
+/* Center the grid within the popover so it doesn’t look lopsided */
+.year-search-popover-section {
+  align-items: center !important;
+}
+
+/* 3) Bubbles: bigger + bigger text */
 .year-search-decade,
 .year-search-year {
-  font-size: 0.95rem !important;
-  padding: 8px 10px !important;
-  border-width: 2px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  white-space: nowrap !important;
+  width: 100% !important; /* fill the grid cell */
   text-align: center !important;
+
+  padding: 8px 14px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+
+  border-radius: 999px !important;
+  border-width: 2px !important;
+
+  /* keep labels from breaking the layout */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+
+  box-sizing: border-box !important;
 }
 
-/* Desktop: make the panel wider and hug the viewport edge (match mobile's tight edge spacing) */
-@media (min-width: 901px) {
-  .year-search-popover {
-    right: 8px !important;
-    max-width: min(92vw, 680px) !important;
-    width: min(680px, calc(100vw - 16px)) !important;
+/* 4) Slight top padding to the whole browse window (both < and > 900px) */
+.year-search-popover {
+  margin-top: 6px !important;
+}
+
+/* 5) On small screens, let the list use full width (still max 6, but usually fewer) */
+@media (max-width: 900px) {
+  .year-search-decade-list,
+  .year-search-year-list {
+    max-width: none !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
   }
 }
