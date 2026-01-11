@@ -3709,10 +3709,12 @@ video {
    ========================================================= */
 @media (max-width: 900px) {
   /* YEAR input was getting too narrow ("YE"). Keep it compact but readable. */
+  /* YEAR input: keep readable on small screens (avoid "YE") */
   .year-search-input {
-    width: 120px !important;
-    min-width: 120px !important;
-    max-width: 120px !important;
+    width: clamp(140px, 42vw, 200px) !important;
+    min-width: clamp(140px, 42vw, 200px) !important;
+    max-width: clamp(140px, 42vw, 200px) !important;
+    flex: 0 0 auto !important;
   }
 
   /* Ensure expanded event cards never overflow the viewport width */
