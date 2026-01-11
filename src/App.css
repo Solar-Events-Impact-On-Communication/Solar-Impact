@@ -3841,3 +3841,29 @@ video {
     box-sizing: border-box;
   }
 }
+
+/* =========================================================
+   FINAL PATCH (mobile <=900px): tighter LEFT padding (8px base)
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Main timeline container */
+  .timeline-screen {
+    padding-left: 8px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Vertical rail + dots */
+  .timeline-rail {
+    margin-left: 16px !important; /* reduced proportionally from 22px */
+    padding-right: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Timeline rows (years + event cards) */
+  .timeline-row {
+    padding-left: 28px !important; /* reduced proportionally from 34px */
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+}
