@@ -4348,3 +4348,28 @@ video {
     height: var(--topbar-h, 74px) !important;
   }
 }
+
+/* =========================================================
+   FINAL FIX: Center brand on non-home mobile single-row topbar
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Only when NOT stacked (non-home pages) */
+  .topbar:not(.topbar--stacked) {
+    position: relative;
+  }
+
+  .topbar:not(.topbar--stacked) .topbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none; /* prevents blocking menu clicks */
+  }
+
+  /* Keep MENU in normal flow on the left */
+  .topbar:not(.topbar--stacked) .menu-button {
+    position: relative;
+    z-index: 2;
+  }
+}
