@@ -3867,3 +3867,39 @@ video {
     box-sizing: border-box !important;
   }
 }
+
+/* =========================================================
+   MOBILE (<=900px): Keep Browse popover inside the viewport
+   ========================================================= */
+@media (max-width: 900px) {
+  .year-search-popover {
+    position: fixed !important; /* anchor to viewport */
+    left: 8px !important;
+    right: 8px !important;
+    top: 76px !important; /* adjust if needed based on your topbar */
+    width: auto !important;
+
+    max-width: none !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  /* Ensure the pill rows wrap instead of forcing width */
+  .year-search-decade-list,
+  .year-search-year-list {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+/* =========================================================
+   MOBILE (<=900px): Timeline title size
+   ========================================================= */
+@media (max-width: 900px) {
+  .timeline-header h1 {
+    font-size: 2.4rem !important; /* increase size */
+    line-height: 1.15 !important;
+  }
+}
