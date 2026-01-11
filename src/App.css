@@ -3877,3 +3877,46 @@ video {
     box-sizing: border-box !important;
   }
 }
+
+/* =========================================================
+   MOBILE FIXES (<= 900px) — Timeline spacing + Browse popover width
+   ========================================================= */
+@media (max-width: 900px) {
+  /* A) Cut the gap between the topbar and the "Timeline" title (keep it ~5–10px) */
+  .timeline-screen {
+    padding-top: 8px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  /* B) Prevent overlap/weird spacing by killing sticky math on mobile */
+  .timeline-header {
+    position: static !important;
+    top: auto !important;
+    margin-bottom: 24px !important; /* restores space below the description */
+  }
+
+  /* C) Add a little extra space under the short description */
+  .timeline-header p {
+    margin-bottom: 18px !important;
+  }
+
+  /* D) Slight additional separation so the rail never kisses the description */
+  .timeline-rail {
+    margin-top: 8px !important;
+  }
+
+  /* E) Browse popover: remove the “right gap” by making it full-width on mobile */
+  .year-search-popover {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
