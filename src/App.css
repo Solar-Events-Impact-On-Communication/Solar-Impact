@@ -3967,7 +3967,7 @@ video {
   text-align: center !important;
 
   padding: 8px 14px !important;
-  font-size: 0.8rem !important;
+  font-size: 0.75rem !important;
   font-weight: 700 !important;
 
   border-radius: 999px !important;
@@ -3992,5 +3992,36 @@ video {
   .year-search-year-list {
     max-width: none !important;
     grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+}
+
+/* =========================================================
+   MOBILE (<=900px): Browse selector bubble sizing + layout
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Decade + year bubble buttons */
+  .year-search-decade,
+  .year-search-year {
+    min-width: 78px !important; /* enough for "1840s" */
+    padding: 10px 14px !important; /* larger click target */
+    font-size: 0.95rem !important;
+
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+  }
+
+  /* Max 6 bubbles per row */
+  .year-search-decade-list {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(78px, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* Years row */
+  .year-search-year-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
   }
 }
