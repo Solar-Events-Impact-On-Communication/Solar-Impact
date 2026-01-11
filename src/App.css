@@ -3734,19 +3734,25 @@ video {
 }
 
 @media (max-width: 900px) {
+  /* Prevent YEAR input from collapsing while keeping it compact */
   .year-search {
     flex-wrap: nowrap !important;
-    align-items: center !important;
   }
 
   .year-search-input,
   .year-search input,
   .year-search input[type='text'],
   .year-search input[type='number'] {
-    width: 140px !important;
-    min-width: 140px !important;
-    max-width: 140px !important;
-    flex: 0 0 140px !important;
+    width: 6ch !important; /* fits 4 digits comfortably */
+    min-width: 6ch !important;
+    max-width: 6ch !important;
+
+    flex: 0 0 auto !important; /* stops flex from shrinking it */
     flex-shrink: 0 !important;
+
+    text-align: center !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    border-radius: 999px !important;
   }
 }
