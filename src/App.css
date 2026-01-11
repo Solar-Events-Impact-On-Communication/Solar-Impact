@@ -3814,3 +3814,30 @@ video {
   /* was: padding: 80px 28px 48px; */
   padding-top: 24px !important;
 }
+
+/* =========================================================
+   Patch: Reduce "gap" below topbar (Timeline header spacing)
+   Target: Mobile/tablet <= 900px
+   ========================================================= */
+@media (max-width: 900px) {
+  /* The big gap is coming from timeline-screen padding-top (was 50px). */
+  .timeline-screen {
+    padding-top: 18px !important; /* ↓ shrink gap under topbar */
+    padding-right: 16px !important;
+    padding-bottom: 56px !important;
+    padding-left: 60px !important; /* keeps rail off the edge, while still more-left than 70px */
+    box-sizing: border-box;
+  }
+
+  /* Don't "reserve" extra space with sticky offset on small screens */
+  .timeline-header {
+    top: 0 !important;
+    margin-bottom: 34px !important; /* restore a bit of space between description and the rail */
+  }
+
+  /* Keep the rail from creating extra right-side space */
+  .timeline-rail {
+    padding-right: 12px !important;
+    box-sizing: border-box;
+  }
+}
