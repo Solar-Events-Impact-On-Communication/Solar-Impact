@@ -4054,3 +4054,50 @@ video {
     white-space: nowrap !important;
   }
 }
+
+/* =========================================================
+   MOBILE (<=900px): Browse decades = ALWAYS 6 columns, no overflow
+   ========================================================= */
+@media (max-width: 900px) {
+  /* 1) Let the popover actually use the available screen width */
+  .year-search-popover {
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+
+    max-width: none !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+    padding-top: 14px !important; /* slight top padding like you want */
+    overflow: hidden !important; /* prevent any clipping/bleed */
+  }
+
+  /* 2) Force EXACTLY 6 columns, but allow columns to shrink properly */
+  .year-search-decade-list {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3) Pills must be allowed to shrink inside their grid cells */
+  .year-search-decade {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    /* keep them readable but compact enough for 6 across */
+    padding: 10px 0 !important;
+    font-size: 0.95rem !important;
+
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+}
