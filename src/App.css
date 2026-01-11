@@ -3781,3 +3781,21 @@ video {
     margin-right: 0 !important;
   }
 }
+
+/* =========================================================
+   TIMELINE — MOBILE GAP TUNING (<= 900px)
+   Put this at VERY BOTTOM of App.css
+   ========================================================= */
+@media (max-width: 900px) {
+  /* 1) Shrink the gap between the topbar and the Timeline title (was 50px) */
+  .timeline-screen {
+    padding-top: 12px !important; /* ~75% smaller than 50px */
+    padding-left: 15px !important; /* keep your requested left padding */
+    padding-right: 16px !important;
+  }
+
+  /* 2) Restore space between the short description and the actual timeline */
+  .timeline-header {
+    margin-bottom: 64px !important; /* brings back the missing gap */
+  }
+}
