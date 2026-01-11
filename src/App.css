@@ -4025,3 +4025,32 @@ video {
     gap: 10px !important;
   }
 }
+
+/* =========================================================
+   MOBILE (<=900px): Decades grid — max 6 per row, never overflow
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Make sure the popover can’t be narrower than the viewport padding */
+  .year-search-popover {
+    max-width: calc(100vw - 16px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important; /* prevents any bleed */
+  }
+
+  /* Max 6 columns, but auto-reduce if they don't fit */
+  .year-search-decade-list {
+    display: grid !important;
+    gap: 10px !important;
+
+    /* Key: creates as many columns as fit, up to 6 */
+    grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)) !important;
+  }
+
+  /* Keep decades readable without forcing overflow */
+  .year-search-decade {
+    min-width: 0 !important; /* allows grid to shrink items */
+    width: 100% !important; /* fill the grid cell */
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+}
