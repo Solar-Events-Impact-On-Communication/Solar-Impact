@@ -4208,3 +4208,20 @@ video {
     white-space: nowrap !important;
   }
 }
+
+/* =========================================================
+   PATCH: Mobile nav drawer top padding on NON-home pages
+   - Default to normal topbar height; use stacked only when topbar is stacked.
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Default (non-home pages): normal topbar height */
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h) + 10px) !important;
+  }
+
+  /* Homepage/timeline stacked header: use stacked height */
+  .topbar.topbar--stacked ~ .nav-drawer,
+  .topbar--stacked ~ .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 10px) !important;
+  }
+}
