@@ -3387,162 +3387,162 @@ video {
 /* Topbar height variables used for layout offsets */
 
 /* =========================================================
-   Topbar + timeline responsive rules (single source of truth)
+   Topbar responsive layout (HOME + other pages)
+   - Uses .topbar--stacked class toggled by App.jsx
    ========================================================= */
 
-/* Heights used for fixed topbar offset */
 :root {
-  --topbar-h: 64px; /* single row */
-  --topbar-h-stacked: 86px; /* 2 rows (home under 900px) */
+  --topbar-h: 64px; /* single-row height */
+  --topbar-h-stacked: 96px; /* two-row height (under 900px + stacked) */
 }
 
-/* App offset for fixed topbar */
+/* Ensure content starts below fixed topbar */
 .app {
   padding-top: var(--topbar-h);
 }
 
-/* Fixed topbar shell */
+/* ---- Base topbar ---- */
 .topbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
-  height: var(--topbar-h);
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(8px);
+  z-index: 50;
 }
 
-/* Inner layout:
-   - 3 columns (1fr / brand / 1fr) so BRAND is always centered
-   - tools row spans full width and uses space-between (menu left, year tools right)
-*/
+/* Inner: we control layout here */
 .topbar-inner {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: 1fr;
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  box-sizing: border-box;
+  gap: 16px;
+  min-height: var(--topbar-h);
 }
 
-.topbar-brand {
-  grid-column: 2;
-  grid-row: 1;
-  justify-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: 0;
-  color: #fff;
-}
-
+/* Tools row: menu left, year tools right */
 .topbar-tools-row {
-  grid-column: 1 / -1;
-  grid-row: 1;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 16px;
+  min-width: 0;
 }
 
-/* Make sure the brand sits above the tools row and stays clickable */
-.topbar-brand {
+/* Brand centered (single-row) */
+.topbar:not(.topbar--stacked) .topbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
   z-index: 2;
 }
-.topbar-tools-row {
-  z-index: 1;
+
+/* Keep tools clickable even with centered brand */
+.topbar:not(.topbar--stacked) .topbar-tools-row {
+  position: relative;
+  z-index: 3;
 }
 
-/* Menu button must NOT be absolutely positioned (it breaks centering) */
-.menu-button {
+/* ---- Stacked (two-row) ---- */
+.topbar.topbar--stacked .topbar-inner {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  min-height: var(--topbar-h-stacked);
+  padding-bottom: 10px; /* a little breathing room */
+}
+
+.topbar.topbar--stacked .topbar-brand {
   position: static;
+  transform: none;
+  align-self: center;
 }
 
-/* Year tools (home only) */
-.year-search {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-right: 8px; /* slight breathing room on the far right */
+/* Menu stays left, year tools stay right on second row */
+.topbar.topbar--stacked .topbar-tools-row {
+  width: 100%;
 }
 
-.year-search-input {
-  width: 96px; /* 4 digits, but not tiny */
-  min-width: 96px;
-  text-align: center;
-  border-radius: 999px;
-}
-
-/* Popover should hug the right edge and not leave a giant empty gutter */
-.year-search-popover {
-  right: 0;
-  left: auto;
-  width: fit-content;
-  max-width: calc(100vw - 18px);
-}
-
-/* =========================================================
-   HOME: stacked topbar under 900px
-   ========================================================= */
+/* Under 900px, the topbar is *often* stacked. Reserve space for it. */
 @media (max-width: 900px) {
-  /* give the content enough room for the stacked header */
   .app {
     padding-top: var(--topbar-h-stacked);
   }
+}
 
-  .topbar.topbar--stacked {
-    height: var(--topbar-h-stacked);
+/* =========================================================
+   HOME / TIMELINE — mobile spacing fixes (under 900px)
+   - Reduce gap between topbar and "Timeline"
+   - Restore spacing between description and the rail
+   - Keep event cards fitting the viewport
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* tighten the area above the Timeline title */
+  .timeline-screen {
+    padding-top: 10px; /* small gap under topbar */
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
-  .topbar.topbar--stacked .topbar-inner {
-    grid-template-rows: auto auto;
-    align-content: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  .timeline-header {
+    position: relative; /* disable sticky on small screens */
+    top: auto;
+    margin-bottom: 0;
   }
 
-  .topbar.topbar--stacked .topbar-brand {
-    grid-row: 1;
-    grid-column: 1 / -1;
-    justify-self: center;
+  .timeline-header h1 {
+    margin: 0 0 6px 0;
   }
 
-  .topbar.topbar--stacked .topbar-tools-row {
-    grid-row: 2;
-    grid-column: 1 / -1;
+  /* put back space between description and the rail */
+  .timeline-header p {
+    margin: 0 0 20px 0;
   }
 
-  /* Slightly tighter controls on small screens */
-  .year-search {
-    margin-right: 6px;
+  .timeline-rail {
+    margin-top: 6px;
+    padding-right: 0;
+  }
+
+  /* make sure the dark blue event boxes can never overflow */
+  .timeline-row,
+  .timeline-year-row,
+  .timeline-year-events,
+  .timeline-year-event {
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  .timeline-year-event {
+    width: 100%;
   }
 }
 
 /* =========================================================
-   Timeline (home) spacing under 900px
+   YEAR search — mobile sizing (under 900px)
    ========================================================= */
+
 @media (max-width: 900px) {
-  /* Make the title sit closer to the topbar, and align left padding */
-  .timeline-screen {
-    padding: 10px 15px 56px 15px; /* top, right, bottom, left */
+  .year-search {
+    margin-right: 6px; /* slight breathing room from right edge */
   }
 
-  /* Keep a real gap between description and the rail */
-  .timeline-header {
-    position: relative; /* disable sticky on small screens */
-    top: auto;
-    margin-bottom: 26px;
+  /* keep "YEAR" readable and keep the pill shape */
+  .year-search-input {
+    width: 92px;
+    min-width: 92px;
+    text-align: center;
+    border-radius: 999px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
-  .timeline-header h1 {
-    margin-bottom: 6px;
-  }
-
-  .timeline-header p {
-    max-width: 42ch;
+  /* keep the browse popover flush to the right edge on small screens */
+  .year-search-popover {
+    right: -6px; /* cancel the form's breathing room */
+    max-width: min(96vw, 360px);
   }
 }
