@@ -4163,3 +4163,43 @@ video {
     text-overflow: unset;
   }
 }
+
+/* =========================================================
+   FIX: Desktop (>900px) Browse popover pills truncating (18...)
+   - Keep 6-across grid
+   - Make pills wide enough for "1840s"
+   - Remove ellipsis/truncation on desktop
+   (Append-only override)
+   ========================================================= */
+@media (min-width: 901px) {
+  .year-search-popover {
+    /* Ensure there is enough room for 6 readable pills */
+    width: min(92vw, 560px) !important;
+    max-width: min(92vw, 560px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .year-search-decade-list,
+  .year-search-year-list {
+    /* Let the grid use the full popover width (no artificial cap) */
+    max-width: none !important;
+    width: 100% !important;
+
+    /* 6 columns, but with a sane minimum so text doesn't truncate */
+    grid-template-columns: repeat(6, minmax(80px, 1fr)) !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .year-search-decade,
+  .year-search-year {
+    /* Bigger + readable */
+    font-size: 0.9rem !important;
+    padding: 10px 14px !important;
+
+    /* Show full label on desktop */
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+}
