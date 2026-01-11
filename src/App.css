@@ -3762,3 +3762,27 @@ video {
     flex-shrink: 0 !important;
   }
 }
+
+/* =========================================================
+   Patch: Reduce TOPBAR bottom padding (mobile only)
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Reduce the bar's overall vertical padding (especially bottom) */
+  .topbar {
+    padding: 8px 14px 4px !important; /* top | left/right | bottom */
+  }
+
+  /* Reduce the vertical space between brand row and controls row */
+  .topbar-inner {
+    gap: 3px !important;
+  }
+
+  /* Remove extra “nudges” that make the bar feel taller */
+  .topbar-inner .brand {
+    transform: none !important;
+  }
+
+  .menu-button {
+    transform: none !important;
+  }
+}
