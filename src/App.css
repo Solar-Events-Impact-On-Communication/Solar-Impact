@@ -3520,9 +3520,14 @@ video {
     margin-bottom: 104px !important;
   }
 
-  /* Nav drawer content should start below the stacked topbar */
+  /* Nav drawer: pad just below topbar on non-home; use stacked height only when topbar is stacked */
   .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 10px) !important;
+    padding-top: calc(var(--topbar-h) + 8px) !important;
+  }
+
+  /* If the drawer is immediately after a stacked topbar (home stacked layout) */
+  .topbar--stacked + .nav-drawer {
+    padding-top: calc(var(--topbar-h-stacked) + 8px) !important;
   }
 }
 
