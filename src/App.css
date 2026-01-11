@@ -3789,13 +3789,47 @@ video {
 @media (max-width: 900px) {
   /* 1) Shrink the gap between the topbar and the Timeline title (was 50px) */
   .timeline-screen {
-    padding-top: 12px !important; /* ~75% smaller than 50px */
+    padding-top: 4px !important; /* ~75% smaller than 50px */
     padding-left: 15px !important; /* keep your requested left padding */
     padding-right: 16px !important;
   }
 
   /* 2) Restore space between the short description and the actual timeline */
   .timeline-header {
-    margin-bottom: 64px !important; /* brings back the missing gap */
+    margin-bottom: 75px !important; /* brings back the missing gap */
   }
+}
+
+/* =========================================================
+   YEAR / DECADE POPOVER — REMOVE ALL RIGHT GAP
+   ========================================================= */
+
+.year-search-popover {
+  position: absolute;
+  top: 120%;
+  right: 0;
+
+  /* 🔥 key fixes */
+  width: fit-content !important;
+  max-width: none !important;
+  min-width: 0 !important;
+
+  padding: 12px 12px 12px 12px; /* real padding only */
+  box-sizing: border-box;
+
+  background: rgba(4, 6, 18, 0.98);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 30;
+}
+
+.year-search-decade-list,
+.year-search-year-list {
+  width: 100%;
 }
