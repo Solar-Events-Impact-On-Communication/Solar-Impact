@@ -4101,3 +4101,65 @@ video {
     box-sizing: border-box !important;
   }
 }
+/* =========================================================
+   Patch: Desktop (>=901px) YEAR input + Browse popover pill sizing
+   - Match YEAR input size to mobile-friendly 4-digit width
+   - Ensure browse decades/year pills show full text (no ellipsis)
+   - Keep a max of 6 pills per row without overflow
+   ========================================================= */
+@media (min-width: 901px) {
+  /* YEAR input: match mobile (fits 4 digits) */
+  .year-search {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .year-search-input,
+  .year-search input,
+  .year-search input[type='text'],
+  .year-search input[type='number'] {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    flex: 0 0 80px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Browse popover container: prevent "right side padding" look */
+  .year-search-popover {
+    right: 10px; /* match mobile right inset */
+    left: auto;
+    width: min(520px, calc(100vw - 20px));
+    max-width: calc(100vw - 20px);
+    box-sizing: border-box;
+    padding: 14px 14px 16px;
+  }
+
+  /* Decades/years grids: 6 across max, responsive within popover */
+  .year-search-decade-grid,
+  .year-search-year-grid {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  /* Pills: show full decade/year text and scale up a bit */
+  .year-search-decade,
+  .year-search-year {
+    width: 100%;
+    min-width: 0; /* allow grid to control width */
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    line-height: 1;
+    border-radius: 999px;
+    text-align: center;
+
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+  }
+}
