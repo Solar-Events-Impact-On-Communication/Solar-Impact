@@ -3841,3 +3841,24 @@ video {
     box-sizing: border-box;
   }
 }
+
+/* =========================================================
+   Mobile timeline left spacing tweak (≤ 900px)
+   ========================================================= */
+@media (max-width: 900px) {
+  /* Main timeline screen padding */
+  .timeline-screen {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Timeline rail alignment */
+  .timeline-rail {
+    padding-left: 24px; /* was larger on desktop */
+  }
+
+  /* Year rows (keeps dots/text closer to edge) */
+  .timeline-row {
+    padding-left: 0;
+  }
+}
