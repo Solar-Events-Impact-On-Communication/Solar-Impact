@@ -4393,3 +4393,74 @@ video {
     pointer-events: none !important; /* prevents blocking clicks on MENU */
   }
 }
+
+/* =========================================================
+   ADMIN – Events page "Filter by Year" controls
+   Match Public Portal YEAR input + Search/Browse buttons
+   ========================================================= */
+
+.admin-year-search {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+/* YEAR input pill (4 digits) */
+.admin-year-search .year-search-input,
+.admin-year-search input.year-search-input,
+.admin-year-search input[type='text'],
+.admin-year-search input[type='number'] {
+  width: 80px !important; /* fits 4 digits */
+  min-width: 80px !important;
+  max-width: 80px !important;
+  height: 36px !important;
+
+  padding: 0 14px !important;
+  border-radius: 999px !important;
+  box-sizing: border-box !important;
+
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 2px solid rgba(255, 255, 255, 0.55) !important;
+  color: #fff !important;
+
+  text-align: center !important;
+  letter-spacing: 0.06em !important;
+  outline: none !important;
+}
+
+/* Search + Browse pill buttons (outlined like public portal) */
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button,
+.admin-year-search button.year-search-button,
+.admin-year-search button.year-search-browse-button {
+  height: 36px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(255, 255, 255, 0.55) !important;
+
+  background: transparent !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+}
+
+.admin-year-search .year-search-button:hover,
+.admin-year-search .year-search-browse-button:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Mobile: keep it compact (same vibe as public) */
+@media (max-width: 900px) {
+  .admin-year-search {
+    align-items: center;
+    gap: 10px;
+  }
+}
