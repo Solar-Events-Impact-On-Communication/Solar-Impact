@@ -4395,72 +4395,71 @@ video {
 }
 
 /* =========================================================
-   ADMIN – Events page "Filter by Year" controls
-   Match Public Portal YEAR input + Search/Browse buttons
+   Admin – Event filter (Year + Search/Browse) match public portal styling
+   (Safe overrides; placed at end so it wins)
    ========================================================= */
 
+/* Layout: label (Filter by Year + input) + buttons in one row */
 .admin-year-search {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 12px;
-  flex-wrap: nowrap;
 }
 
-/* YEAR input pill (4 digits) */
-.admin-year-search .year-search-input,
-.admin-year-search input.year-search-input,
-.admin-year-search input[type='text'],
-.admin-year-search input[type='number'] {
-  width: 80px !important; /* fits 4 digits */
-  min-width: 80px !important;
-  max-width: 80px !important;
-  height: 36px !important;
-
-  padding: 0 14px !important;
-  border-radius: 999px !important;
-  box-sizing: border-box !important;
-
-  background: rgba(0, 0, 0, 0.35) !important;
-  border: 2px solid rgba(255, 255, 255, 0.55) !important;
-  color: #fff !important;
-
-  text-align: center !important;
-  letter-spacing: 0.06em !important;
-  outline: none !important;
+.admin-year-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* Search + Browse pill buttons (outlined like public portal) */
+/* Input: compact pill sized for 4-digit year (desktop + mobile share same look) */
+.admin-year-label input.year-search-input,
+.admin-year-label .year-search-input,
+.admin-year-label input[type='text'],
+.admin-year-label input[type='number'] {
+  width: 88px;
+  min-width: 88px;
+  max-width: 88px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 999px; /* keep pill/ellipse */
+  padding: 0 14px;
+}
+
+/* Buttons: match public topbar (no ALL CAPS) */
 .admin-year-search .year-search-button,
-.admin-year-search .year-search-browse-button,
-.admin-year-search button.year-search-button,
-.admin-year-search button.year-search-browse-button {
-  height: 36px !important;
-  padding: 0 16px !important;
-  border-radius: 999px !important;
-  border: 2px solid rgba(255, 255, 255, 0.55) !important;
-
-  background: transparent !important;
-  color: #fff !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  white-space: nowrap !important;
-  cursor: pointer !important;
+.admin-year-search .year-search-browse-button {
+  height: 36px;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.55);
 }
 
 .admin-year-search .year-search-button:hover,
 .admin-year-search .year-search-browse-button:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.85);
 }
 
-/* Mobile: keep it compact (same vibe as public) */
+/* Keep the year filter row compact on small screens */
 @media (max-width: 900px) {
   .admin-year-search {
-    align-items: center;
     gap: 10px;
+  }
+
+  .admin-year-label input.year-search-input,
+  .admin-year-label .year-search-input,
+  .admin-year-label input[type='text'],
+  .admin-year-label input[type='number'] {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
   }
 }
