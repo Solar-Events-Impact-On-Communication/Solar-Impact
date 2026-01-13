@@ -4858,3 +4858,93 @@ video {
     margin-bottom: 16px !important;
   }
 }
+
+/* =========================================================
+   ADMIN TEAM PAGE — BUTTON WIDTH FIXES
+   
+   Add this AFTER the previous team mobile fixes
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* ===========================================
+     ADD NEW MEMBER - Constrain button widths
+     =========================================== */
+
+  /* Select Photo button */
+  .admin-team-add-row .admin-team-photo-upload,
+  .admin-team-add-row label[class*='photo'] {
+    width: auto !important;
+    max-width: 280px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Add Member button */
+  .admin-team-add-row > button:last-child,
+  .admin-team-add-row .primary,
+  .admin-team-add-row .primary-button,
+  .admin-team-add-row button[type='submit'] {
+    width: auto !important;
+    max-width: 280px !important;
+    min-width: 200px !important;
+    margin: 0 auto !important;
+  }
+
+  /* ===========================================
+     TEAM MEMBER CARDS - Constrain button widths
+     =========================================== */
+
+  /* Actions container - center the buttons */
+  .admin-team-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  /* All buttons in team actions */
+  .admin-team-actions > *,
+  .admin-team-actions button,
+  .admin-team-actions label,
+  .admin-team-actions .admin-team-photo-upload,
+  .admin-team-actions .admin-team-remove-button,
+  .admin-team-actions .admin-edit-button,
+  .admin-team-actions .admin-modal-button {
+    width: auto !important;
+    min-width: 180px !important;
+    max-width: 220px !important;
+    grid-column: unset !important;
+  }
+
+  /* Change Photo button */
+  .admin-team-photo-upload {
+    min-width: 180px !important;
+    max-width: 220px !important;
+  }
+
+  /* ===========================================
+     PHOTO PREVIEW CHIP - Better layout
+     =========================================== */
+  .admin-new-member-photo-chip {
+    max-width: 320px !important;
+    margin: 0 auto !important;
+  }
+
+  .admin-new-member-photo-chip .admin-team-remove-button {
+    min-width: unset !important;
+    max-width: unset !important;
+    width: auto !important;
+    padding: 8px 16px !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 400px) {
+  .admin-team-actions > *,
+  .admin-team-actions button,
+  .admin-team-add-row > button,
+  .admin-team-add-row .admin-team-photo-upload {
+    min-width: 160px !important;
+    max-width: 200px !important;
+  }
+}
