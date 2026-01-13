@@ -4395,71 +4395,739 @@ video {
 }
 
 /* =========================================================
-   Admin – Event filter (Year + Search/Browse) match public portal styling
-   (Safe overrides; placed at end so it wins)
+   ADMIN PORTAL — MOBILE OPTIMIZATIONS (<900px)
+   
+   Comprehensive responsive fixes for the admin panel
+   Add this to the END of your App.css file
    ========================================================= */
 
-/* Layout: label (Filter by Year + input) + buttons in one row */
-.admin-year-search {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.admin-year-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Input: compact pill sized for 4-digit year (desktop + mobile share same look) */
-.admin-year-label input.year-search-input,
-.admin-year-label .year-search-input,
-.admin-year-label input[type='text'],
-.admin-year-label input[type='number'] {
-  width: 88px;
-  min-width: 88px;
-  max-width: 88px;
-  height: 36px;
-  box-sizing: border-box;
-  border-radius: 999px; /* keep pill/ellipse */
-  padding: 0 14px;
-}
-
-/* Buttons: match public topbar (no ALL CAPS) */
-.admin-year-search .year-search-button,
-.admin-year-search .year-search-browse-button {
-  height: 36px;
-  border-radius: 999px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 1;
-  background: transparent;
-  color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.55);
-}
-
-.admin-year-search .year-search-button:hover,
-.admin-year-search .year-search-browse-button:hover {
-  border-color: rgba(255, 255, 255, 0.85);
-}
-
-/* Keep the year filter row compact on small screens */
+/* ===========================================
+   1. ADMIN LAYOUT — BASE MOBILE FIXES
+   =========================================== */
 @media (max-width: 900px) {
-  .admin-year-search {
-    gap: 10px;
+  /* Reduce padding on admin pages */
+  .main--admin {
+    padding: 16px 12px 32px !important;
   }
 
-  .admin-year-label input.year-search-input,
-  .admin-year-label .year-search-input,
-  .admin-year-label input[type='text'],
-  .admin-year-label input[type='number'] {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
+  /* Admin panel should use full width */
+  .admin-view {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .admin-view > .panel,
+  .admin-view > .panel.admin-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 12px !important;
+    border-radius: 16px !important;
+    margin: 0 0 24px 0 !important;
+  }
+}
+
+/* ===========================================
+   2. ADMIN HEADER + TABS — MOBILE STACK
+   =========================================== */
+@media (max-width: 900px) {
+  /* Stack header elements vertically */
+  .admin-header-top {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Reduce title size */
+  .admin-events-title {
+    font-size: 1.8rem !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  /* Center tabs */
+  .admin-tabs {
+    width: 100% !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .admin-tabs .admin-tab-button {
+    font-size: 0.75rem !important;
+    padding: 6px 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Center action buttons */
+  .admin-header-actions {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  .admin-add-button,
+  .admin-about-edit-button {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* ===========================================
+   3. ADMIN TABLE — MOBILE RESPONSIVE
+   =========================================== */
+@media (max-width: 900px) {
+  /* Table wrapper */
+  .admin-table-wrapper {
+    padding: 0 8px 12px !important;
+    max-height: 55vh !important;
+    border-radius: 16px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Make table scrollable horizontally if needed */
+  .admin-events-table,
+  .admin-accounts-table {
+    min-width: 500px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .admin-events-table th,
+  .admin-events-table td,
+  .admin-accounts-table th,
+  .admin-accounts-table td {
+    padding: 8px 10px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .admin-events-table thead th,
+  .admin-accounts-table thead th {
+    font-size: 0.95rem !important;
+  }
+
+  /* Edit button cell */
+  .admin-events-th-edit {
+    width: 100px !important;
+  }
+
+  .admin-edit-button {
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Alternative: Card-based table for very small screens */
+@media (max-width: 600px) {
+  /* Convert table to cards */
+  .admin-events-table thead {
+    display: none !important;
+  }
+
+  .admin-events-table,
+  .admin-events-table tbody,
+  .admin-events-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .admin-events-table tr {
+    margin-bottom: 12px !important;
+    padding: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    background: #fafafa !important;
+  }
+
+  .admin-events-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 6px 0 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    text-align: right !important;
+  }
+
+  .admin-events-table td:last-child {
+    border-bottom: none !important;
+  }
+
+  .admin-events-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-align: left;
+    color: #333;
+  }
+
+  .admin-events-edit-cell {
+    justify-content: center !important;
+    padding-top: 10px !important;
+  }
+
+  .admin-events-actions {
+    flex-direction: row !important;
+    gap: 8px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===========================================
+   4. ADMIN MODALS — MOBILE FULLSCREEN
+   =========================================== */
+@media (max-width: 900px) {
+  /* Modal backdrop */
+  .admin-modal-backdrop {
+    padding: 12px 8px !important;
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  /* Base modal */
+  .admin-modal {
+    width: calc(100vw - 16px) !important;
+    max-width: 100% !important;
+    max-height: calc(100vh - 24px) !important;
+    padding: 14px 12px 16px !important;
+    border-radius: 16px !important;
+    margin: auto !important;
+  }
+
+  /* Modal header */
+  .admin-modal-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding-right: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .admin-modal .admin-modal-title {
+    font-size: 1.4rem !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  .admin-modal-actions {
+    position: static !important;
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  .admin-modal-button {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+    flex: 1 !important;
+    max-width: 140px !important;
+  }
+
+  /* Form fields */
+  .admin-field {
+    margin-bottom: 10px !important;
+  }
+
+  .admin-field-label {
+    font-size: 0.85rem !important;
+  }
+
+  .admin-modal .input,
+  .admin-modal select,
+  .admin-modal textarea {
+    padding: 10px 12px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* ===========================================
+   5. EDIT EVENT MODAL — MOBILE OPTIMIZED
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-event-modal-backdrop {
+    padding: 8px !important;
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  .admin-event-modal {
+    width: calc(100vw - 16px) !important;
+    max-width: 100% !important;
+    max-height: calc(100vh - 16px) !important;
+    padding: 0 12px 20px !important;
+    border-radius: 16px !important;
+    margin: auto !important;
+  }
+
+  /* Modal header */
+  .admin-event-modal-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 12px 10px !important;
+    margin: 0 -12px 10px !important;
+  }
+
+  .admin-event-modal-title {
+    font-size: 1.3rem !important;
+    text-align: center !important;
+  }
+
+  .admin-event-modal-header-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .admin-event-modal-save,
+  .admin-event-modal-cancel {
+    min-width: 90px !important;
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Modal body */
+  .admin-event-modal-body {
+    padding: 12px 4px 16px !important;
+    gap: 14px !important;
+  }
+
+  /* Event fields */
+  .admin-event-field {
+    margin-bottom: 14px !important;
+  }
+
+  .admin-event-field-label,
+  .admin-event-label {
+    font-size: 0.8rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .admin-event-modal .input,
+  .admin-event-modal select,
+  .admin-event-modal textarea {
+    padding: 10px 12px !important;
+    font-size: 0.9rem !important;
+    border-radius: 10px !important;
+  }
+
+  .admin-event-modal textarea {
+    min-height: 100px !important;
+    max-height: 150px !important;
+  }
+}
+
+/* ===========================================
+   6. MEDIA/ARTICLE VIEWER — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  /* Articles viewer in edit modal */
+  .admin-event-modal-media {
+    margin-top: 16px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .admin-event-media-viewer {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  /* Side controls stack below image */
+  .admin-event-media-side {
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  .admin-event-media-side-block {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .admin-event-media-image-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .admin-event-media-image {
+    max-width: 100% !important;
+    max-height: 50vh !important;
+    border-radius: 12px !important;
+  }
+
+  /* Caption section */
+  .admin-event-caption-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-top: 40px !important;
+    padding-top: 20px !important;
+  }
+
+  .admin-event-caption-actions {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .admin-event-caption-input {
+    min-height: 80px !important;
+  }
+}
+
+/* ===========================================
+   7. ADMIN SUBPANELS (Profile, etc.)
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-subpanel {
+    padding: 12px 14px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Profile layout */
+  .admin-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .admin-profile-header-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .admin-profile-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .profile-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .profile-section-actions {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* ===========================================
+   8. ADMIN TEAM SECTION — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  /* Add new member form */
+  .admin-team-add-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .admin-team-add-row > * {
+    width: 100% !important;
+  }
+
+  /* Team member rows */
+  .admin-team-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 14px 12px !important;
+    text-align: center !important;
+  }
+
+  .admin-team-photo-cell {
+    margin-bottom: 4px !important;
+  }
+
+  .admin-team-info {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .admin-team-info input {
+    text-align: center !important;
+  }
+
+  .admin-team-actions {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  .admin-team-photo-upload {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+  }
+
+  .admin-team-remove-button {
+    max-width: 100% !important;
+    width: auto !important;
+  }
+}
+
+/* ===========================================
+   9. ABOUT PAGE EDITOR — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-about-edit-list {
+    margin-top: 8px !important;
+  }
+
+  .admin-about-edit-item {
+    padding: 12px 0 18px !important;
+  }
+
+  .admin-about-edit-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .admin-about-edit-label {
+    font-size: 1.1rem !important;
+  }
+
+  .admin-about-edit-textarea {
+    min-height: 120px !important;
+    max-height: 200px !important;
+  }
+
+  .admin-about-order-control {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* ===========================================
+   10. CONFIRM DIALOGS — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-confirm-modal {
+    max-width: calc(100vw - 32px) !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .admin-confirm-title {
+    font-size: 1rem !important;
+  }
+
+  .admin-confirm-text {
+    font-size: 0.85rem !important;
+  }
+
+  .admin-confirm-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .admin-confirm-actions .admin-modal-button {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* Delete media dialog */
+  .delete-media-dialog {
+    max-width: calc(100vw - 32px) !important;
+    padding: 14px 16px !important;
+  }
+
+  .delete-media-preview {
+    max-height: 200px !important;
+  }
+
+  .delete-media-preview img {
+    max-height: 160px !important;
+  }
+
+  .delete-media-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .delete-dialog-btn {
+    width: 100% !important;
+  }
+}
+
+/* ===========================================
+   11. AVATAR CROP MODAL — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  .avatar-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: 100% !important;
+    padding: 12px 14px !important;
+  }
+
+  .avatar-crop-container {
+    height: 220px !important;
+  }
+
+  .avatar-modal-buttons {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .avatar-modal-buttons button {
+    width: 100% !important;
+  }
+}
+
+/* ===========================================
+   12. YEAR SEARCH IN ADMIN — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-locate-bar {
+    margin-bottom: 12px !important;
+  }
+
+  .admin-year-search {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .admin-year-label {
+    width: 100% !important;
+  }
+
+  .admin-year-label input.year-search-input {
+    width: 100% !important;
+  }
+
+  .admin-year-search .year-search-button,
+  .admin-year-search .year-search-browse-button {
+    width: 100% !important;
+  }
+
+  /* Year picker popover */
+  .admin-year-search-popover {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .admin-year-decade-list,
+  .admin-year-year-list {
+    justify-content: center !important;
+  }
+
+  .admin-year-decade-pill,
+  .admin-year-year-pill {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* ===========================================
+   13. BLOCKER OVERLAY — MOBILE
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-blocker-inner {
+    max-width: calc(100vw - 48px) !important;
+    padding: 12px 16px !important;
+    text-align: center !important;
+  }
+
+  .admin-fullpage-blocker-card {
+    max-width: calc(100vw - 48px) !important;
+    padding: 14px 16px !important;
+  }
+}
+
+/* ===========================================
+   14. TOUCH-FRIENDLY ENHANCEMENTS
+   =========================================== */
+@media (max-width: 900px) {
+  /* Increase touch targets */
+  .admin-edit-button,
+  .admin-modal-button,
+  .admin-tab-button,
+  .admin-add-button,
+  .admin-about-edit-button,
+  .admin-team-remove-button,
+  .admin-team-photo-upload,
+  .delete-dialog-btn,
+  .admin-event-modal-save,
+  .admin-event-modal-cancel {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Add subtle active states for touch feedback */
+  .admin-edit-button:active,
+  .admin-modal-button:active,
+  .admin-add-button:active {
+    transform: scale(0.97) !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Prevent text selection on buttons */
+  button {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  /* Smooth scrolling for iOS */
+  .admin-table-wrapper,
+  .admin-event-modal-body,
+  .admin-modal {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ===========================================
+   15. LANDSCAPE ORIENTATION FIXES
+   =========================================== */
+@media (max-width: 900px) and (orientation: landscape) {
+  /* Reduce modal heights in landscape */
+  .admin-event-modal,
+  .admin-modal {
+    max-height: calc(100vh - 24px) !important;
+  }
+
+  .admin-event-modal-body {
+    max-height: calc(100vh - 120px) !important;
+  }
+
+  /* Reduce media viewer height */
+  .admin-event-media-image {
+    max-height: 40vh !important;
+  }
+
+  .delete-media-preview {
+    max-height: 30vh !important;
+  }
+}
+
+/* ===========================================
+   16. EXTRA SMALL SCREENS (<400px)
+   =========================================== */
+@media (max-width: 400px) {
+  .admin-events-title {
+    font-size: 1.5rem !important;
+  }
+
+  .admin-modal .admin-modal-title {
+    font-size: 1.2rem !important;
+  }
+
+  .admin-event-modal-title {
+    font-size: 1.1rem !important;
+  }
+
+  .admin-tabs .admin-tab-button {
+    font-size: 0.7rem !important;
+    padding: 5px 8px !important;
+  }
+
+  .admin-add-button,
+  .admin-about-edit-button {
+    font-size: 0.8rem !important;
+    padding: 6px 10px !important;
   }
 }
