@@ -4611,3 +4611,250 @@ video {
     margin-bottom: 16px !important;
   }
 }
+
+/* =========================================================
+   ADMIN TEAM PAGE — MOBILE OPTIMIZATIONS (<900px)
+   
+   Add this to the END of your App.css file
+   (After the previous mobile fixes)
+   ========================================================= */
+
+/* ===========================================
+   1. ADD NEW MEMBER FORM
+   =========================================== */
+@media (max-width: 900px) {
+  /* Container */
+  .admin-team-add {
+    padding: 16px 14px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .admin-team-add h3 {
+    font-size: 1.1rem !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Stack the form fields vertically */
+  .admin-team-add-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Make all inputs full width */
+  .admin-team-add-row input,
+  .admin-team-add-row .input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 14px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* File select button - full width */
+  .admin-team-add-row label,
+  .admin-team-add-row .admin-team-photo-upload {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Add Member button - full width */
+  .admin-team-add-row button,
+  .admin-team-add-row .primary,
+  .admin-team-add-row .primary-button {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Photo note text */
+  .admin-team-photo-note {
+    text-align: center !important;
+    margin-top: 10px !important;
+  }
+}
+
+/* ===========================================
+   2. TEAM MEMBER LIST
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-team-list {
+    gap: 16px !important;
+    margin-top: 24px !important;
+  }
+
+  /* Individual team member card */
+  .admin-team-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Photo */
+  .admin-team-photo-cell {
+    margin-bottom: 4px !important;
+  }
+
+  .admin-team-photo-thumb,
+  .admin-team-photo-placeholder {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  /* Info section - name and role inputs */
+  .admin-team-info {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .admin-team-info input,
+  .admin-team-name-input,
+  .admin-team-role-input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 14px !important;
+    font-size: 0.95rem !important;
+    text-align: left !important;
+    border-radius: 8px !important;
+  }
+
+  /* Actions section - buttons */
+  .admin-team-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Photo buttons - span full width on top row */
+  .admin-team-photo-upload {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: unset !important;
+    flex: unset !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+  }
+
+  /* Remove photo button - takes half width */
+  .admin-team-actions > button:nth-child(2) {
+    grid-column: 1 !important;
+  }
+
+  /* Edit and Delete buttons */
+  .admin-team-actions .admin-edit-button,
+  .admin-team-actions .admin-modal-button,
+  .admin-team-actions button {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Remove button specific */
+  .admin-team-remove-button {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Danger/Delete button styling */
+  .admin-team-actions .admin-modal-button--danger,
+  .admin-team-actions button[class*='danger'],
+  .admin-team-actions button[class*='delete'] {
+    grid-column: span 1 !important;
+  }
+}
+
+/* ===========================================
+   3. EXTRA SMALL SCREENS (<500px)
+   =========================================== */
+@media (max-width: 500px) {
+  .admin-team-row {
+    padding: 16px 12px !important;
+  }
+
+  .admin-team-photo-thumb,
+  .admin-team-photo-placeholder {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .admin-team-info input {
+    padding: 10px 12px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Stack all buttons vertically on very small screens */
+  .admin-team-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-team-photo-upload,
+  .admin-team-actions > button,
+  .admin-team-actions > label {
+    grid-column: 1 !important;
+  }
+}
+
+/* ===========================================
+   4. NEW MEMBER PHOTO PREVIEW CHIP
+   =========================================== */
+@media (max-width: 900px) {
+  .admin-new-member-photo-chip {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    padding: 10px 14px !important;
+    gap: 12px !important;
+  }
+
+  .admin-new-member-photo-chip img {
+    width: 50px !important;
+    height: 50px !important;
+    flex: 0 0 50px !important;
+  }
+
+  .admin-new-member-photo-chip span {
+    flex: 1 !important;
+    text-align: left !important;
+  }
+
+  .admin-new-member-photo-chip .admin-team-remove-button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    padding: 8px 14px !important;
+  }
+}
+
+/* ===========================================
+   5. TEAM PAGE HEADER
+   =========================================== */
+@media (max-width: 900px) {
+  /* Team Members title */
+  .admin-team-section h2,
+  .admin-subpanel h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Description text */
+  .admin-team-section > p,
+  .admin-subpanel > p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 16px !important;
+  }
+}
