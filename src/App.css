@@ -1,52 +1,65 @@
-/* ========================================================= 
-  Solar Events — App.css 
-========================================================= */
+/* =========================================================
+   Solar Events — App.css (Optimized & Consolidated)
+   Last updated: January 2026
+   ========================================================= */
 
-/* ========================================================= 
+/* =========================================================
+   TABLE OF CONTENTS
+   
+   1. CSS Variables
+   2. Base / Reset
+   3. App Shell (topbar, main, footer)
+   4. Navigation (menu, drawer)
+   5. Timeline (home view)
+   6. Panels & Cards
+   7. Forms & Inputs
+   8. Buttons
+   9. Admin Layout
+   10. Admin Tables
+   11. Admin Profile & Dashboard
+   12. Admin Team Section
+   13. Admin About Editor
+   14. Admin Modals
+   15. Admin Edit Event Modal
+   16. Admin Media/Article Viewer
+   17. Event Detail Overlay
+   18. Media Overlay (public)
+   19. Year Search & Popover
+   20. Animations
+   21. RESPONSIVE — All Breakpoints (consolidated)
+   ========================================================= */
 
-TABLE OF CONTENTS 
-01. App Shell 
-02. MENU BUTTON + SLIDE-OUT NAV 
-03. TIMELINE (HOME VIEW) 
-04. Year-grouped timeline styles 
-05. Scroll indicators 
-06. GENERIC PANELS 
-07. Forms / Buttons / Cards 
-08. Admin layout 
-09. Admin profile view 
-10. Admin header + tabs 
-11. About Page editor – full-width fields 
-12. Admin – About edit layout 
-13. About page dynamic content 
-14. Admin account modal 
-15. Admin full-page blocker during save/delete 
-16. Event detail overlay 
-17. Search in top-right of the topbar 
-18. MEDIA OVERLAY 19. Responsive tweaks 
-20. ADMIN BUTTON + TAB OVERRIDES 
-21. Profile card text should be black 
-22. Dark admin modal button style (Edit Admin Account) 
-23. About Page edit layout 
-24. About Page editor – tighter header + clear separation between sections 
-25. Admin Team Section 
-26. Avatar crop modal 
-27. Admin Edit Event Modal Layout 
-28. Inputs/Textareas in Edit Event Modal 
-29. Admin – Edit Event modal 
-30. Edit Event modal – white, full-width fields 
-31. Edit Event modal overrides 
-32. Refine Edit Event field styling 
-33. Final Edit Event Modal – cleaned styles 
-34. Admin Edit Event – Newspaper Articles Viewer 
-35. Admin – Newspaper Articles viewer 
-36. Admin – Delete article confirm dialog 
-37. Delete-article confirmation dialog styles 
-========================================================= */
+/* =========================================================
+   1. CSS VARIABLES
+   ========================================================= */
+:root {
+  --topbar-h: 64px;
+  --topbar-h-stacked: 74px;
+  --topbar-h-mobile: 52px;
+}
 
-/* ========================================================= 
-  App Shell 
-========================================================= */
+/* =========================================================
+   2. BASE / RESET
+   ========================================================= */
+button {
+  border-width: 3px;
+  border-style: solid;
+}
 
+button:focus,
+button:focus-visible {
+  outline: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================================
+   3. APP SHELL
+   ========================================================= */
 .app {
   min-height: 100vh;
   width: 100%;
@@ -63,20 +76,52 @@ TABLE OF CONTENTS
     sans-serif;
   padding-top: var(--topbar-h);
 }
+
+/* --- Topbar --- */
 .topbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 20;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  padding: 18px 28px;
+  display: block;
+  padding: 10px 18px 8px;
+  height: auto;
   background: rgba(0, 0, 0, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
+
+.topbar-inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.topbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.topbar-tools-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+
+.topbar-menu {
+  flex: 0 0 auto;
+  z-index: 3;
+}
+
 .brand {
   font-weight: 800;
   letter-spacing: 0.2em;
@@ -84,6 +129,7 @@ TABLE OF CONTENTS
   white-space: nowrap;
   justify-self: center;
 }
+
 .brand-button {
   background: transparent;
   border: none;
@@ -91,43 +137,95 @@ TABLE OF CONTENTS
   padding: 0;
   cursor: pointer;
 }
+
+/* Stacked topbar (mobile home) */
+.topbar--stacked .topbar-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar--stacked .topbar-brand {
+  position: static;
+  transform: none;
+}
+
+.topbar--stacked .topbar-tools-row {
+  width: 100%;
+}
+
+.topbar--stacked .year-search {
+  justify-content: flex-end;
+}
+
+/* Non-stacked topbar */
+.topbar:not(.topbar--stacked) .topbar-inner {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.topbar:not(.topbar--stacked) .topbar-tools-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.topbar:not(.topbar--stacked) .topbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* --- Main Content Areas --- */
 .main {
   flex: 1;
   max-width: 1100px;
   margin: 24px auto;
   padding: 0 16px 40px;
 }
+
 .main--timeline {
   max-width: 100%;
   margin: 0;
   padding: 0;
 }
+
 .main--about {
   max-width: 100%;
   margin: 0;
-  padding: 80px 10px 48px;
+  padding: 24px 10px 48px;
   box-sizing: border-box;
 }
-.main--admin {
-  max-width: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 80px 28px 48px;
-  box-sizing: border-box;
-}
-.panel.panel--wide {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 40px;
-  padding: 32px 24px;
-  border-radius: 24px;
-  box-sizing: border-box;
-}
+
 .main--about .panel {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
 }
+
+.main--about .panel--wide {
+  max-width: none;
+  width: calc(100% - 80px);
+  margin: 0 auto;
+}
+
+.main--admin {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 24px 28px 48px;
+  box-sizing: border-box;
+}
+
+/* --- Footer --- */
 .footer {
   padding: 22px;
   text-align: center;
@@ -135,34 +233,42 @@ TABLE OF CONTENTS
   color: rgba(195, 205, 240, 0.9);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(5, 7, 17, 0.95);
-} /* ========================================================= MENU BUTTON + SLIDE-OUT NAV ========================================================= */
+}
+
+/* =========================================================
+   4. NAVIGATION
+   ========================================================= */
 .menu-button {
-  position: absolute;
-  left: 16px;
+  position: static;
   display: flex;
   align-items: center;
   gap: 10px;
   background: transparent;
   border: none;
   padding: 4px 8px;
+  margin: 0;
   cursor: pointer;
   color: #fff;
 }
+
 .menu-icon {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
+
 .menu-icon span {
   width: 26px;
   height: 3px;
   border-radius: 999px;
   background: #ffffff;
 }
+
 .menu-text {
   font-size: 1.1rem;
   font-weight: 700;
 }
+
 .nav-drawer {
   position: fixed;
   top: 0;
@@ -179,9 +285,11 @@ TABLE OF CONTENTS
   display: flex;
   flex-direction: column;
 }
+
 .nav-drawer--open {
   transform: translateX(0);
 }
+
 .nav-item {
   width: 100%;
   padding: 18px 24px;
@@ -196,33 +304,44 @@ TABLE OF CONTENTS
   text-align: left;
   cursor: pointer;
 }
+
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.08);
 }
+
 .nav-icon {
   font-size: 2rem;
-} /* ========================================================= TIMELINE (HOME VIEW) ========================================================= */
+}
+
+/* =========================================================
+   5. TIMELINE (HOME VIEW)
+   ========================================================= */
 .timeline-screen {
   position: relative;
   min-height: calc(100vh - 120px);
-  padding: 50px 40px 64px 70px;
+  padding: 14px 40px 64px 70px;
   box-sizing: border-box;
 }
+
 .timeline-header {
   position: sticky;
   top: 50px;
   z-index: 5;
+  margin-top: 0;
   margin-bottom: 48px;
 }
+
 .timeline-header h1 {
   margin: 0 0 4px 0;
   font-size: 3rem;
 }
+
 .timeline-header p {
   margin: 0;
   font-size: 1rem;
   color: rgba(230, 230, 255, 0.9);
 }
+
 .timeline-rail {
   position: relative;
   margin-left: 48px;
@@ -231,6 +350,7 @@ TABLE OF CONTENTS
   padding-bottom: 32px;
   border-left: 4px solid rgba(255, 255, 255, 0.9);
 }
+
 .timeline-row {
   position: relative;
   display: block;
@@ -243,9 +363,11 @@ TABLE OF CONTENTS
   cursor: pointer;
   color: inherit;
 }
+
 .timeline-row:hover {
   background: rgba(0, 0, 0, 0.35);
 }
+
 .timeline-dot {
   position: absolute;
   left: -11px;
@@ -256,7 +378,9 @@ TABLE OF CONTENTS
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
-} /* ========================================================= Year-grouped timeline styles ========================================================= */
+}
+
+/* Year-grouped timeline */
 .timeline-year-header {
   display: flex;
   align-items: center;
@@ -269,25 +393,30 @@ TABLE OF CONTENTS
   text-align: left;
   cursor: pointer;
 }
+
 .timeline-year-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .timeline-year-main {
   display: flex;
   align-items: baseline;
   gap: 10px;
 }
+
 .timeline-year {
   font-size: 1.6rem;
   font-weight: 800;
 }
+
 .timeline-year-count {
   font-size: 0.95rem;
   font-weight: 600;
   color: rgba(220, 230, 255, 0.9);
 }
+
 .timeline-year-subtitle {
   font-size: 0.9rem;
   color: rgba(220, 230, 255, 0.9);
@@ -297,18 +426,22 @@ TABLE OF CONTENTS
     opacity 0.2s ease,
     transform 0.2s ease;
 }
+
 .timeline-row--year:hover .timeline-year-subtitle {
   opacity: 1;
   transform: translateY(0);
 }
+
 .timeline-year-chevron {
   display: none;
 }
+
 .timeline-year-events {
   margin-top: 10px;
   padding-left: 4px;
   border-left: 2px dashed rgba(255, 255, 255, 0.25);
 }
+
 .timeline-year-event {
   display: block;
   width: 100%;
@@ -321,13 +454,16 @@ TABLE OF CONTENTS
   color: inherit;
   cursor: pointer;
 }
+
 .timeline-year-event:hover {
   background: rgba(0, 0, 0, 0.45);
 }
+
 .timeline-year-event-date {
   font-size: 0.95rem;
   font-weight: 700;
 }
+
 .timeline-year-event-type {
   font-size: 0.95rem;
   font-weight: 700;
@@ -348,12 +484,14 @@ TABLE OF CONTENTS
   font-size: 1rem;
   font-weight: 700;
 }
+
 .timeline-year-event-description {
   font-size: 0.95rem;
   font-weight: 700;
   color: rgba(230, 235, 255, 0.9);
   margin-top: 2px;
 }
+
 .timeline-year-event-hint {
   font-size: 0.8rem;
   margin-top: 3px;
@@ -364,10 +502,13 @@ TABLE OF CONTENTS
     opacity 0.2s ease,
     transform 0.2s ease;
 }
+
 .timeline-year-event:hover .timeline-year-event-hint {
   opacity: 1;
   transform: translateY(0);
-} /* ========================================================= Scroll indicators ========================================================= */
+}
+
+/* Scroll indicators */
 .scroll-indicator {
   position: fixed;
   left: 50%;
@@ -389,33 +530,85 @@ TABLE OF CONTENTS
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.96);
   pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.2s ease;
 }
+
 .scroll-indicator--top {
   top: 90px;
 }
 .scroll-indicator--bottom {
   bottom: 30px;
 }
+
 .scroll-arrow {
   display: block;
   font-size: 1.2rem;
-  margin-top: 0;
   animation: arrow-bounce 1.2s infinite;
 }
+
 .scroll-arrow--up {
   animation-direction: reverse;
 }
-@keyframes arrow-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
-  }
-} /* ========================================================= GENERIC PANELS ========================================================= */
+
+/* Timeline alerts & banners */
+.timeline-alert {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+}
+
+.timeline-alert--error {
+  background: rgba(188, 48, 82, 0.25);
+  border-color: rgba(255, 145, 168, 0.9);
+  color: #ffe3ec;
+}
+
+.timeline-alert--info {
+  background: rgba(255, 194, 120, 0.18);
+  border-color: rgba(255, 217, 140, 0.95);
+  color: #ffe9c8;
+}
+
+.global-banner {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 19;
+  padding: 14px 22px;
+  border-radius: 999px;
+  max-width: 80vw;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  border: 1px solid transparent;
+}
+
+.global-banner--info {
+  background: rgba(255, 194, 120, 0.22);
+  border-color: rgba(255, 217, 140, 0.95);
+  color: #ffe9c8;
+}
+
+.global-banner--error {
+  background: rgba(188, 48, 82, 0.35);
+  border-color: rgba(255, 145, 168, 0.95);
+  color: #ffe3ec;
+}
+
+/* =========================================================
+   6. PANELS & CARDS
+   ========================================================= */
 .panel {
   background: rgba(9, 12, 26, 0.94);
   border-radius: 20px;
@@ -423,6 +616,7 @@ TABLE OF CONTENTS
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
+
 .panel h1 {
   margin-top: 0;
   margin-bottom: 8px;
@@ -431,26 +625,70 @@ TABLE OF CONTENTS
   margin-top: 24px;
   margin-bottom: 6px;
 }
+
+.panel.panel--wide {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 32px 24px;
+  border-radius: 24px;
+  box-sizing: border-box;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.card {
+  background: rgba(10, 15, 32, 0.95);
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 .helper {
   color: rgba(205, 214, 255, 0.85);
   font-size: 0.95rem;
-} /* ========================================================= Forms / Buttons / Cards ========================================================= */
+}
+
+/* =========================================================
+   7. FORMS & INPUTS
+   ========================================================= */
+.input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(6, 8, 20, 0.95);
+  color: #f5f7ff;
+}
+
+.input::placeholder {
+  color: rgba(200, 210, 240, 0.8);
+}
+
+.input.input--error {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.7);
+}
+
+.input--readonly {
+  opacity: 0.7;
+  cursor: default;
+}
+
 .birthday-form {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 16px 0;
 }
-.input {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(6, 8, 20, 0.95);
-  color: #f5f7ff;
-}
-.input::placeholder {
-  color: rgba(200, 210, 240, 0.8);
-}
+
+/* =========================================================
+   8. BUTTONS
+   ========================================================= */
 .primary {
   padding: 10px 16px;
   border-radius: 999px;
@@ -460,21 +698,56 @@ TABLE OF CONTENTS
   font-weight: 700;
   cursor: pointer;
 }
+
 .primary:hover {
   filter: brightness(1.05);
 }
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+
+.primary-button {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 3px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
 }
-.card {
-  background: rgba(10, 15, 32, 0.95);
-  border-radius: 16px;
-  padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-} /* ========================================================= Admin layout ========================================================= */
+
+.secondary-button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: transparent;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.danger-button,
+.cancel-button {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.danger-button:hover,
+.cancel-button:hover {
+  background: #ff3b3b;
+  border-color: #ff3b3b;
+  color: #ffffff;
+}
+
+/* =========================================================
+   9. ADMIN LAYOUT
+   ========================================================= */
 .admin-view {
   width: 100%;
   max-width: 100%;
@@ -482,6 +755,7 @@ TABLE OF CONTENTS
   display: flex;
   justify-content: center;
 }
+
 .admin-view > .panel,
 .admin-view > .panel.admin-panel {
   width: 100%;
@@ -490,80 +764,36 @@ TABLE OF CONTENTS
   padding: 32px 24px;
   border-radius: 24px;
   box-sizing: border-box;
-} /* ========================================================= Admin profile view ========================================================= */
-.admin-profile-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
 }
-.admin-profile-section {
-  margin-top: 24px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-}
-.admin-profile-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.admin-profile-section-title {
-  margin: 0;
-  font-size: 1.1rem;
+
+.admin-view button,
+.admin-modal button,
+.admin-confirm-modal button {
+  border-width: 3px;
+  border-style: solid;
+  border-color: #000000;
   color: #000000;
 }
-.admin-profile-section-actions {
-  display: flex;
-  gap: 8px;
-}
-.admin-profile-description {
-  margin-top: 4px;
-  font-size: 0.95rem;
-  color: #333333;
-}
-.admin-profile-value {
-  margin-top: 4px;
-  font-size: 0.95rem;
-  color: #111111;
-}
-.admin-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
-  gap: 16px;
-  margin-top: 16px;
-}
-.admin-login label {
-  display: block;
-  margin-bottom: 10px;
-}
-.admin-login label span {
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 4px;
-  color: rgba(210, 218, 255, 0.9);
-}
-.admin-dashboard {
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(7, 10, 22, 0.95);
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-} /* ========================================================= Admin header + tabs ========================================================= */
+
+/* Admin header & tabs */
 .admin-events-header {
   margin-bottom: 20px;
 }
+
 .admin-header-top {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   column-gap: 24px;
 }
+
 .admin-events-title {
   margin: 0;
   font-size: 2.6rem;
   white-space: nowrap;
   justify-self: start;
 }
+
 .admin-tabs {
   display: inline-flex;
   padding: 3px;
@@ -571,11 +801,31 @@ TABLE OF CONTENTS
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
+
+.admin-tabs .admin-tab-button {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(230, 236, 255, 0.85);
+}
+
+.admin-tabs .admin-tab-button.is-active {
+  background: #ffffff;
+  color: #000000;
+}
+
 .admin-header-actions {
   justify-self: end;
   display: flex;
   gap: 8px;
 }
+
 .admin-add-button,
 .admin-about-edit-button {
   display: inline-flex;
@@ -590,16 +840,53 @@ TABLE OF CONTENTS
   font-size: 0.95rem;
   cursor: pointer;
 }
+
 .admin-add-plus,
 .admin-edit-icon {
   font-size: 1.1rem;
   line-height: 1;
 }
+
 .admin-logged-in {
   margin: 8px 0 0;
   font-size: 0.9rem;
   color: rgba(205, 214, 255, 0.85);
 }
+
+.admin-locate-bar {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-login label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.admin-login label span {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: rgba(210, 218, 255, 0.9);
+}
+
+.admin-dashboard {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(7, 10, 22, 0.95);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* =========================================================
+   10. ADMIN TABLES
+   ========================================================= */
 .admin-table-wrapper,
 .admin-subpanel {
   margin-top: 24px;
@@ -610,6 +897,7 @@ TABLE OF CONTENTS
   width: 100%;
   box-sizing: border-box;
 }
+
 .admin-table-wrapper {
   padding: 0 16px 16px 16px;
   max-height: 65vh;
@@ -617,18 +905,26 @@ TABLE OF CONTENTS
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .admin-table-wrapper::-webkit-scrollbar {
   display: none;
 }
+
+.admin-table-wrapper--about {
+  padding: 16px 20px 20px 20px;
+}
+
 .admin-subpanel {
   padding: 16px 20px 20px 20px;
   border: none;
 }
+
 .admin-events-table,
 .admin-accounts-table {
   width: 100%;
   border-collapse: collapse;
 }
+
 .admin-events-table th,
 .admin-events-table td,
 .admin-accounts-table th,
@@ -638,6 +934,7 @@ TABLE OF CONTENTS
   font-size: 0.95rem;
   vertical-align: middle;
 }
+
 .admin-events-table thead th,
 .admin-accounts-table thead th {
   font-size: 1.1rem;
@@ -649,20 +946,42 @@ TABLE OF CONTENTS
   z-index: 1;
   border-bottom: 2px solid #000000;
 }
+
 .admin-events-table tbody td,
 .admin-accounts-table tbody td {
   border-bottom: 1px solid #000000;
 }
+
 .admin-events-table tbody tr:last-child td,
 .admin-accounts-table tbody tr:last-child td {
   border-bottom: none;
 }
+
 .admin-events-th-edit {
   width: 150px;
 }
+
 .admin-events-edit-cell {
   text-align: left;
 }
+
+.admin-events-edit-cell,
+.admin-events-edit-cell * {
+  text-align: left;
+}
+
+.admin-events-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.admin-events-actions .admin-edit-button {
+  justify-content: flex-start;
+}
+
 .admin-edit-button {
   display: inline-flex;
   align-items: center;
@@ -676,115 +995,478 @@ TABLE OF CONTENTS
   white-space: nowrap;
   color: #000000;
 }
-.admin-edit-icon {
-  font-size: 0.9rem;
-}
-.admin-locate-bar {
-  margin-top: 8px;
-  margin-bottom: 16px;
-}
-.admin-year-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.admin-year-label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 1rem;
-  color: rgba(245, 247, 255, 0.9);
-}
-.admin-year-label input.year-search-input {
-  width: 160px;
-}
-@media (max-width: 520px) {
-  .admin-year-label input.year-search-input {
-    width: min(220px, 80vw);
-  }
-}
-.admin-year-search .year-search-button,
-.admin-year-search .year-search-browse-button {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 2px solid #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.admin-year-search .year-search-button {
-  background: #ffffff;
-  color: #000000;
-}
-.admin-year-search .year-search-browse-button {
-  background: transparent;
-  color: #ffffff;
-}
-.admin-year-picker {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.admin-year-pill.is-selected {
-  background: #ffffff;
-  color: #000000;
-}
+
 .admin-empty-cell {
   text-align: center;
   padding: 18px 12px;
   font-style: italic;
 }
-.admin-table-wrapper--about {
-  padding: 16px 20px 20px 20px;
+
+/* =========================================================
+   11. ADMIN PROFILE & DASHBOARD
+   ========================================================= */
+.admin-profile-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
 }
+
+.admin-profile-section {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.admin-profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-profile-section-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #000000;
+}
+
+.admin-profile-section-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-profile-description {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #333333;
+}
+
+.admin-profile-value {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #111111;
+}
+
+/* Profile card text */
+.admin-subpanel.admin-subpanel--profile,
+.admin-subpanel.admin-subpanel--profile h2,
+.admin-subpanel.admin-subpanel--profile h3,
+.admin-subpanel.admin-subpanel--profile .admin-field-label span,
+.admin-subpanel.admin-subpanel--profile .helper,
+.admin-subpanel.admin-subpanel--profile .profile-static-value {
+  color: #000000;
+}
+
+.profile-obscured {
+  font-family: monospace;
+  letter-spacing: 0.14em;
+}
+
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.profile-section-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.profile-section-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.profile-show-toggle {
+  margin-left: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 3px solid #000000;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.profile-divider {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  margin: 18px 0;
+}
+
+/* =========================================================
+   12. ADMIN TEAM SECTION
+   ========================================================= */
+.admin-team-add {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(7, 10, 22, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.admin-team-add h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.admin-team-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.3fr) minmax(0, 1.4fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-team-photo-note {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: rgba(210, 218, 255, 0.85);
+}
+
+.admin-team-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-team-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 2.2fr) minmax(0, 2.1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.admin-team-photo-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-team-photo-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.admin-team-photo-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 20%, #4a526c, #151724 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-team-photo-inner {
+  width: 60%;
+  height: 60%;
+  position: relative;
+}
+
+.admin-team-photo-circle {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 52%;
+  border-radius: 50%;
+  background: #c4c8d2;
+}
+
+.admin-team-photo-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 36%;
+  border-radius: 999px 999px 30px 30px;
+  background: #8e94a5;
+}
+
+.admin-team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-team-name-input {
+  font-weight: 600;
+}
+
+.admin-team-role-input {
+  font-size: 0.9rem;
+}
+
+.admin-team-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.admin-team-actions > * {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.admin-team-photo-upload {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 1 1 200px;
+  min-width: 160px;
+  max-width: 100%;
+}
+
+.admin-team-photo-upload input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-team-photo-upload span {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-team-remove-button {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+  flex: 0 1 auto;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-team-remove-button:hover {
+  background: #ff3b3b;
+  border-color: #ff3b3b;
+  color: #ffffff;
+}
+
+/* New member photo preview chip */
+.admin-new-member-photo-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.admin-new-member-photo-chip img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  display: block;
+}
+
+.admin-new-member-photo-chip span {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: rgba(245, 247, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-new-member-photo-chip .admin-team-remove-button {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   13. ADMIN ABOUT EDITOR
+   ========================================================= */
 .admin-about-content h2 {
   margin-top: 4px;
   margin-bottom: 8px;
 }
+
 .admin-about-section-title {
   font-weight: 700;
   color: #000000;
 }
-.admin-about-section-label {
-  font-size: 0.9rem;
-  color: #444444;
-  margin-bottom: 2px;
-} /* ========================================================= Admin – About edit layout ========================================================= */
+
+.admin-about-section-label,
+.admin-about-edit-label {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #111111;
+}
+
 .admin-about-input,
 .admin-about-textarea {
   width: 100%;
   max-width: none;
   box-sizing: border-box;
 }
+
+.admin-about-edit-list {
+  margin-top: 12px;
+}
+
+.admin-about-edit-item {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 0 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 .admin-about-edit-item:last-child {
   border-bottom: none;
 }
+
+.admin-about-edit-item + .admin-about-edit-item {
+  margin-top: 18px;
+}
+
 .admin-about-edit-item .input {
   width: 100%;
   display: block;
   box-sizing: border-box;
 }
+
 .admin-about-edit-item textarea.input {
   min-height: 160px;
   resize: vertical;
-} /* ========================================================= About page dynamic content ========================================================= */
+}
+
+.admin-about-edit-item .admin-field {
+  margin-bottom: 8px;
+}
+
+.admin-about-edit-item .admin-field + .admin-field {
+  margin-top: 2px;
+}
+
+.admin-about-edit-header {
+  gap: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-bottom: 0;
+}
+
+.admin-about-edit-field {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.admin-about-edit-input,
+.admin-about-edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  border-radius: 8px;
+}
+
+.admin-about-edit-textarea {
+  min-height: 150px;
+  max-height: 150px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.admin-about-edit-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-about-edit-textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+}
+
+.admin-about-edit-textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+}
+
+.admin-about-order-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #000000;
+}
+
+.admin-about-order-select {
+  min-width: 70px;
+  padding: 6px 10px;
+}
+
+/* About page (public) */
 .about-sections {
   margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .about-section-title {
   margin: 0 0 6px 0;
   font-size: 1.9rem;
 }
+
+.about-section-text {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
 .about-team {
   margin-top: 40px;
 }
+
 .about-team h2 {
   margin: 0 0 24px;
   font-size: clamp(3.5rem, 2.6vw, 8rem);
@@ -792,6 +1474,14 @@ TABLE OF CONTENTS
   letter-spacing: 0.03em;
   text-align: left;
 }
+
+.about-team-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 64px 32px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
 .about-team-member {
   display: flex;
   flex-direction: column;
@@ -802,6 +1492,7 @@ TABLE OF CONTENTS
   background: transparent;
   border: none;
 }
+
 .about-team-info {
   margin-top: 10px;
   display: flex;
@@ -809,6 +1500,7 @@ TABLE OF CONTENTS
   gap: 2px;
   text-align: left;
 }
+
 .about-team-photo-wrapper {
   width: clamp(120px, 16vw, 160px);
   height: clamp(120px, 16vw, 160px);
@@ -819,6 +1511,7 @@ TABLE OF CONTENTS
   align-items: center;
   justify-content: center;
 }
+
 .about-team-photo {
   width: 100%;
   height: 100%;
@@ -826,6 +1519,7 @@ TABLE OF CONTENTS
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.7);
 }
+
 .about-team-photo-fallback {
   position: relative;
   width: 100%;
@@ -836,6 +1530,7 @@ TABLE OF CONTENTS
   overflow: hidden;
   color: transparent;
 }
+
 .about-team-photo-fallback::before {
   content: '';
   position: absolute;
@@ -847,6 +1542,7 @@ TABLE OF CONTENTS
   border-radius: 50%;
   background: #b0b0b0;
 }
+
 .about-team-photo-fallback::after {
   content: '';
   position: absolute;
@@ -858,14 +1554,22 @@ TABLE OF CONTENTS
   background: #b0b0b0;
   border-radius: 60% 60% 40% 40%;
 }
+
 .about-team-name {
   font-weight: 700;
   font-size: clamp(1rem, 1.6vw, 1.25rem);
 }
+
 .about-team-role {
   font-size: 0.9rem;
   color: rgba(210, 218, 255, 0.9);
-} /* ========================================================= Admin account modal ========================================================= */
+}
+
+/* =========================================================
+   14. ADMIN MODALS
+   ========================================================= */
+
+/* --- Modal Backdrop --- */
 .admin-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -876,6 +1580,12 @@ TABLE OF CONTENTS
   justify-content: center;
   padding: 24px 16px;
 }
+
+.admin-modal-backdrop--confirm {
+  z-index: 70;
+}
+
+/* --- Base Modal --- */
 .admin-modal {
   max-width: 520px;
   width: 100%;
@@ -884,47 +1594,86 @@ TABLE OF CONTENTS
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
   padding: 18px 20px 20px 20px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  overflow: auto;
 }
+
 .admin-modal-header {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 14px;
+  padding-right: 0;
 }
+
 .admin-modal-title {
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
-  font-size: 3rem;
+  padding-right: 10px;
+  white-space: normal;
+  font-size: 1.9rem;
+  line-height: 1.15;
+  max-width: calc(100% - 220px);
 }
+
 .admin-modal-actions {
+  position: static;
+  flex: 0 0 auto;
+  margin-left: auto;
   display: inline-flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
 }
-.admin-view button,
-.admin-modal button,
-.admin-confirm-modal button {
-  border-width: 3px;
-  border-style: solid;
-  border-color: #000000;
+
+/* --- Modal Buttons --- */
+.admin-modal-button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 3px solid #000000;
+  background: #ffffff;
   color: #000000;
+  font-weight: 600;
+  cursor: pointer;
 }
+
 .admin-modal-button--ghost,
 .admin-modal-button--outline {
   background: transparent;
   color: #000000;
-}
-button {
-  border-width: 3px;
-  border-style: solid;
-}
-.admin-modal-backdrop--confirm {
-  z-index: 70;
-}
-.admin-modal-button--outline {
-  background: transparent;
-  color: #000000;
   border-color: #000000;
 }
+
+.admin-modal-button--danger {
+  border-color: #e53935;
+  border-radius: 999px;
+  border: 3px solid #e53935;
+  background: #ffffff;
+  color: #e53935;
+}
+
+/* Dark modal button overrides */
+.admin-modal .admin-modal-button,
+.admin-modal .admin-modal-button--ghost,
+.admin-modal .admin-modal-button--outline,
+.admin-modal .admin-modal-button--danger {
+  border-radius: 999px;
+  border: 3px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+}
+
+.admin-modal .admin-password-toggle {
+  border: none;
+  background: transparent;
+  color: #f9fafb;
+}
+
+/* --- Confirm Modal --- */
 .admin-confirm-modal {
   max-width: 360px;
   width: 100%;
@@ -935,24 +1684,47 @@ button {
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.85);
   text-align: left;
 }
+
 .admin-confirm-title {
   margin: 0 0 6px 0;
   font-size: 1.1rem;
   font-weight: 700;
 }
+
 .admin-confirm-text {
   margin: 0 0 14px 0;
   font-size: 0.9rem;
   color: #444444;
 }
+
 .admin-confirm-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 }
+
+.admin-confirm-modal .admin-modal-button {
+  border-color: #000000;
+  color: #000000;
+  background: #ffffff;
+}
+
+.admin-confirm-modal .admin-modal-button--danger {
+  border-color: #e53935;
+  color: #e53935;
+  background: #ffffff;
+}
+
+.admin-confirm-modal .admin-modal-button--danger:hover {
+  background: #e53935;
+  color: #ffffff;
+}
+
+/* --- Form Fields --- */
 .admin-field {
   margin-bottom: 12px;
 }
+
 .admin-field-label {
   display: flex;
   flex-direction: column;
@@ -962,15 +1734,35 @@ button {
   font-size: 0.9rem;
   color: #f9fafb;
 }
+
 .admin-field-note {
   font-size: 0.75rem;
   color: rgba(241, 245, 249, 0.85);
 }
+
+.admin-field-required {
+  margin-left: 2px;
+  color: #e53935;
+  font-weight: 700;
+}
+
+.admin-field--error .admin-field-label span:first-child {
+  color: #ffb3b3;
+}
+
+.admin-field-error-text {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  color: #ffb3b3;
+}
+
 .admin-password-wrapper {
   display: flex;
   align-items: center;
   gap: 6px;
 }
+
 .admin-password-toggle {
   border: none;
   background: transparent;
@@ -979,22 +1771,12 @@ button {
   cursor: pointer;
   padding: 2px 6px;
 }
+
 .admin-modal select.input {
   padding-right: 28px;
 }
-.admin-field--error .admin-field-label span:first-child {
-  color: #ffb3b3;
-}
-.input.input--error {
-  border-color: #ff6b6b;
-  box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.7);
-}
-.admin-field-error-text {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.8rem;
-  color: #ffb3b3;
-} /* ========================================================= Admin full-page blocker during save/delete ========================================================= */
+
+/* --- Full-page Blocker --- */
 .admin-blocker {
   position: fixed;
   inset: 0;
@@ -1005,6 +1787,7 @@ button {
   justify-content: center;
   pointer-events: auto;
 }
+
 .admin-blocker-inner {
   background: rgba(9, 12, 26, 0.98);
   border-radius: 18px;
@@ -1015,6 +1798,7 @@ button {
   gap: 10px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
 }
+
 .admin-blocker-spinner {
   width: 18px;
   height: 18px;
@@ -1023,6 +1807,7 @@ button {
   border-top-color: #ffffff;
   animation: admin-blocker-spin 0.85s linear infinite;
 }
+
 .admin-blocker-text {
   font-size: 0.9rem;
   color: #ffffff;
@@ -1030,14 +1815,679 @@ button {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-@keyframes admin-blocker-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} /* ========================================================= Event detail overlay ========================================================= */
+
+.admin-fullpage-blocker {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-fullpage-blocker-card {
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: rgba(20, 30, 60, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 320px;
+  text-align: center;
+}
+
+.admin-fullpage-blocker-title {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.admin-fullpage-blocker-subtitle {
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+/* --- Avatar Crop Modal --- */
+.avatar-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.avatar-modal {
+  width: min(440px, 90vw);
+  background: #050711;
+  border-radius: 18px;
+  padding: 16px 18px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+}
+
+.avatar-modal h3 {
+  margin: 0 0 8px;
+}
+
+.avatar-crop-container {
+  margin-top: 8px;
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000000;
+}
+
+.avatar-crop-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.avatar-modal-controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.avatar-modal-zoom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.avatar-modal-zoom input[type='range'] {
+  flex: 1;
+}
+
+.avatar-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* --- Add Newspaper Article Modal --- */
+.admin-modal--add-article .admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.admin-modal--add-article .admin-modal-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.admin-modal--add-article .admin-field-label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.admin-modal--add-article .admin-field-required {
+  display: inline;
+  margin-left: 6px;
+  vertical-align: baseline;
+  line-height: 1;
+}
+
+.admin-modal--add-article .admin-textarea--caption {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: none;
+  overflow: hidden;
+}
+
+.admin-modal--add-article .admin-textarea--caption::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.admin-modal--add-article .admin-file-input-large {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+/* =========================================================
+   15. ADMIN EDIT EVENT MODAL
+   ========================================================= */
+.admin-event-modal-backdrop {
+  padding: 24px 16px;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.admin-event-modal {
+  max-width: 1100px;
+  padding: 0 32px 28px;
+  color: #f5f7ff;
+  position: relative;
+  width: min(1100px, 100vw - 80px);
+  max-height: calc(100vh - 96px);
+  background: radial-gradient(circle at top, #141827, #050711 55%);
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-event-modal-header {
+  gap: 16px;
+  margin: 0 -32px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 26px 14px;
+  background: linear-gradient(to bottom, rgba(3, 7, 19, 0.98), rgba(3, 7, 19, 0.94));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-event-modal-title {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.admin-event-modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-event-modal-save,
+.admin-event-modal-cancel {
+  min-width: 110px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: none;
+  background: transparent;
+  color: #f5f7ff;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.admin-event-modal-save:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #050711;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.admin-event-modal-cancel:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #fef2f2;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.admin-event-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px 26px 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-event-modal-body::-webkit-scrollbar,
+.admin-event-modal textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-event-modal-body::-webkit-scrollbar-track,
+.admin-event-modal textarea::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 4px;
+}
+
+.admin-event-modal-body::-webkit-scrollbar-thumb,
+.admin-event-modal textarea::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.9);
+  border-radius: 4px;
+}
+
+.admin-event-modal-body::-webkit-scrollbar-thumb:hover,
+.admin-event-modal textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(226, 232, 240, 0.95);
+}
+
+.admin-event-modal-body,
+.admin-event-modal textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.9) rgba(15, 23, 42, 0.6);
+}
+
+/* Event form fields */
+.admin-event-field {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.admin-event-field-label,
+.admin-event-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(240, 243, 255, 0.85);
+}
+
+.admin-event-modal .input,
+.admin-event-modal select,
+.admin-event-modal textarea {
+  width: 100%;
+  border-radius: 14px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #ffffff;
+  color: #050711;
+  font-size: 0.95rem;
+  box-shadow: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.admin-event-modal .input:focus,
+.admin-event-modal select:focus,
+.admin-event-modal textarea:focus {
+  border-color: #ffd46a;
+  box-shadow: 0 0 0 1px rgba(255, 212, 106, 0.8);
+}
+
+.admin-event-modal textarea {
+  border-radius: 18px;
+  resize: none;
+  min-height: 130px;
+  max-height: 130px;
+  overflow-y: auto;
+  line-height: 1.45;
+}
+
+.admin-event-modal-form textarea.input {
+  min-height: 150px;
+  max-height: 300px;
+  resize: none;
+}
+
+.admin-event-helper {
+  font-size: 0.8rem;
+  color: rgba(249, 250, 251, 0.7);
+  margin-top: 4px;
+}
+
+/* =========================================================
+   16. ADMIN MEDIA/ARTICLE VIEWER
+   ========================================================= */
+.admin-event-modal-media {
+  margin-top: 24px;
+  padding-bottom: 40px;
+  margin-bottom: 34px;
+}
+
+.admin-event-articles-section-title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-event-media-viewer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.admin-event-media-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex: 0 0 auto;
+}
+
+.admin-event-media-side-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-event-media-side-label {
+  font-size: 0.8rem;
+  color: #f5f7ff;
+  text-align: center;
+}
+
+.admin-event-media-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.admin-event-media-circle--danger {
+  background: #ff4d4f;
+  color: #ffffff;
+}
+
+.admin-event-media-circle:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.admin-event-media-circle:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-event-media-nav {
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  color: #000000;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.admin-event-media-nav:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+}
+
+.admin-event-media-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-event-media-nav--left {
+  justify-self: flex-start;
+}
+.admin-event-media-nav--right {
+  justify-self: flex-end;
+}
+
+.admin-event-media-image-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-event-media-image {
+  background: transparent;
+  margin: 0;
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  max-height: 75vh;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
+/* Caption section */
+.admin-event-caption-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: 25px;
+  margin-bottom: 20px;
+  margin-top: 60px;
+  min-height: 44px;
+}
+
+.admin-event-caption-title {
+  margin: 0;
+}
+
+.admin-event-caption-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-event-caption-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-event-caption-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-event-caption-edit {
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.admin-event-caption-edit:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-event-caption-editbox,
+.admin-event-caption-input {
+  margin-top: 20px;
+}
+
+.admin-event-caption-input {
+  width: 100%;
+  resize: none;
+}
+
+.admin-event-caption-input.is-readonly {
+  background: #cbd5e1;
+  color: #111111;
+  border-color: #94a3b8;
+  opacity: 1;
+}
+
+.admin-event-caption-input.is-editing {
+  background: #ffffff;
+  color: #111111;
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Delete article dialog */
+.delete-media-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 24px 16px;
+}
+
+.delete-media-dialog {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 420px;
+  width: 100%;
+  background: #ffffff;
+  color: #111111;
+  border-radius: 18px;
+  padding: 20px 22px 18px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.85);
+}
+
+.delete-media-title {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.delete-media-text {
+  margin: 0 0 14px 0;
+  font-size: 0.9rem;
+  color: #444444;
+}
+
+.delete-media-preview {
+  background: #0b0f1a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 260px;
+}
+
+.delete-media-preview img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.delete-media-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.delete-dialog-btn {
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  color: #f9fafb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+  min-width: 110px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border-width: 3px;
+  border-style: solid;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.delete-dialog-btn-cancel {
+  border-color: #000000;
+  color: #000000;
+}
+
+.delete-dialog-btn-confirm {
+  border-color: #e53935;
+  color: #e53935;
+}
+
+.delete-dialog-btn-confirm:hover {
+  background: #e53935;
+  color: #ffffff;
+}
+
+.delete-dialog-btn-cancel:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.delete-dialog-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+.delete-dialog-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(249, 250, 251, 0.4);
+  border-top-color: #f9fafb;
+  margin-right: 8px;
+  animation: delete-dialog-spin 0.7s linear infinite;
+}
+
+/* =========================================================
+   17. EVENT DETAIL OVERLAY
+   ========================================================= */
 .event-overlay-backdrop {
   position: fixed;
   inset: 0;
@@ -1048,6 +2498,7 @@ button {
   padding: clamp(16px, 2.2vw, 24px) clamp(14px, 2.4vw, 22px);
   background: rgba(0, 0, 0, 0.4);
 }
+
 .event-detail-card {
   position: relative;
   max-width: 900px;
@@ -1062,6 +2513,7 @@ button {
   color: #111111;
   margin-left: 0;
 }
+
 .event-detail-meta,
 .event-detail-title,
 .event-detail-short,
@@ -1069,6 +2521,7 @@ button {
 .event-detail-footer {
   grid-column: 1;
 }
+
 .event-detail-meta {
   margin-bottom: 6px;
   font-size: clamp(1rem, 1.9vw, 1.5rem);
@@ -1080,35 +2533,71 @@ button {
   flex-wrap: wrap;
   font-weight: 800;
 }
+
 .event-detail-meta-type {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: clamp(0.85rem, 1.9vw, 1.5rem);
 }
+
 .event-detail-title {
   margin: 4px 0 6px 0;
   font-size: clamp(1rem, 1.9vw, 1.5rem);
   font-weight: 600;
 }
+
 .event-detail-short {
   margin: 2px 0 8px 0;
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   color: #555555;
 }
+
+.event-detail-location {
+  grid-column: 1;
+  margin-bottom: 8px;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: #555555;
+}
+
+.event-detail-section {
+  margin-top: 35px;
+  margin-bottom: 24px;
+}
+
 .event-detail-section h2 {
   margin: 0 0 6px 0;
   font-size: clamp(1rem, 1.7vw, 1.25rem);
 }
+
+.event-detail-scrollbox {
+  height: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0;
+  margin-right: -4px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar {
+  width: 6px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+}
+
 .event-detail-scrollbox p {
   margin: 0;
   line-height: 1.5;
   font-size: clamp(0.95rem, 1.4vw, 1.05rem);
 }
-.event-detail-section {
-  margin-top: 35px;
-  margin-bottom: 24px;
-}
+
 .event-detail-side-action {
   position: absolute;
   top: 50%;
@@ -1119,12 +2608,7 @@ button {
   align-items: center;
   text-align: center;
 }
-.event-detail-location {
-  grid-column: 1;
-  margin-bottom: 8px;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  color: #555555;
-}
+
 .event-detail-circle-button {
   width: clamp(42px, 4.5vw, 60px);
   height: clamp(42px, 4.5vw, 60px);
@@ -1138,19 +2622,23 @@ button {
   justify-content: center;
   margin-bottom: 6px;
 }
+
 .event-detail-circle-button:hover {
   background: #f5f5f5;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
   transform: translateY(-1px);
 }
+
 .event-detail-circle-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
 }
+
 .event-detail-articles-icon {
   font-size: clamp(1rem, 1.6vw, 1.3rem);
   line-height: 1;
 }
+
 .event-detail-circle-label {
   display: block;
   max-width: 90px;
@@ -1159,11 +2647,13 @@ button {
   line-height: 1.3;
   color: #333333;
 }
+
 .event-detail-footer {
   margin-top: 24px;
   display: flex;
   justify-content: center;
 }
+
 .event-detail-cta {
   padding: clamp(8px, 1.4vw, 12px) clamp(22px, 3vw, 30px);
   border-radius: 999px;
@@ -1174,6 +2664,7 @@ button {
   font-weight: 700;
   cursor: pointer;
 }
+
 .event-detail-close {
   position: absolute;
   top: 18px;
@@ -1197,171 +2688,32 @@ button {
     box-shadow 0.15s ease,
     transform 0.15s ease;
 }
+
 .event-detail-close:hover {
   background: #e53935;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   transform: translateY(-1px);
 }
+
 .event-detail-close:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-button:focus {
-  outline: none;
-}
-button:focus-visible {
-  outline: none;
-} /* ========================================================= search in top-right of the topbar ========================================================= */
-.year-search {
-  position: static;
-  transform: none;
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  max-width: min(520px, 48vw);
-}
-.year-search-input {
-  width: clamp(90px, 8vw, 130px);
-  padding: clamp(6px, 0.7vw, 8px) clamp(10px, 1vw, 14px);
-  border-radius: 999px;
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  font-size: clamp(0.9rem, 1vw, 1rem);
-}
-.year-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-.year-search-button,
-.year-search-browse {
-  padding: clamp(6px, 0.7vw, 8px) clamp(10px, 1.1vw, 16px);
-  border-radius: 999px;
-  font-size: clamp(0.85rem, 0.95vw, 1rem);
-  cursor: pointer;
-}
-.year-search-button {
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  background: transparent;
-  color: #ffffff;
-}
-.year-search-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-.year-search-browse {
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-}
-.year-search-browse:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.year-search-popover {
-  position: absolute;
-  top: 120%;
-  right: 0;
 
-  /* ✅ shrink to content instead of a big fixed rectangle */
-  width: max-content;
-  min-width: 0;
-  max-width: min(92vw, 320px);
+.article-overlay-image {
+  max-width: min(980px, 92vw);
+  max-height: 78vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
 
-  padding: 12px 12px 10px;
-  border-radius: 16px;
-  background: rgba(4, 6, 18, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 30;
-}
-.year-search-popover-section {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.year-search-popover-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(210, 220, 255, 0.8);
-}
-.year-search-decade-list,
-.year-search-year-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.year-search-decade,
-.year-search-year {
-  padding: 4px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-.year-search-decade:hover,
-.year-search-year:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-.year-search-decade.is-active {
-  border-color: rgba(255, 214, 120, 0.95);
-  background: rgba(255, 214, 120, 0.14);
-}
-.timeline-alert {
-  margin-top: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid transparent;
-}
-.timeline-alert--error {
-  background: rgba(188, 48, 82, 0.25);
-  border-color: rgba(255, 145, 168, 0.9);
-  color: #ffe3ec;
-}
-.timeline-alert--info {
-  background: rgba(255, 194, 120, 0.18);
-  border-color: rgba(255, 217, 140, 0.95);
-  color: #ffe9c8;
-}
-.global-banner {
-  position: fixed;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 19;
-  padding: 14px 22px;
-  border-radius: 999px;
-  max-width: 80vw;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-align: center;
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.7),
-    0 0 18px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-  border: 1px solid transparent;
-}
-.global-banner--info {
-  background: rgba(255, 194, 120, 0.22);
-  border-color: rgba(255, 217, 140, 0.95);
-  color: #ffe9c8;
-}
-.global-banner--error {
-  background: rgba(188, 48, 82, 0.35);
-  border-color: rgba(255, 145, 168, 0.95);
-  color: #ffe3ec;
-} /* ========================================================= MEDIA OVERLAY ========================================================= */
+/* =========================================================
+   18. MEDIA OVERLAY (PUBLIC)
+   ========================================================= */
 .media-overlay-backdrop {
   position: fixed;
   inset: 0;
@@ -1372,6 +2724,7 @@ button:focus-visible {
   padding: 32px 16px;
   background: rgba(0, 0, 0, 0.5);
 }
+
 .media-overlay-card {
   position: relative;
   max-width: 1000px;
@@ -1386,6 +2739,7 @@ button:focus-visible {
   flex-direction: column;
   padding: 20px 24px 16px;
 }
+
 .media-overlay-back {
   position: absolute;
   top: 12px;
@@ -1398,9 +2752,11 @@ button:focus-visible {
   color: #000000;
   cursor: pointer;
 }
+
 .media-overlay-back:hover {
   opacity: 0.8;
 }
+
 .media-overlay-close {
   position: absolute;
   top: 12px;
@@ -1418,39 +2774,47 @@ button:focus-visible {
   line-height: 1;
   cursor: pointer;
 }
+
 .media-overlay-close:hover {
   background: #e53935;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   transform: translateY(-1px);
 }
+
 .media-overlay-close:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+
 .media-overlay-header {
-  padding-top: 30px;
+  padding-top: 54px;
   padding-bottom: 12px;
   text-align: center;
 }
+
 .media-overlay-title {
   margin: 0;
   font-size: clamp(1.3rem, 2.2vw, 1.8rem);
 }
+
 .media-overlay-subtitle {
   margin: 4px 0 0 0;
   font-size: 0.9rem;
   color: #666666;
 }
+
 .media-overlay-status {
   text-align: center;
   font-size: 0.95rem;
   padding: 16px 8px;
   color: #444444;
 }
+
 .media-overlay-status--error {
   color: #b71c1c;
 }
+
 .media-overlay-body {
   display: flex;
   gap: 8px;
@@ -1459,11 +2823,13 @@ button:focus-visible {
   align-items: stretch;
   min-height: 0;
 }
+
 .media-image-wrapper {
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
 }
+
 .media-image-scroll {
   flex: 1 1 auto;
   height: 100%;
@@ -1475,12 +2841,22 @@ button:focus-visible {
   justify-content: center;
   align-items: flex-start;
 }
+
+.media-image-scroll.is-scrollable {
+  align-items: flex-start;
+}
+
+.media-image-scroll.is-centered {
+  align-items: center;
+}
+
 .media-image {
   display: block;
   width: 100%;
   max-width: 100%;
   height: auto;
 }
+
 .media-nav-button,
 .media-nav-button--left,
 .media-nav-button--right {
@@ -1495,2922 +2871,365 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333333;
+  color: #111111;
   transition:
     background 0.15s ease,
     color 0.15s ease;
 }
+
 .media-nav-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
+
 .media-nav-arrow {
+  display: block;
   font-size: clamp(2rem, 3vw, 2.6rem);
   line-height: 1;
 }
+
 .media-nav-label {
+  display: block;
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #444444;
 }
+
 .media-nav-button--left:hover {
   background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
   color: #000000;
 }
+
 .media-nav-button--right:hover {
   background: linear-gradient(to left, rgba(0, 0, 0, 0.08), transparent);
   color: #000000;
 }
-.media-caption {
+
+.media-caption,
+.media-overlay-caption {
+  width: 100%;
+  text-align: center;
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   font-size: clamp(0.8rem, 1vw, 0.95rem);
   color: #333333;
-  text-align: center;
-} /* ========================================================= Responsive tweaks ========================================================= */
-@media (max-width: 1024px) {
-  .event-detail-card {
-    margin-left: 0;
-  }
-  .event-overlay-backdrop {
-    align-items: center;
-    padding: 32px 16px;
-  }
 }
-@media (max-width: 768px) {
-  .timeline-screen {
-    padding: 50px 0 80px 72px;
-  }
-  .timeline-header {
-    top: 50px;
-    margin-bottom: 40px;
-  }
-  .timeline-header h1 {
-    font-size: 2rem;
-  }
-  .nav-item {
-    font-size: 1.3rem;
-  }
-  .event-detail-card {
-    padding: 20px 96px 20px 20px;
-  }
-  .year-search-popover {
-    right: 8px;
-  }
-  .admin-header-top {
-    grid-template-columns: 1fr;
-    row-gap: 12px;
-  }
-  .admin-events-title,
-  .admin-tabs,
-  .admin-header-actions {
-    justify-self: center;
-  }
-}
-@media (max-width: 640px) {
-  .media-nav-button,
-  .media-nav-button--left,
-  .media-nav-button--right {
-    flex: 0 0 40px;
-  }
-  .media-nav-label {
-    display: none;
-  }
-  .event-detail-circle-button {
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
-  }
-  .event-detail-circle-label {
-    font-size: 0.7rem;
-  }
-}
-@media (max-width: 780px) {
-  .topbar {
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 10px;
-    padding: 14px 14px;
-  }
-  .brand {
-    grid-column: 1 / -1;
-    justify-self: center;
-  }
-  .year-search {
-    grid-column: 1 / -1;
-    justify-self: center;
-    flex-wrap: wrap;
-    max-width: 100%;
-  }
-  .year-search-input {
-    width: min(180px, 40vw);
-  }
-} /* ========================================================= ADMIN BUTTON + TAB OVERRIDES ========================================================= */
-.admin-add-button,
-.admin-about-edit-button,
-.admin-edit-button,
-.admin-modal-button,
-.admin-modal-button--ghost,
-.admin-modal-button--outline,
-.admin-confirm-actions .admin-modal-button {
-  border-radius: 999px;
-  border: 3px solid #000000;
-  background: #ffffff;
-  color: #000000;
-}
-.admin-modal-button--danger {
-  border-color: #e53935;
-  border-radius: 999px;
-  border: 3px solid #e53935;
-  background: #ffffff;
-  color: #e53935;
-}
-.admin-tabs .admin-tab-button {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 5px 14px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-radius: 999px;
-  border: none;
-  background: transparent;
-  color: rgba(230, 236, 255, 0.85);
-}
-.admin-tabs .admin-tab-button.is-active {
-  background: #ffffff;
-  color: #000000;
-} /* ========================================================= Profile card text should be black ========================================================= */
-.admin-subpanel.admin-subpanel--profile,
-.admin-subpanel.admin-subpanel--profile h2,
-.admin-subpanel.admin-subpanel--profile h3,
-.admin-subpanel.admin-subpanel--profile .admin-field-label span,
-.admin-subpanel.admin-subpanel--profile .helper,
-.admin-subpanel.admin-subpanel--profile .profile-static-value {
-  color: #000000;
-}
-.admin-field-required {
-  margin-left: 2px;
-  color: #e53935;
-  font-weight: 700;
-}
-.profile-obscured {
-  font-family: monospace;
-  letter-spacing: 0.14em;
-}
-.profile-section-header {
+
+/* =========================================================
+   19. YEAR SEARCH & POPOVER
+   ========================================================= */
+.year-search {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 24px;
-  margin-bottom: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: auto;
+  z-index: 3;
+  pointer-events: auto;
+  flex: 1 0 auto;
 }
-.profile-section-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-.profile-section-actions {
+
+.year-search-input-wrap {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
-.profile-show-toggle {
-  margin-left: 8px;
-  padding: 4px 10px;
+
+.year-search-input-wrap .year-search-input {
+  width: 85px;
+  max-width: 85px;
+  min-width: 70px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.year-search-input {
+  padding: 6px 12px;
   border-radius: 999px;
-  border: 3px solid #000000;
-  background: #ffffff;
-  color: #000000;
-  font-size: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem;
+}
+
+.year-search-input::placeholder {
+  color: rgba(200, 210, 255, 0.8);
+}
+
+.year-search-button,
+.year-search-browse-button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
 }
-.profile-divider {
-  border: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-  margin: 18px 0;
-} /* ========================================================= Dark admin modal button style (Edit Admin Account) ========================================================= */
-.admin-modal .admin-modal-button,
-.admin-modal .admin-modal-button--ghost,
-.admin-modal .admin-modal-button--outline,
-.admin-modal .admin-modal-button--danger {
-  border-radius: 999px;
-  border: 3px solid #ffffff;
+
+.year-search-button {
+  background: #ffffff;
+  color: #000000;
+}
+
+.year-search-browse-button {
   background: transparent;
   color: #ffffff;
 }
-.admin-modal .admin-password-toggle {
-  border: none;
-  background: transparent;
-  color: #f9fafb;
-}
-.admin-confirm-modal .admin-modal-button {
-  border-color: #000000;
-  color: #000000;
-  background: #ffffff;
-}
-.admin-confirm-modal .admin-modal-button--danger {
-  border-color: #e53935;
-  color: #e53935;
-  background: #ffffff;
-} /* ========================================================= About Page edit layout ========================================================= */
-.admin-about-edit-list {
-  margin-top: 12px;
-}
-.admin-about-section-label,
-.admin-about-edit-label {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #111111;
-}
-.admin-about-edit-item .admin-field {
-  margin-bottom: 8px;
-}
-.admin-about-order-control {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  color: #000000;
-}
-.admin-about-order-select {
-  min-width: 70px;
-  padding: 6px 10px;
-}
-.about-section-text {
-  margin: 0;
-  line-height: 1.5;
-  font-size: 0.95rem;
-  color: #ffffff;
-}
-.main--about .panel--wide {
-  max-width: none;
-  width: calc(100% - 80px);
-  margin: 0 auto;
-}
-@media (max-width: 768px) {
-  .main--about {
-    padding: 80px 16px 32px;
-  }
-  .panel.panel--wide {
-    padding: 24px 16px;
-    border-radius: 20px;
-  }
-} /* ========================================================= About Page editor – tighter header + clear separation between sections ========================================================= */
-.admin-about-edit-item {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px 0 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-.admin-about-edit-item + .admin-about-edit-item {
-  margin-top: 18px;
-}
-.admin-about-edit-header {
-  gap: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-  padding-bottom: 0;
-}
-.admin-about-edit-field {
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
-.admin-about-edit-item .admin-field + .admin-field {
-  margin-top: 2px;
-}
-.admin-about-edit-input,
-.admin-about-edit-textarea {
-  width: 100%;
-  box-sizing: border-box;
-  display: block;
-}
-.about-team-grid {
-  margin-top: 10px;
-  display: grid;
-  gap: 64px 32px;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-@media (min-width: 640px) {
-  .about-team-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1024px) {
-  .about-team-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-} /* ========================================================= Admin Team Section ========================================================= */
-.admin-team-add {
-  margin-top: 18px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(7, 10, 22, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-.admin-team-add h3 {
-  margin: 0 0 8px;
-  font-size: 1.1rem;
-}
-.admin-team-add-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.3fr) minmax(0, 1.4fr) auto;
-  gap: 10px;
-  align-items: center;
-}
-.admin-team-photo-note {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  color: rgba(210, 218, 255, 0.85);
-}
-.admin-team-list {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.admin-team-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 2.2fr) minmax(0, 2.1fr);
-  gap: 16px;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
-.admin-team-photo-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.admin-team-photo-thumb {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-}
-.admin-team-photo-placeholder {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 20%, #4a526c, #151724 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.admin-team-photo-inner {
-  width: 60%;
-  height: 60%;
-  position: relative;
-}
-.admin-team-photo-circle {
-  position: absolute;
-  left: 50%;
-  top: 24%;
-  transform: translateX(-50%);
-  width: 52%;
-  height: 52%;
-  border-radius: 50%;
-  background: #c4c8d2;
-}
-.admin-team-photo-bar {
-  position: absolute;
-  left: 50%;
-  bottom: 8%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 36%;
-  border-radius: 999px 999px 30px 30px;
-  background: #8e94a5;
-}
-.admin-team-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.admin-team-name-input {
-  font-weight: 600;
-}
-.admin-team-role-input {
-  font-size: 0.9rem;
-}
-.admin-team-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-.admin-team-actions > * {
-  min-width: 0;
-  flex: 0 1 auto;
-}
-.admin-team-photo-upload {
-  position: relative;
+
+/* Admin year search */
+.admin-year-search {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  font-size: 0.8rem;
-  cursor: pointer;
-  white-space: nowrap;
-  flex: 1 1 200px;
-  min-width: 160px;
-  max-width: 100%;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-.admin-team-photo-upload input[type='file'] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.admin-team-photo-upload {
-  max-width: 100%;
-}
-.admin-team-photo-upload span {
-  display: inline-block;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-} /* ========================================================= Admin Team – New member photo preview chip ========================================================= */
-.admin-new-member-photo-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* keep it compact inside the grid column */
-  min-width: 0;
-  max-width: 100%;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(0, 0, 0, 0.25); /* prevents any child overflow from painting outside */
-  overflow: hidden;
-}
-.admin-new-member-photo-chip img {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
-  display: block;
-}
-.admin-new-member-photo-chip span {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 0.85rem;
-  color: rgba(245, 247, 255, 0.92);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-} /* keep Remove button from stretching the chip */
-.admin-new-member-photo-chip .admin-team-remove-button {
-  flex: 0 0 auto;
-  padding: 6px 12px;
-  border-radius: 999px;
-}
-.admin-fullpage-blocker {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.admin-fullpage-blocker-card {
-  padding: 18px 22px;
-  border-radius: 16px;
-  background: rgba(20, 30, 60, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  max-width: 320px;
-  text-align: center;
-}
-.admin-fullpage-blocker-title {
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-.admin-fullpage-blocker-subtitle {
-  opacity: 0.85;
-  font-size: 0.95rem;
-} /* ========================================================= Avatar crop modal ========================================================= */
-.avatar-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-.avatar-modal {
-  width: min(440px, 90vw);
-  background: #050711;
-  border-radius: 18px;
-  padding: 16px 18px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
-}
-.avatar-modal h3 {
-  margin: 0 0 8px;
-}
-.avatar-crop-container {
-  margin-top: 8px;
-  position: relative;
-  width: 100%;
-  height: 260px;
-  overflow: hidden;
-  border-radius: 16px;
-  background: #000000;
-}
-.avatar-crop-loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 5;
-  pointer-events: none;
-}
-.avatar-modal-controls {
-  margin-top: 10px;
+
+.admin-year-label {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
+  font-size: 1rem;
+  color: rgba(245, 247, 255, 0.9);
 }
-.avatar-modal-zoom {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
+
+.admin-year-label input.year-search-input {
+  width: 160px;
 }
-.avatar-modal-zoom input[type='range'] {
-  flex: 1;
-}
-.avatar-modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.primary-button {
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 3px solid #ffffff;
-  background: #ffffff;
-  color: #000000;
-  font-weight: 600;
-  cursor: pointer;
-}
-.secondary-button {
+
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: transparent;
-  color: #ffffff;
-  font-weight: 500;
-  cursor: pointer;
-}
-.danger-button,
-.cancel-button {
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 2px solid #ffffff !important;
-  background: transparent;
-  color: #ffffff !important;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease;
-}
-.danger-button:hover,
-.cancel-button:hover {
-  background: #ff3b3b;
-  border-color: #ff3b3b;
-  color: #ffffff;
-}
-.input--readonly {
-  opacity: 0.7;
-  cursor: default;
-}
-.admin-team-remove-button {
-  padding: 6px 16px;
-  border-radius: 999px;
   border: 2px solid #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.admin-year-search .year-search-button {
   background: #ffffff;
   color: #000000;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease;
-  flex: 0 1 auto;
-  max-width: 140px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-.admin-team-remove-button:hover {
-  background: #ff3b3b;
-  border-color: #ff3b3b;
+
+.admin-year-search .year-search-browse-button {
+  background: transparent;
   color: #ffffff;
 }
-.admin-year-search-popover {
-  margin-top: 14px;
-  padding: 16px 20px;
-  background: rgba(5, 7, 17, 0.95);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: inline-block;
-  max-width: 100%;
-}
-.admin-year-search-popover-section + .admin-year-search-popover-section {
-  margin-top: 18px;
-}
-.admin-year-search-popover-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
-}
-.admin-year-decade-list,
-.admin-year-year-list {
+
+.admin-year-picker {
+  margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-.admin-year-decade-pill,
-.admin-year-year-pill {
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 2px solid #ffffff;
-  background: #ffffff;
-  color: #000000;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    box-shadow 0.18s ease,
-    transform 0.12s ease;
-  white-space: nowrap;
-}
-.admin-year-decade-pill:hover,
-.admin-year-year-pill:hover {
-  background: transparent;
-  color: #ffffff;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
-  transform: translateY(-1px);
-}
-.admin-year-decade-pill.is-active,
-.admin-year-year-pill.is-selected {
-  background: #f6c761;
-  border-color: #f6c761;
-  color: #000000;
-  box-shadow: 0 0 0 1px rgba(246, 199, 97, 0.5);
-}
-.admin-event-button--save {
-  border-color: #38c172;
-}
-.admin-event-button--cancel {
-  border-color: #e3342f;
-}
-.admin-event-articles-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.admin-event-articles-caption {
-  font-size: 0.85rem;
-  opacity: 0.9;
-  text-align: center;
-}
-.admin-event-articles-meta {
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-.admin-event-articles-delete {
-  margin-top: 4px;
-}
-.admin-event-articles-nav {
-  align-self: center;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: transparent;
-  cursor: pointer;
-}
-.admin-event-articles-nav:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.admin-event-articles-add {
-  border-radius: 24px;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  padding: 14px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.admin-event-articles-add-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-.admin-event-articles-caption-input {
-  max-height: 100px;
-}
-@media (max-width: 768px) {
-  .admin-event-modal {
-    max-width: 100%;
-  }
-  .admin-event-articles-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .admin-event-articles-nav {
-    order: -1;
-    justify-self: center;
-  }
-} /* ========================================================= Admin Edit Event Modal Layout ========================================================= */
-.admin-edit-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.admin-edit-panel {
-  width: min(900px, 100% - 80px);
-  max-height: calc(100vh - 80px);
-  background: #050711;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.9);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.admin-edit-panel-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: #050711;
-  padding: 18px 32px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.admin-edit-panel-body {
-  padding: 20px 32px 28px;
-  overflow-y: auto;
-}
-.admin-edit-field {
-  margin-bottom: 18px;
-}
-.admin-edit-label {
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 6px;
-  display: block;
-} /* ========================================================= Inputs/Textareas in Edit Event Modal ========================================================= */
-.admin-edit-panel .input,
-.admin-edit-panel select,
-.admin-edit-panel textarea {
-  width: 100%;
-  background: #ffffff;
-  color: #111111;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 10px 14px;
-  font-size: 0.95rem;
-}
-.admin-edit-panel textarea {
-  border-radius: 14px;
-  min-height: 120px;
-  max-height: 180px;
-  overflow-y: auto;
-  resize: vertical;
-}
-.admin-edit-actions {
-  display: flex;
-  gap: 10px;
-}
-.admin-edit-save {
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid #33cc66;
-  background: transparent;
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-}
-.admin-edit-save:hover {
-  background: #33cc66;
-  color: #000;
-}
-.admin-edit-cancel {
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid #ff5c5c;
-  background: transparent;
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-}
-.admin-edit-cancel:hover {
-  background: #ff5c5c;
-  color: #000;
-} /* ========================================================= Admin – Edit Event modal ========================================================= */
-.admin-event-modal-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.admin-event-button {
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: 2px solid #000000;
-  background: transparent;
-  color: #000000;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    transform 0.1s ease;
-}
-.admin-event-button:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-.admin-event-button--cancel:hover:not(:disabled) {
-  background: #e53935;
-  color: #ffffff;
-}
-.admin-event-button--save:hover:not(:disabled) {
-  background: #2e7d32;
-  color: #ffffff;
-}
-.admin-event-label {
-  display: flex;
-  flex-direction: column;
   gap: 6px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #111111;
 }
-.admin-event-input,
-.admin-event-textarea {
-  width: 100%;
-  box-sizing: border-box;
+
+.admin-year-pill.is-selected {
   background: #ffffff;
-  color: #111111;
-  border-radius: 999px;
-  border: 2px solid #000000;
-  padding: 8px 14px;
-  font-size: 0.9rem;
+  color: #000000;
 }
-.admin-event-textarea {
-  max-height: 180px;
-  overflow-y: auto;
-  border-radius: 16px;
-  min-height: 120px;
-  resize: vertical;
-}
-.admin-event-section {
-  margin-top: 6px;
-}
-.admin-event-section-title {
-  margin-bottom: 10px;
-  margin: 0 0 8px 0;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-.admin-event-articles-card {
-  margin-top: 8px;
-  margin-bottom: 16px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 18px;
-  border: 2px solid #000000;
-  background: #f7f7f7;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.admin-event-articles-frame {
-  min-width: 0;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-.admin-event-articles-image {
-  background: #000;
-  max-width: 100%;
-  max-height: 260px;
-  object-fit: contain;
-  border-radius: 10px;
-  border: 1px solid #bbbbbb;
-} /* ========================================================= Edit Event modal – white, full-width fields ========================================================= */
-.admin-event-modal .input,
-.admin-event-modal textarea,
-.admin-event-modal select {
-  width: 100%;
-  max-width: 100%;
-  background: #ffffff;
-  color: #111111;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  padding: 10px 14px;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
-} /* ========================================================= Edit Event modal overrides ========================================================= */
-.admin-event-modal-header .admin-modal-title {
-  color: #f5f7ff;
-}
-.admin-event-modal .admin-event-field {
-  margin-bottom: 18px;
-}
-.admin-event-modal .admin-event-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(240, 243, 255, 0.85);
-}
-.admin-event-modal-header .admin-modal-button:first-of-type:hover {
-  background: #1bbf5b;
-  color: #050713;
-}
-.admin-event-modal-header .admin-modal-button.admin-modal-button--ghost:hover {
-  background: #e25353;
-  color: #050713;
-} /* ========================================================= Edit Event field styling ========================================================= */
-.admin-event-modal .admin-event-input,
-.admin-event-modal .admin-event-textarea,
-.admin-event-modal .admin-event-select,
-.admin-event-modal input,
-.admin-event-modal textarea,
-.admin-event-modal select {
-  width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  color: #111322;
-  border-radius: 0px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 10px 18px;
-  margin: 0 2px;
-}
-.admin-event-modal textarea,
-.admin-event-modal .admin-event-textarea {
-  min-height: 130px;
-  resize: vertical;
-  border-radius: 0px;
-}
-.event-detail-scrollbox {
-  height: 220px;
-  max-height: 220px;
-  overflow-y: auto;
-  padding-right: 0;
-  margin-right: -4px;
-}
-.event-detail-scrollbox::-webkit-scrollbar {
-  width: 6px;
-}
-.event-detail-scrollbox::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 999px;
-}
-.event-detail-scrollbox::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 999px;
-}
-.admin-about-edit-textarea {
-  min-height: 150px;
-  max-height: 150px;
-  resize: none;
-  overflow-y: auto;
-}
-.admin-about-edit-textarea::-webkit-scrollbar {
-  width: 6px;
-}
-.admin-about-edit-textarea::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 999px;
-}
-.admin-about-edit-textarea::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 999px;
-}
-.input,
-.year-search-input,
-.admin-about-edit-input,
-.admin-about-edit-textarea,
-.admin-modal select.input {
-  border-radius: 8px;
-}
-.admin-year-pill {
-  padding: 4px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: transparent;
+
+/* Year picker popover */
+.year-picker-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  width: 420px;
+  max-width: 90vw;
+  background: #000000;
   color: #ffffff;
-  font-size: 0.8rem;
-  cursor: pointer;
-  border-radius: 12px;
-} /* ========================================================= Edit Event Modal ========================================================= */
-.admin-event-modal-backdrop {
-  padding: 24px 16px;
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.72);
-}
-.admin-event-modal {
-  max-width: 1100px;
-  padding: 0 32px 28px;
-  color: #f5f7ff;
-  position: relative;
-  width: min(1100px, 100vw - 80px);
-  max-height: calc(100vh - 96px);
-  background: radial-gradient(circle at top, #141827, #050711 55%);
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.admin-event-modal-header {
-  gap: 16px;
-  margin: 0 -32px 12px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 26px 14px;
-  background: linear-gradient(to bottom, rgba(3, 7, 19, 0.98), rgba(3, 7, 19, 0.94));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.admin-event-modal-title {
-  margin: 0;
-  font-size: clamp(1.25rem, 2vw, 1.6rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.admin-event-modal-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.admin-event-modal-save,
-.admin-event-modal-cancel {
-  min-width: 110px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: none;
-  background: transparent;
-  color: #f5f7ff;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.15s ease;
-}
-.admin-event-modal-save:hover {
-  background: #16a34a;
-  border-color: #16a34a;
-  color: #050711;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
-  transform: translateY(-1px);
-}
-.admin-event-modal-cancel:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
-  color: #fef2f2;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
-  transform: translateY(-1px);
-}
-.admin-event-modal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding-right: 4px;
-  flex: 1;
-  padding: 20px 26px 24px;
-  overflow-y: auto;
-}
-.admin-event-field {
-  width: 100%;
-  margin-bottom: 18px;
-}
-.admin-event-field-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.admin-event-modal .input,
-.admin-event-modal select,
-.admin-event-modal textarea {
-  width: 100%;
-  border-radius: 14px;
-  padding: 10px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: #ffffff;
-  color: #050711;
-  font-size: 0.95rem;
-  box-shadow: none;
-  outline: none;
-}
-.admin-event-modal .input:focus,
-.admin-event-modal select:focus,
-.admin-event-modal textarea:focus {
-  border-color: #ffd46a;
-  box-shadow: 0 0 0 1px rgba(255, 212, 106, 0.8);
-}
-.admin-event-modal textarea {
   border-radius: 18px;
-  resize: none;
-  min-height: 130px;
-  max-height: 130px;
-  overflow-y: auto;
-  line-height: 1.45;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.8),
+    0 0 1px rgba(255, 255, 255, 0.2);
 }
-.admin-event-helper {
-  font-size: 0.8rem;
-  color: rgba(249, 250, 251, 0.7);
-  margin-top: 4px;
+
+.year-picker-popover::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background: #000000;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  transform: rotate(45deg);
 }
-.admin-event-modal-body::-webkit-scrollbar,
-.admin-event-modal textarea::-webkit-scrollbar {
-  width: 8px;
-}
-.admin-event-modal-body::-webkit-scrollbar-track,
-.admin-event-modal textarea::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 4px;
-}
-.admin-event-modal-body::-webkit-scrollbar-thumb,
-.admin-event-modal textarea::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.9);
-  border-radius: 4px;
-}
-.admin-event-modal-body::-webkit-scrollbar-thumb:hover,
-.admin-event-modal textarea::-webkit-scrollbar-thumb:hover {
-  background: rgba(226, 232, 240, 0.95);
-}
-.admin-event-modal-body,
-.admin-event-modal textarea {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.9) rgba(15, 23, 42, 0.6);
-}
-.admin-event-articles-section-title {
-  margin-top: 24px;
+
+.year-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
-.admin-event-articles-list {
-  margin-bottom: 16px;
-}
-.admin-event-article-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-}
-.admin-event-article-main {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.admin-event-article-url {
-  font-size: 0.8rem;
-  color: #e5e7eb;
-  word-break: break-all;
-}
-.admin-event-article-caption {
-  font-size: 0.8rem;
-  color: rgba(209, 213, 219, 0.9);
-}
-.admin-event-article-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.admin-event-article-delete {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(248, 113, 113, 0.9);
-  background: transparent;
-  color: #fecaca;
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-}
-.admin-event-article-delete:hover {
-  background: #b91c1c;
-  color: #fef2f2;
-}
-.admin-event-new-article-row {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto;
-  gap: 10px;
-  align-items: center;
-  margin-top: 8px;
-}
-.admin-event-new-article-button {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.9);
-  background: transparent;
-  color: #e5e7eb;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-}
-.admin-event-new-article-button:hover {
-  background: #38bdf8;
-  border-color: #38bdf8;
-  color: #02101f;
-}
-@media (max-width: 768px) {
-  .admin-event-modal {
-    width: calc(100vw - 32px);
-    max-height: calc(100vh - 40px);
-    border-radius: 18px;
-  }
-  .admin-event-modal-header {
-    padding: 14px 16px 10px;
-  }
-  .admin-event-modal-body {
-    padding: 16px;
-  }
-  .admin-event-new-article-row {
-    grid-template-columns: 1fr;
-  }
-}
-.admin-event-modal-form textarea.input {
-  min-height: 150px;
-  max-height: 300px;
-  resize: none;
-} /* ========================================================= Admin Edit Event – Newspaper Articles Viewer ========================================================= */
-.admin-event-media-nav {
-  align-self: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: none;
-  background: #ffffff;
-  color: #000000;
+
+.year-picker-title {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.year-picker-close {
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-}
-.admin-event-media-nav:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
-}
-.admin-event-media-nav:disabled {
-  opacity: 0.35;
-  cursor: default;
-  transform: none;
-  box-shadow: none;
-}
-.admin-event-media-nav--left {
-  justify-self: flex-start;
-}
-.admin-event-media-nav--right {
-  justify-self: flex-end;
-} /* ========================================================= Admin – Newspaper Articles viewer ========================================================= */
-.admin-event-modal-media {
-  margin-top: 24px;
-}
-.admin-event-media-viewer {
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-.admin-event-media-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  flex: 0 0 auto;
-}
-.admin-event-media-side-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.admin-event-media-side-label {
-  font-size: 0.8rem;
-  color: #f5f7ff;
-  text-align: center;
-}
-.admin-event-media-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
   border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.year-picker-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.year-picker-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.year-picker-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.year-picker-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.year-picker-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
+
+.year-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.year-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.year-pill.is-selected {
   background: #ffffff;
   color: #000000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
-.admin-event-media-circle--danger {
-  background: #ff4d4f;
-  color: #ffffff;
+
+/* =========================================================
+   20. ANIMATIONS
+   ========================================================= */
+@keyframes arrow-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
 }
-.admin-event-media-circle:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-}
-.admin-event-media-circle:disabled {
-  opacity: 0.4;
-  cursor: default;
-  transform: none;
-  box-shadow: none;
-}
-.admin-event-media-image-wrap {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  justify-content: center;
-}
-.admin-event-media-image {
-  background: transparent;
-  margin: 0;
-  display: block;
-  width: 100%;
-  max-width: 520px;
-  height: auto;
-  max-height: 75vh;
-  border-radius: 16px;
-  object-fit: contain;
-} /* ========================================================= Admin – Delete article confirm dialog ========================================================= */
-.delete-dialog-btn-cancel:hover:not(:disabled) {
-  background: #dc2626;
-  border-color: #dc2626;
-}
-.delete-dialog-btn-confirm:hover:not(:disabled) {
-  background: #16a34a;
-  border-color: #16a34a;
-}
-.delete-dialog-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
-  box-shadow: none;
-  transform: none;
-}
-.delete-dialog-spinner {
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  border: 2px solid rgba(249, 250, 251, 0.4);
-  border-top-color: #f9fafb;
-  margin-right: 8px;
-  animation: delete-dialog-spin 0.7s linear infinite;
-}
-@keyframes delete-dialog-spin {
+
+@keyframes admin-blocker-spin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
     transform: rotate(360deg);
   }
-} /* ========================================================= Delete-article confirmation dialog styles ========================================================= */
-.delete-media-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.65);
-  padding: 24px 16px;
 }
-.delete-media-dialog {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 420px;
-  width: 100%;
-  background: #ffffff;
-  color: #111111;
-  border-radius: 18px;
-  padding: 20px 22px 18px;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.85);
-}
-.delete-media-title {
-  margin: 0 0 6px 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-.delete-media-text {
-  margin: 0 0 14px 0;
-  font-size: 0.9rem;
-  color: #444444;
-}
-.delete-media-preview {
-  background: #0b0f1a;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 8px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 14px;
-  border-radius: 12px;
-  overflow: hidden;
-  max-height: 260px;
-}
-.delete-media-preview img {
-  max-width: 100%;
-  max-height: 220px;
-  border-radius: 8px;
-  object-fit: contain;
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.delete-media-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.delete-dialog-btn {
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  color: #f9fafb;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-  min-width: 110px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  border-width: 3px;
-  border-style: solid;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  background: #ffffff;
-}
-.delete-dialog-btn-cancel {
-  border-color: #000000;
-  color: #000000;
-}
-.delete-dialog-btn-confirm {
-  border-color: #e53935;
-  color: #e53935;
-}
-.delete-dialog-btn-confirm:hover {
-  background: #e53935;
-  color: #ffffff;
-}
-.admin-confirm-modal .admin-modal-button--danger:hover {
-  background: #e53935;
-  color: #ffffff;
-}
-.admin-event-caption-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.admin-event-caption-text {
-  flex: 1;
-  min-width: 0;
-}
-.admin-event-caption-edit {
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff;
-  border-radius: 999px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-.admin-event-caption-edit:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.admin-event-caption-editbox {
-  margin-top: 8px;
-}
-.admin-event-caption-input {
-  width: 100%;
-  resize: none;
-}
-.admin-event-caption-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
-}
-.article-overlay-image {
-  max-width: min(980px, 92vw);
-  max-height: 78vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-} /* ========================================================= Post-cleanup visual fixes ========================================================= */
-.admin-events-actions {
-  gap: 14px;
-}
-.admin-events-actions .admin-edit-button--danger:hover {
-  background: #b00020;
-  border-color: #b00020;
-  color: #ffffff;
-}
-.admin-events-actions .admin-edit-button--danger:hover .admin-edit-icon,
-.admin-events-actions .admin-edit-button--danger:hover .admin-edit-text {
-  color: #ffffff;
-}
-.admin-event-caption-header,
-.admin-field-label--caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.admin-event-caption-title {
-  margin: 0;
-}
-.admin-event-caption-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.admin-event-caption-input.is-readonly {
-  background: #e5e7eb;
-  color: #111111;
-  border-color: #94a3b8;
-  opacity: 1;
-}
-.admin-event-caption-input.is-editing {
-  background: #ffffff;
-  color: #111111;
-  border-color: rgba(0, 0, 0, 0.35);
-}
-.admin-event-caption-header {
-  min-height: 44px;
-}
-.media-overlay-header {
-  padding-top: 54px;
-}
-.media-caption,
-.media-overlay-caption {
-  width: 100%;
-  text-align: center;
-}
-.media-nav-button,
-.media-nav-button--left,
-.media-nav-button--right {
-  color: #111111;
-}
-.media-nav-arrow {
-  display: block;
-}
-.media-nav-label {
-  display: block;
-}
-@media (max-width: 640px) {
-  .media-nav-label {
-    display: none;
-  }
-} /* ========================================================= (addresses remaining spacing/layout issues) ========================================================= */
-.admin-events-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.admin-events-edit-cell .admin-events-actions {
-  gap: 12px;
-}
-.admin-event-caption-header {
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  padding-top: 25px;
-  margin-bottom: 20px;
-  margin-top: 60px;
-}
-.admin-event-caption-input.is-readonly {
-  background: #cbd5e1;
-}
-.admin-event-modal-media {
-  padding-bottom: 40px;
-  margin-bottom: 34px;
-}
-.admin-event-caption-editbox,
-.admin-event-caption-input {
-  margin-top: 20px;
-}
-.admin-modal .admin-modal-title {
-  font-size: 1.9rem;
-  line-height: 1.15;
-}
-.admin-modal-header {
-  position: relative;
-  padding-right: 180px;
-}
-.admin-modal-actions {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: inline-flex;
-  gap: 10px;
-  align-items: center;
-}
-.admin-modal-title {
-  margin-right: 0;
-} /* ========================================================= (admin modal header overlap, actions alignment, media centering) ========================================================= */
-.admin-modal-header {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
-  padding-right: 0;
-}
-.admin-modal-title {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin: 0;
-  padding-right: 10px;
-  white-space: normal;
-}
-.admin-modal-actions {
-  position: static;
-  flex: 0 0 auto;
-  margin-left: auto;
-  align-items: center;
-  justify-content: flex-end;
-}
-.admin-modal .admin-modal-title {
-  max-width: calc(100% - 220px);
-}
-@media (max-width: 520px) {
-  .admin-modal-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .admin-modal-actions {
-    justify-content: flex-end;
-  }
-  .admin-modal .admin-modal-title {
-    max-width: 100%;
-  }
-}
-.admin-events-edit-cell,
-.admin-events-edit-cell * {
-  text-align: left;
-}
-.admin-events-actions {
-  align-items: flex-start;
-  width: 100%;
-}
-.admin-events-actions .admin-edit-button {
-  justify-content: flex-start;
-}
-.media-image-scroll {
-  display: flex;
-  justify-content: center;
-}
-.media-image-scroll.is-scrollable {
-  align-items: flex-start;
-}
-.media-image-scroll.is-centered {
-  align-items: center;
-} /* ========================================================= Add Newspaper Article modal ========================================================= */ /* Header: align actions with top of title */
-.admin-modal--add-article .admin-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-.admin-modal--add-article .admin-modal-actions {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding-top: 6px;
-} /* Put asterisk inline next to label text (not stacked under) */
-.admin-modal--add-article .admin-field-label {
-  display: block;
-  margin-bottom: 6px;
-}
-.admin-modal--add-article .admin-field-required {
-  display: inline;
-  margin-left: 6px;
-  vertical-align: baseline;
-  line-height: 1;
-} /* Caption textarea: white, full-width, non-resizable, auto-grow friendly */
-.admin-modal--add-article .admin-textarea--caption {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  padding: 10px 12px;
-  resize: none;
-  overflow: hidden;
-}
-.admin-modal--add-article .admin-textarea--caption::placeholder {
-  color: rgba(0, 0, 0, 0.45);
-} /* File input styling (white) */
-.admin-modal--add-article .admin-file-input-large {
-  width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-/* ========================================================= 
-Additional Fixes 
-========================================================= */
 
-@media (max-width: 900px) {
-  /* Keep the timeline header closer to the topbar on small screens */
-  .timeline-header {
-    margin-bottom: 24px;
+@keyframes delete-dialog-spin {
+  from {
+    transform: rotate(0deg);
   }
-
-  /* Give the timeline more usable horizontal space */
-  .timeline-rail {
-    margin-left: 24px;
-    padding-right: 16px;
-  }
-
-  .timeline-row {
-    padding: 18px 16px 18px 34px; /* top/right/bottom/left */
-    margin-bottom: 20px;
-  }
-
-  .timeline-year-events {
-    padding-left: 10px;
-  }
-
-  .timeline-year-event {
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-
-  /* Event details modal/cards */
-  .timeline-event-card,
-  .timeline-card,
-  .event-card,
-  .event-details {
-    width: calc(100vw - 60px);
-    max-width: 100%;
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (max-width: 520px) {
-  .timeline-event-card,
-  .timeline-card,
-  .event-card,
-  .event-details {
-    width: calc(100vw - 28px);
-    border-radius: 14px;
+@keyframes cropper-spin {
+  from {
+    transform: rotate(0deg);
   }
-}
-@media (max-width: 520px) {
-  .timeline,
-  .timeline-container,
-  .timeline-wrap {
-    padding-left: 14px; /* shifts content left */
-    padding-right: 14px;
-  }
-}
-@media (max-width: 520px) {
-  .timeline-line {
-    left: 14px;
-  }
-} /* Mobile Friendly */
-img,
-video {
-  max-width: 100%;
-  height: auto;
-}
-.admin-modal,
-.modal,
-.dialog {
-  max-width: calc(100vw - 24px);
-  max-height: calc(100vh - 24px);
-  overflow: auto;
-}
-@media (max-width: 520px) {
-  .admin-page,
-  .public-page,
-  .content {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-  button,
-  input,
-  select,
-  textarea {
-    max-width: 100%;
+  to {
+    transform: rotate(360deg);
   }
 }
 
 /* =========================================================
-   TOPBAR + MOBILE (<900px) — single source of truth
-   - Wide: single row (menu left / brand centered / year tools right)
-   - Narrow: 2 rows (brand centered on row 1, menu left + year tools right on row 2)
-   - Fixes timeline overlap + removes excessive top gap on small screens
+   21. RESPONSIVE — All Breakpoints (Consolidated)
    ========================================================= */
 
-/* Topbar height variables used for layout offsets */
-:root {
-  --topbar-h: 64px; /* wide single-row height (approx) */
-  --topbar-h-stacked: 74px; /* narrow two-row height (approx) */
+/* ---------------------------------------------------------
+   TABLET (max-width: 1024px)
+   --------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .main--about .panel--wide {
+    width: calc(100% - 40px);
+  }
+
+  .about-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* App content should always start below the fixed topbar */
-.app {
-  padding-top: var(--topbar-h);
-}
-
-/* Make the fixed topbar not fight grid rules defined earlier */
-.topbar {
-  display: block !important; /* let inner handle layout */
-  padding: 10px 18px 8px !important; /* compact */
-  height: auto !important;
-}
-
-/* Brand centered on the bar */
-.topbar-brand {
-  position: absolute !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  margin: 0 !important;
-  white-space: nowrap;
-}
-
-/* Tools row spans full width: menu hard-left, year tools hard-right */
-.topbar-tools-row {
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  flex-wrap: nowrap !important;
-}
-
-/* Menu stays left and participates normally */
-.topbar-menu {
-  flex: 0 0 auto;
-}
-
-.menu-button {
-  position: static !important;
-  margin: 0 !important;
-}
-
-/* Year tools: hug the right edge with a tiny right padding */
-.year-search {
-  margin-left: auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
-  padding-right: 6px; /* slight breathing room from window edge */
-}
-
-/* Year input: compact 4-digit pill */
-.year-search-input,
-.year-search input,
-.year-search input[type='text'],
-.year-search input[type='number'] {
-  width: 5.5ch !important;
-  min-width: 5.5ch !important;
-  max-width: 6ch !important;
-  text-align: center;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-  border-radius: 999px !important;
-}
-
-/* Keep buttons pill-shaped and vertically centered */
-.year-search-button,
-.year-search-browse {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  white-space: nowrap !important;
-  border-radius: 999px !important;
-  height: 36px !important;
-  line-height: 1 !important;
-}
-
-/* -------------------------
-   NARROW (<900px): stacked 2 rows
-   ------------------------- */
+/* ---------------------------------------------------------
+   MOBILE (max-width: 900px)
+   --------------------------------------------------------- */
 @media (max-width: 900px) {
+  /* App shell */
   .app {
-    padding-top: var(--topbar-h-stacked) !important;
+    padding-top: var(--topbar-h-mobile);
   }
 
-  .topbar-brand {
-    position: static !important;
-    left: auto !important;
-    transform: none !important;
-    align-self: center !important;
-    text-align: center !important;
+  .main--admin {
+    padding: 20px 12px 32px !important;
   }
 
-  .topbar-tools-row {
-    width: 100% !important;
-    justify-content: space-between !important;
+  /* Topbar */
+  .topbar--stacked {
+    padding-bottom: 12px;
   }
 
-  .year-search {
-    margin-left: 0 !important; /* space-between handles it */
-    padding-right: 8px !important; /* slight breathing room */
-  }
-
-  /* Timeline: reduce top gap + shift left (title/desc + rail) + add space under description */
-  .timeline-screen {
-    /* Extra space ABOVE the title (in addition to .app padding-top). Make this small. */
-    padding-top: 12px !important;
-
-    /* You asked for ~15px left padding on mobile */
-    padding-left: 15px !important;
-
-    /* Keep a little right/bottom breathing room */
-    padding-right: 16px !important;
-    padding-bottom: 64px !important;
-  }
-
-  /* Bring the rail left to match the new padding */
-  .timeline-rail {
-    margin-left: 28px !important;
-    padding-right: 16px !important;
-  }
-
-  .timeline-header {
-    top: var(--topbar-h-stacked) !important;
-
-    /* add a bit more room between description and first year/timeline */
-    margin-bottom: 104px !important;
-  }
-
-  /* Nav drawer: pad just below topbar on non-home; use stacked height only when topbar is stacked */
-  .nav-drawer {
-    padding-top: calc(var(--topbar-h) + 8px) !important;
-  }
-
-  /* If the drawer is immediately after a stacked topbar (home stacked layout) */
-  .topbar--stacked + .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 8px) !important;
-  }
-}
-
-/* Ensure any lingering stacked class doesn't break wide layout */
-@media (min-width: 901px) {
-  .topbar--stacked .topbar-inner {
-    flex-direction: row !important;
-    align-items: center !important;
-  }
-  .topbar--stacked .topbar-brand {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-}
-
-/* =========================================================
-   TOPBAR + MOBILE TIMELINE — CLEAN CONSOLIDATED RULES
-   (This section replaces the old duplicate “TOPBAR — …” blocks)
-   ========================================================= */
-
-/* ---- Topbar base ---- */
-.topbar {
-  background: rgba(0, 0, 0, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 10px 18px 8px; /* tighter bottom padding */
-}
-
-/* Single-row by default (>= 901px) */
-.topbar-inner {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  /* The tools row will control the left/right layout */
-}
-
-/* Tools row spans full width: menu hard-left, year tools hard-right */
-.topbar-tools-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: nowrap;
-}
-
-/* Brand is always centered (independent of tools row width) */
-.topbar-brand {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  white-space: nowrap;
-}
-
-/* Ensure menu button stays on the left and doesn't get pushed/overlapped */
-.topbar-menu {
-  flex: 0 0 auto;
-  z-index: 3;
-}
-
-/* Year tools on the right */
-.year-search {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  position: relative; /* anchor the popover */
-  z-index: 3;
-}
-
-/* Year input: compact 4-digit pill */
-.year-search-input {
-  width: 8.5ch;
-  max-width: 8.5ch;
-  min-width: 8.5ch;
-  border-radius: 999px;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 14px;
-  box-sizing: border-box;
-}
-
-/* Buttons: pill + no wrapping */
-.year-search-button,
-.year-search-browse {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0 16px;
-  border-radius: 999px;
-  box-sizing: border-box;
-  white-space: nowrap;
-}
-
-/* Popover: right-aligned to the YEAR controls by default */
-.year-search-popover {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  left: auto;
-  margin: 0;
-  max-width: min(92vw, 720px);
-}
-
-/* ---- Stacked only when React adds .topbar--stacked (home under ~900px) ---- */
-.topbar--stacked .topbar-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.topbar--stacked .topbar-brand {
-  position: static;
-  transform: none;
-}
-
-.topbar--stacked .topbar-tools-row {
-  width: 100%;
-}
-
-.topbar--stacked .year-search {
-  justify-content: flex-end;
-}
-
-/* Under 900px: make the popover span the full available width (no right gap) */
-@media (max-width: 900px) {
-  .topbar--stacked .year-search-popover {
-    left: 0;
-    right: 0;
-    width: calc(100vw - 36px); /* topbar padding (18px * 2) */
-    max-width: none;
-  }
-}
-
-/* =========================================================
-   TIMELINE (HOME VIEW) — MOBILE SPACING (<900px)
-   Fix: reduce gap below topbar, and restore space between description and rail
-   ========================================================= */
-
-@media (max-width: 900px) {
-  .timeline-screen {
-    /* Reduce the “giant” top gap and keep content away from edges */
-    padding: 18px 15px 64px 15px;
-    min-height: calc(100vh - 120px);
-    box-sizing: border-box;
-  }
-
-  /* Make header non-sticky on small screens to avoid overlap issues */
-  .timeline-header {
-    position: relative;
-    top: auto;
-    margin-bottom: 18px;
-  }
-
-  .timeline-header h1 {
-    margin: 0 0 6px 0;
-  }
-
-  /* Restore a visible gap between the description and the rail */
-  .timeline-header p {
-    margin: 0 0 18px 0;
-  }
-
-  /* Rail + rows: align better with reduced left padding */
-  .timeline-rail {
-    margin-left: 18px;
-    padding-right: 0;
-  }
-
-  .timeline-row {
-    padding: 18px 14px 18px 34px;
-  }
-}
-
-/* =========================================================
-   Mobile (<=900px) — Expanded timeline event card MUST fit viewport
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Give the rail a little less "reserved" space on the right */
-  .timeline-rail {
-    padding-right: 12px !important; /* was 24px */
-    box-sizing: border-box !important;
-  }
-
-  /* Make sure the year row itself isn't creating overflow */
-  .timeline-row.timeline-row--year {
-    padding-right: 12px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Expanded container should respect the available width */
-  .timeline-row.is-expanded .timeline-year-events {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-
-    /* keep the dashed border but avoid pushing content wider */
-    padding-right: 0 !important;
-    margin-right: 0 !important;
-    overflow: hidden !important;
-  }
-
-  /* The actual dark box */
-  .timeline-row.is-expanded .timeline-year-event {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    /* THIS is the key: prevents 100% + padding overflow */
-    box-sizing: border-box !important;
-
-    /* prevent long text from forcing width */
-    overflow: hidden !important;
-  }
-}
-
-@media (max-width: 900px) {
-  .year-search {
-    flex-wrap: nowrap !important;
-    align-items: center;
-  }
-
-  .year-search-input,
-  .year-search input,
-  .year-search input[type='text'],
-  .year-search input[type='number'] {
-    width: 80px !important;
-    min-width: 80px !important;
-    max-width: 80px !important;
-
-    flex: 0 0 80px !important;
-    flex-shrink: 0 !important;
-  }
-}
-
-/* =========================================================
-   Patch: Reduce TOPBAR bottom padding (mobile only)
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Reduce the bar's overall vertical padding (especially bottom) */
-  .topbar {
-    padding: 8px 14px 4px !important; /* top | left/right | bottom */
-  }
-
-  /* Reduce the vertical space between brand row and controls row */
-  .topbar-inner {
-    gap: 3px !important;
-  }
-
-  /* Remove extra “nudges” that make the bar feel taller */
-  .topbar-inner .brand {
-    transform: none !important;
-  }
-
-  .menu-button {
-    transform: none !important;
-  }
-}
-
-/* =========================================================
-   FIX: Reduce “gap under topbar” (Timeline + About/Admin)
-   This is NOT topbar padding — it’s page padding.
-   Paste at VERY BOTTOM so it wins.
-   ========================================================= */
-
-/* 1) Timeline page: remove the extra top padding that creates the big gap */
-.timeline-screen {
-  /* was: padding: 50px 40px 64px 70px; */
-  padding-top: 14px !important; /* small breathing room below topbar */
-}
-
-/* Optional: if you want the Timeline header a touch closer still */
-.timeline-header {
-  margin-top: 0 !important;
-}
-
-/* 2) About (and Admin) pages: reduce the huge built-in top padding */
-.main--about {
-  /* was: padding: 80px 10px 48px; */
-  padding-top: 24px !important;
-}
-
-.main--admin {
-  /* was: padding: 80px 28px 48px; */
-  padding-top: 24px !important;
-}
-
-/* =========================================================
-   Patch: Reduce "gap" below topbar (Timeline header spacing)
-   Target: Mobile/tablet <= 900px
-   ========================================================= */
-@media (max-width: 900px) {
-  /* The big gap is coming from timeline-screen padding-top (was 50px). */
-  .timeline-screen {
-    padding-top: 18px !important; /* ↓ shrink gap under topbar */
-    padding-right: 16px !important;
-    padding-bottom: 56px !important;
-    padding-left: 60px !important; /* keeps rail off the edge, while still more-left than 70px */
-    box-sizing: border-box;
-  }
-
-  /* Don't "reserve" extra space with sticky offset on small screens */
-  .timeline-header {
-    top: 0 !important;
-    margin-bottom: 34px !important; /* restore a bit of space between description and the rail */
-  }
-
-  /* Keep the rail from creating extra right-side space */
-  .timeline-rail {
-    padding-right: 4px !important;
-    box-sizing: border-box;
-  }
-}
-
-/* =========================================================
-   FINAL PATCH (mobile <=900px): tighter LEFT padding (8px base)
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Main timeline container */
-  .timeline-screen {
-    padding-left: 8px !important;
-    padding-right: 12px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Vertical rail + dots */
-  .timeline-rail {
-    margin-left: 16px !important; /* reduced proportionally from 22px */
-    padding-right: 6px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Timeline rows (years + event cards) */
-  .timeline-row {
-    padding-left: 28px !important; /* reduced proportionally from 34px */
-    padding-right: 10px !important;
-    box-sizing: border-box !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Keep Browse popover inside the viewport
-   ========================================================= */
-@media (max-width: 900px) {
-  .year-search-popover {
-    position: fixed !important; /* anchor to viewport */
-    left: 8px !important;
-    right: 8px !important;
-    top: 76px !important; /* adjust if needed based on your topbar */
-    width: auto !important;
-
-    max-width: none !important;
-    min-width: 0 !important;
-
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-
-  /* Ensure the pill rows wrap instead of forcing width */
-  .year-search-decade-list,
-  .year-search-year-list {
-    width: 100% !important;
-    flex-wrap: wrap !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Timeline title size
-   ========================================================= */
-@media (max-width: 900px) {
-  .timeline-header h1 {
-    font-size: 2.4rem !important; /* increase size */
-    line-height: 1.15 !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Topbar "SOLAR EVENTS" spacing + size
-   ========================================================= */
-@media (max-width: 900px) {
-  .topbar-title,
-  .topbar-brand {
-    font-size: 1.15rem !important; /* increase size slightly */
-    margin-bottom: 6px !important; /* subtle gap when stacked */
-    line-height: 1.2 !important;
-  }
-}
-
-/* =========================================================
-   BROWSE POPOVER (Decades/Years) — sizing + 6-per-row max
-   Patch block (append-only): safe overrides for current CSS
-   ========================================================= */
-
-/* 1) Popover: add slight top padding + remove desktop "right gap" */
-.year-search-popover {
-  /* match the tighter mobile feel while staying anchored to the year tools */
-  right: 8px !important;
-  left: auto !important;
-
-  /* a touch more breathing room at the top */
-  padding-top: 16px !important;
-
-  /* keep it from becoming a huge rectangle */
-  width: auto !important;
-  max-width: min(92vw, 520px) !important;
-
-  box-sizing: border-box !important;
-}
-
-/* 2) Bubble rows: max 6 per row (desktop can’t exceed 6; mobile can be fewer) */
-.year-search-decade-list,
-.year-search-year-list {
-  /* Use a grid that wraps naturally */
-  display: grid !important;
-  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-
-  /* sizing + spacing */
-  gap: 10px !important;
-
-  /* cap the row width so you never get more than 6 pills per row */
-  max-width: calc((6 * 96px) + (5 * 10px)) !important;
-  width: 100% !important;
-
-  /* prevent weird overflow */
-  box-sizing: border-box !important;
-}
-
-/* Center the grid within the popover so it doesn’t look lopsided */
-.year-search-popover-section {
-  align-items: center !important;
-}
-
-/* 3) Bubbles: bigger + bigger text */
-.year-search-decade,
-.year-search-year {
-  width: 100% !important; /* fill the grid cell */
-  text-align: center !important;
-
-  padding: 8px 14px !important;
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-
-  border-radius: 999px !important;
-  border-width: 2px !important;
-
-  /* keep labels from breaking the layout */
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-
-  box-sizing: border-box !important;
-}
-
-/* 4) Slight top padding to the whole browse window (both < and > 900px) */
-.year-search-popover {
-  margin-top: 6px !important;
-}
-
-/* 5) On small screens, let the list use full width (still max 6, but usually fewer) */
-@media (max-width: 900px) {
-  .year-search-decade-list,
-  .year-search-year-list {
-    max-width: none !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Browse selector bubble sizing + layout
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Decade + year bubble buttons */
-  .year-search-decade,
-  .year-search-year {
-    min-width: 78px !important; /* enough for "1840s" */
-    padding: 10px 14px !important; /* larger click target */
-    font-size: 0.95rem !important;
-
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-  }
-
-  /* Max 6 bubbles per row */
-  .year-search-decade-list {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(78px, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  /* Years row */
-  .year-search-year-list {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Decades grid — max 6 per row, never overflow
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Make sure the popover can’t be narrower than the viewport padding */
-  .year-search-popover {
-    max-width: calc(100vw - 16px) !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important; /* prevents any bleed */
-  }
-
-  /* Max 6 columns, but auto-reduce if they don't fit */
-  .year-search-decade-list {
-    display: grid !important;
-    gap: 10px !important;
-
-    /* Key: creates as many columns as fit, up to 6 */
-    grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)) !important;
-  }
-
-  /* Keep decades readable without forcing overflow */
-  .year-search-decade {
-    min-width: 0 !important; /* allows grid to shrink items */
-    width: 100% !important; /* fill the grid cell */
-    justify-content: center !important;
-    white-space: nowrap !important;
-  }
-}
-
-/* =========================================================
-   MOBILE (<=900px): Browse decades = ALWAYS 6 columns, no overflow
-   ========================================================= */
-@media (max-width: 900px) {
-  /* 1) Let the popover actually use the available screen width */
-  .year-search-popover {
-    left: 8px !important;
-    right: 8px !important;
-    width: auto !important;
-
-    max-width: none !important;
-    min-width: 0 !important;
-
-    box-sizing: border-box !important;
-    padding-top: 14px !important; /* slight top padding like you want */
-    overflow: hidden !important; /* prevent any clipping/bleed */
-  }
-
-  /* 2) Force EXACTLY 6 columns, but allow columns to shrink properly */
-  .year-search-decade-list {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 3) Pills must be allowed to shrink inside their grid cells */
-  .year-search-decade {
-    width: 100% !important;
-    min-width: 0 !important;
-
-    /* keep them readable but compact enough for 6 across */
-    padding: 10px 0 !important;
-    font-size: 0.95rem !important;
-
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-
-    display: inline-flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
-  }
-}
-/* =========================================================
-   Patch: Desktop (>=901px) YEAR input + Browse popover pill sizing
-   - Match YEAR input size to mobile-friendly 4-digit width
-   - Ensure browse decades/year pills show full text (no ellipsis)
-   - Keep a max of 6 pills per row without overflow
-   ========================================================= */
-@media (min-width: 901px) {
-  /* YEAR input: match mobile (fits 4 digits) */
-  .year-search {
+  .topbar--stacked .topbar-tools-row {
+    justify-content: space-between;
     flex-wrap: nowrap;
-    align-items: center;
   }
 
-  .year-search-input,
-  .year-search input,
-  .year-search input[type='text'],
-  .year-search input[type='number'] {
-    width: 80px !important;
-    min-width: 80px !important;
-    max-width: 80px !important;
-    flex: 0 0 80px !important;
-    flex-shrink: 0 !important;
-    box-sizing: border-box !important;
+  .topbar--stacked .year-search {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 6px;
+    flex-wrap: nowrap;
   }
 
-  /* Browse popover container: prevent "right side padding" look */
-  .year-search-popover {
-    right: 10px; /* match mobile right inset */
-    left: auto;
-    width: min(520px, calc(100vw - 20px));
-    max-width: calc(100vw - 20px);
-    box-sizing: border-box;
-    padding: 14px 14px 16px;
-  }
-
-  /* Decades/years grids: 6 across max, responsive within popover */
-  .year-search-decade-grid,
-  .year-search-year-grid {
-    width: 100%;
-    max-width: 100%;
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 10px;
-    box-sizing: border-box;
-  }
-
-  /* Pills: show full decade/year text and scale up a bit */
-  .year-search-decade,
-  .year-search-year {
-    width: 100%;
-    min-width: 0; /* allow grid to control width */
-    padding: 10px 12px;
-    font-size: 0.95rem;
-    line-height: 1;
-    border-radius: 999px;
-    text-align: center;
-
-    white-space: nowrap;
-    overflow: visible;
-    text-overflow: unset;
-  }
-}
-
-/* =========================================================
-   FIX: Desktop (>900px) Browse popover pills truncating (18...)
-   - Keep 6-across grid
-   - Make pills wide enough for "1840s"
-   - Remove ellipsis/truncation on desktop
-   (Append-only override)
-   ========================================================= */
-@media (min-width: 901px) {
-  .year-search-popover {
-    /* Ensure there is enough room for 6 readable pills */
-    width: min(92vw, 560px) !important;
-    max-width: min(92vw, 560px) !important;
-    box-sizing: border-box !important;
-  }
-
-  .year-search-decade-list,
-  .year-search-year-list {
-    /* Let the grid use the full popover width (no artificial cap) */
-    max-width: none !important;
-    width: 100% !important;
-
-    /* 6 columns, but with a sane minimum so text doesn't truncate */
-    grid-template-columns: repeat(6, minmax(80px, 1fr)) !important;
-
-    box-sizing: border-box !important;
-  }
-
-  .year-search-decade,
-  .year-search-year {
-    /* Bigger + readable */
-    font-size: 0.9rem !important;
-    padding: 10px 14px !important;
-
-    /* Show full label on desktop */
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: nowrap !important;
-  }
-}
-
-/* =========================================================
-   PATCH: Mobile nav drawer top padding on NON-home pages
-   - Default to normal topbar height; use stacked only when topbar is stacked.
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Default (non-home pages): normal topbar height */
-  .nav-drawer {
-    padding-top: calc(var(--topbar-h) + 10px) !important;
-  }
-
-  /* Homepage/timeline stacked header: use stacked height */
-  .topbar.topbar--stacked ~ .nav-drawer,
-  .topbar--stacked ~ .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 10px) !important;
-  }
-}
-
-/* =========================================================
-   FIX: Mobile drawer has extra top padding on non-home pages
-   - Base .nav-drawer uses padding-top: 64px (too tall on mobile single-row topbar)
-   - Keep stacked home/timeline behavior using --topbar-h-stacked
-   ========================================================= */
-
-@media (max-width: 900px) {
-  :root {
-    /* Actual single-row topbar height on mobile (non-stacked) */
-    --topbar-h-mobile: 52px;
-  }
-
-  /* Non-home pages (topbar not stacked): reduce the drawer’s internal top padding */
-  .nav-drawer {
-    padding-top: calc(var(--topbar-h-mobile) + 8px) !important;
-  }
-
-  /* Home/timeline (stacked header): keep the taller offset */
-  .topbar.topbar--stacked ~ .nav-drawer,
-  .topbar--stacked ~ .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 8px) !important;
-  }
-}
-
-/* =========================================================
-   Patch: (<900px) NON-HOME topbar order
-   Goal: MENU left, brand centered (non-stacked topbar)
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Only when topbar is NOT stacked (i.e., non-home pages) */
-  .topbar:not(.topbar--stacked) .topbar-inner {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: 1fr auto 1fr !important;
-    align-items: center !important;
-    column-gap: 12px !important;
-  }
-
-  .topbar:not(.topbar--stacked) .topbar-tools-row {
-    grid-column: 1 !important;
-    justify-self: start !important;
-    margin-left: 0 !important;
-    width: auto !important;
-  }
-
-  /* MENU wrapper/button */
-  .topbar:not(.topbar--stacked) .topbar-menu {
-    justify-self: start !important;
-  }
-  .topbar:not(.topbar--stacked) .menu-button {
-    justify-self: start !important;
-  }
-
-  /* Brand centered */
-  .topbar:not(.topbar--stacked) .topbar-brand,
-  .topbar:not(.topbar--stacked) .brand {
-    grid-column: 2 !important;
-    justify-self: center !important;
-    margin: 0 !important;
-    transform: none !important;
-  }
-
-  /* Undo any absolute positioning on mobile */
-  .topbar:not(.topbar--stacked) .menu-button {
-    position: static !important;
-    left: auto !important;
-    top: auto !important;
-  }
-}
-/* =========================================================
-   PATCH: Non-home topbar on mobile should stay single-row
-   - Keeps MENU left + brand centered
-   - Prevents any older "force column" rules from stacking it
-   - Safe: only applies when NOT .topbar--stacked
-   ========================================================= */
-
-/* Always keep non-stacked topbar as a single row (all widths) */
-.topbar:not(.topbar--stacked) .topbar-inner {
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex-wrap: nowrap !important;
-}
-
-/* MENU stays left; right side is empty on non-home pages (tools hidden in JSX) */
-.topbar:not(.topbar--stacked) .topbar-tools-row {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  width: 100% !important;
-  flex-wrap: nowrap !important;
-}
-
-/* Center the brand/title (works even when tools are hidden) */
-.topbar:not(.topbar--stacked) .topbar-brand {
-  position: absolute !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  margin: 0 !important;
-  text-align: center !important;
-  pointer-events: none; /* keep menu clicks reliable */
-}
-
-/* Make sure menu isn't pushed to the right by any order rules */
-.topbar:not(.topbar--stacked) .topbar-left,
-.topbar:not(.topbar--stacked) .menu-btn {
-  order: 0 !important;
-  justify-self: flex-start !important;
-  margin-right: auto !important;
-}
-
-/* Mobile (<900px): explicitly prevent stacking on non-home pages */
-@media (max-width: 900px) {
-  .topbar:not(.topbar--stacked) {
-    height: var(--topbar-h, 74px) !important;
-    padding-bottom: 0 !important;
-  }
-
-  .topbar:not(.topbar--stacked) .topbar-inner {
-    height: var(--topbar-h, 74px) !important;
-  }
-}
-
-/* =========================================================
-   FINAL PATCH: Non-home (NOT stacked) topbar on mobile (<900px)
-   - MENU stays hard-left
-   - Brand stays perfectly centered
-   - Does NOT stack and does NOT push the topbar down
-   ========================================================= */
-@media (max-width: 900px) {
-  /* Ensure the inner wrapper is the positioning context */
-  .topbar:not(.topbar--stacked) .topbar-inner {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
-    min-height: 0 !important; /* prevents accidental extra height */
-  }
-
-  /* Keep the MENU on the far left */
-  .topbar:not(.topbar--stacked) .topbar-tools-row {
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .topbar:not(.topbar--stacked) .menu-button {
-    position: static !important;
-    margin: 0 !important;
-  }
-
-  /* FORCE the brand dead-center (works even if the right side is empty) */
-  .topbar:not(.topbar--stacked) .brand,
-  .topbar:not(.topbar--stacked) .topbar-brand {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    margin: 0 !important;
-    justify-self: auto !important;
-    text-align: center !important;
-    white-space: nowrap !important;
-    pointer-events: none !important; /* prevents blocking clicks on MENU */
-  }
-}
-
-/* =========================================================
-   ADMIN PORTAL — TARGETED MOBILE FIXES
-   
-   Fixes for:
-   1. Tab selector width
-   2. Year search layout (match public portal)
-   3. Event list card layout
-   
-   Add this to the END of your App.css file
-   (Replace the previous mobile optimizations if needed)
-   ========================================================= */
-
-/* ===========================================
-   1. TAB SELECTOR — Keep compact, don't stretch
-   =========================================== */
-@media (max-width: 900px) {
-  /* Remove any width forcing on tabs */
+  /* Admin tabs - keep compact */
   .admin-tabs {
     width: auto !important;
     display: inline-flex !important;
@@ -4425,21 +3244,36 @@ video {
     font-size: 0.8rem !important;
   }
 
-  /* Center the tabs row */
   .admin-header-top {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     gap: 12px !important;
   }
-}
 
-/* ===========================================
-   2. YEAR SEARCH — Match public portal style
-   (Horizontal row: input + Search + Browse)
-   =========================================== */
-@media (max-width: 900px) {
-  /* Keep it as a horizontal row like public portal */
+  /* Admin panel */
+  .admin-view > .panel,
+  .admin-view > .panel.admin-panel {
+    padding: 20px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  /* Admin title */
+  .admin-events-title {
+    font-size: 2rem !important;
+    text-align: center !important;
+  }
+
+  .admin-header-actions {
+    justify-content: center !important;
+  }
+
+  .admin-locate-bar {
+    margin-top: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Admin year search - keep horizontal like public portal */
   .admin-year-search {
     display: flex !important;
     flex-direction: row !important;
@@ -4449,7 +3283,6 @@ video {
     gap: 8px !important;
   }
 
-  /* Year label should not stack */
   .admin-year-label {
     flex-direction: row !important;
     align-items: center !important;
@@ -4457,7 +3290,6 @@ video {
     width: auto !important;
   }
 
-  /* Input field - compact width for 4 digits */
   .admin-year-label input.year-search-input,
   .admin-year-search input[type='text'] {
     width: 80px !important;
@@ -4468,7 +3300,6 @@ video {
     text-align: center !important;
   }
 
-  /* Buttons stay inline */
   .admin-year-search .year-search-button,
   .admin-year-search .year-search-browse-button {
     width: auto !important;
@@ -4476,18 +3307,7 @@ video {
     white-space: nowrap !important;
   }
 
-  /* Filter label text */
-  .admin-year-label > span:first-child {
-    white-space: nowrap !important;
-  }
-}
-
-/* ===========================================
-   3. EVENT LIST — Fix the broken card layout
-   Restore proper table or use better cards
-   =========================================== */
-@media (max-width: 900px) {
-  /* UNDO the card conversion - keep as scrollable table */
+  /* Admin events table - scrollable */
   .admin-events-table,
   .admin-events-table thead,
   .admin-events-table tbody,
@@ -4534,14 +3354,12 @@ video {
     display: none !important;
   }
 
-  /* Table wrapper allows horizontal scroll */
   .admin-table-wrapper {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 0 12px 12px !important;
   }
 
-  /* Edit/Delete buttons in a row */
   .admin-events-edit-cell {
     text-align: left !important;
   }
@@ -4557,73 +3375,54 @@ video {
   .admin-events-actions .admin-edit-button {
     white-space: nowrap !important;
   }
-}
 
-/* For very small screens, make buttons stack but keep table */
-@media (max-width: 500px) {
-  .admin-events-table {
-    min-width: 550px !important;
-  }
-
-  .admin-events-table th,
-  .admin-events-table td {
-    padding: 8px 8px !important;
-    font-size: 0.85rem !important;
-  }
-
-  /* Stack edit/delete buttons vertically on tiny screens */
-  .admin-events-actions {
+  /* Admin layout */
+  .admin-layout {
+    display: flex !important;
     flex-direction: column !important;
-    gap: 6px !important;
-  }
-}
-
-/* ===========================================
-   4. ADDITIONAL ADMIN MOBILE POLISH
-   =========================================== */
-@media (max-width: 900px) {
-  /* Admin page padding */
-  .main--admin {
-    padding: 20px 12px 32px !important;
+    gap: 16px !important;
   }
 
-  /* Admin panel */
-  .admin-view > .panel,
-  .admin-view > .panel.admin-panel {
-    padding: 20px 14px !important;
-    border-radius: 18px !important;
+  /* Timeline */
+  .timeline-screen {
+    padding: 14px 16px 40px 40px;
   }
 
-  /* Title size */
-  .admin-events-title {
-    font-size: 2rem !important;
-    text-align: center !important;
+  .timeline-header {
+    top: 60px;
+    margin-bottom: 30px;
   }
 
-  /* Header actions */
-  .admin-header-actions {
-    justify-content: center !important;
+  .timeline-header h1 {
+    font-size: 2.2rem;
   }
 
-  /* Locate bar margin */
-  .admin-locate-bar {
-    margin-top: 12px !important;
-    margin-bottom: 16px !important;
+  .timeline-rail {
+    margin-left: 24px;
+    padding-right: 8px;
   }
-}
 
-/* =========================================================
-   ADMIN TEAM PAGE — MOBILE OPTIMIZATIONS (<900px)
-   
-   Add this to the END of your App.css file
-   (After the previous mobile fixes)
-   ========================================================= */
+  .timeline-row {
+    padding: 16px 10px 16px 28px;
+    margin-bottom: 18px;
+  }
 
-/* ===========================================
-   1. ADD NEW MEMBER FORM
-   =========================================== */
-@media (max-width: 900px) {
-  /* Container */
+  .timeline-dot {
+    left: -12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .scroll-indicator {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .scroll-indicator--top {
+    top: 64px;
+  }
+
+  /* Team section mobile */
   .admin-team-add {
     padding: 16px 14px 18px !important;
     border-radius: 16px !important;
@@ -4634,7 +3433,6 @@ video {
     margin-bottom: 12px !important;
   }
 
-  /* Stack the form fields vertically */
   .admin-team-add-row {
     display: flex !important;
     flex-direction: column !important;
@@ -4642,7 +3440,6 @@ video {
     grid-template-columns: unset !important;
   }
 
-  /* Make all inputs full width */
   .admin-team-add-row input,
   .admin-team-add-row .input {
     width: 100% !important;
@@ -4651,40 +3448,36 @@ video {
     font-size: 0.95rem !important;
   }
 
-  /* File select button - full width */
   .admin-team-add-row label,
   .admin-team-add-row .admin-team-photo-upload {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: auto !important;
+    max-width: 280px !important;
+    margin: 0 auto !important;
     justify-content: center !important;
   }
 
-  /* Add Member button - full width */
-  .admin-team-add-row button,
+  .admin-team-add-row > button:last-child,
   .admin-team-add-row .primary,
-  .admin-team-add-row .primary-button {
-    width: 100% !important;
+  .admin-team-add-row .primary-button,
+  .admin-team-add-row button[type='submit'] {
+    width: auto !important;
+    max-width: 280px !important;
+    min-width: 200px !important;
+    margin: 0 auto !important;
     padding: 12px 16px !important;
     font-size: 0.95rem !important;
   }
 
-  /* Photo note text */
   .admin-team-photo-note {
     text-align: center !important;
     margin-top: 10px !important;
   }
-}
 
-/* ===========================================
-   2. TEAM MEMBER LIST
-   =========================================== */
-@media (max-width: 900px) {
   .admin-team-list {
     gap: 16px !important;
     margin-top: 24px !important;
   }
 
-  /* Individual team member card */
   .admin-team-row {
     display: flex !important;
     flex-direction: column !important;
@@ -4695,7 +3488,6 @@ video {
     grid-template-columns: unset !important;
   }
 
-  /* Photo */
   .admin-team-photo-cell {
     margin-bottom: 4px !important;
   }
@@ -4706,7 +3498,6 @@ video {
     height: 100px !important;
   }
 
-  /* Info section - name and role inputs */
   .admin-team-info {
     width: 100% !important;
     display: flex !important;
@@ -4725,37 +3516,26 @@ video {
     border-radius: 8px !important;
   }
 
-  /* Actions section - buttons */
   .admin-team-actions {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
     gap: 10px !important;
+    width: 100% !important;
     margin-top: 4px !important;
   }
 
-  /* Photo buttons - span full width on top row */
-  .admin-team-photo-upload {
-    grid-column: 1 / -1 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: unset !important;
-    flex: unset !important;
-    justify-content: center !important;
-    padding: 10px 14px !important;
-  }
-
-  /* Remove photo button - takes half width */
-  .admin-team-actions > button:nth-child(2) {
-    grid-column: 1 !important;
-  }
-
-  /* Edit and Delete buttons */
+  .admin-team-actions > *,
+  .admin-team-actions button,
+  .admin-team-actions label,
+  .admin-team-actions .admin-team-photo-upload,
+  .admin-team-actions .admin-team-remove-button,
   .admin-team-actions .admin-edit-button,
-  .admin-team-actions .admin-modal-button,
-  .admin-team-actions button {
-    width: 100% !important;
-    max-width: 100% !important;
+  .admin-team-actions .admin-modal-button {
+    width: auto !important;
+    min-width: 180px !important;
+    max-width: 220px !important;
+    grid-column: unset !important;
     padding: 10px 12px !important;
     font-size: 0.85rem !important;
     justify-content: center !important;
@@ -4765,57 +3545,15 @@ video {
     text-overflow: ellipsis !important;
   }
 
-  /* Remove button specific */
-  .admin-team-remove-button {
-    width: 100% !important;
-    max-width: 100% !important;
+  .admin-team-photo-upload {
+    min-width: 180px !important;
+    max-width: 220px !important;
   }
 
-  /* Danger/Delete button styling */
-  .admin-team-actions .admin-modal-button--danger,
-  .admin-team-actions button[class*='danger'],
-  .admin-team-actions button[class*='delete'] {
-    grid-column: span 1 !important;
-  }
-}
-
-/* ===========================================
-   3. EXTRA SMALL SCREENS (<500px)
-   =========================================== */
-@media (max-width: 500px) {
-  .admin-team-row {
-    padding: 16px 12px !important;
-  }
-
-  .admin-team-photo-thumb,
-  .admin-team-photo-placeholder {
-    width: 80px !important;
-    height: 80px !important;
-  }
-
-  .admin-team-info input {
-    padding: 10px 12px !important;
-    font-size: 0.9rem !important;
-  }
-
-  /* Stack all buttons vertically on very small screens */
-  .admin-team-actions {
-    grid-template-columns: 1fr !important;
-  }
-
-  .admin-team-photo-upload,
-  .admin-team-actions > button,
-  .admin-team-actions > label {
-    grid-column: 1 !important;
-  }
-}
-
-/* ===========================================
-   4. NEW MEMBER PHOTO PREVIEW CHIP
-   =========================================== */
-@media (max-width: 900px) {
   .admin-new-member-photo-chip {
     width: 100% !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
     justify-content: flex-start !important;
     padding: 10px 14px !important;
     gap: 12px !important;
@@ -4833,118 +3571,424 @@ video {
   }
 
   .admin-new-member-photo-chip .admin-team-remove-button {
-    flex: 0 0 auto !important;
+    min-width: unset !important;
+    max-width: unset !important;
     width: auto !important;
-    padding: 8px 14px !important;
+    padding: 8px 16px !important;
+    flex: 0 0 auto !important;
   }
-}
 
-/* ===========================================
-   5. TEAM PAGE HEADER
-   =========================================== */
-@media (max-width: 900px) {
-  /* Team Members title */
   .admin-team-section h2,
   .admin-subpanel h2 {
     font-size: 1.4rem !important;
     margin-bottom: 8px !important;
   }
 
-  /* Description text */
   .admin-team-section > p,
   .admin-subpanel > p {
     font-size: 0.9rem !important;
     line-height: 1.5 !important;
     margin-bottom: 16px !important;
   }
-}
 
-/* =========================================================
-   ADMIN TEAM PAGE — BUTTON WIDTH FIXES
-   
-   Add this AFTER the previous team mobile fixes
-   ========================================================= */
-
-@media (max-width: 900px) {
-  /* ===========================================
-     ADD NEW MEMBER - Constrain button widths
-     =========================================== */
-
-  /* Select Photo button */
-  .admin-team-add-row .admin-team-photo-upload,
-  .admin-team-add-row label[class*='photo'] {
-    width: auto !important;
-    max-width: 280px !important;
-    margin: 0 auto !important;
+  /* About page */
+  .main--about {
+    padding-top: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
-  /* Add Member button */
-  .admin-team-add-row > button:last-child,
-  .admin-team-add-row .primary,
-  .admin-team-add-row .primary-button,
-  .admin-team-add-row button[type='submit'] {
-    width: auto !important;
-    max-width: 280px !important;
-    min-width: 200px !important;
-    margin: 0 auto !important;
+  .main--about .panel--wide {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    padding: 24px 16px;
   }
 
-  /* ===========================================
-     TEAM MEMBER CARDS - Constrain button widths
-     =========================================== */
+  .about-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 24px;
+  }
 
-  /* Actions container - center the buttons */
-  .admin-team-actions {
-    display: flex !important;
+  .about-team h2 {
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+  }
+
+  /* Event detail overlay */
+  .event-detail-card {
+    padding: 20px 20px 20px 20px;
+    border-width: 4px;
+    border-radius: 24px;
+  }
+
+  .event-detail-side-action {
+    display: none;
+  }
+
+  .event-detail-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Media overlay */
+  .media-overlay-card {
+    padding: 12px 14px;
+    border-radius: 18px;
+    border-width: 4px;
+  }
+
+  .media-overlay-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .media-nav-button,
+  .media-nav-button--left,
+  .media-nav-button--right {
+    display: none;
+  }
+
+  .media-image-scroll {
+    max-height: 50vh;
+  }
+
+  /* Edit event modal */
+  .admin-event-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 24px) !important;
+    padding: 0 16px 20px !important;
+  }
+
+  .admin-event-modal-header {
     flex-direction: column !important;
-    align-items: center !important;
-    gap: 10px !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 14px 16px 12px !important;
+    margin: 0 -16px 12px !important;
+  }
+
+  .admin-event-modal-title {
+    font-size: 1.3rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    padding-right: 0 !important;
+  }
+
+  .admin-event-modal-header-actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .admin-event-modal-body {
+    padding: 12px 8px 20px !important;
+    gap: 14px !important;
+  }
+
+  .admin-event-modal textarea {
+    min-height: 100px !important;
+    max-height: 150px !important;
+  }
+
+  /* Avatar modal */
+  .avatar-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .avatar-crop-container {
+    height: 220px !important;
+  }
+
+  .avatar-modal-buttons {
+    flex-direction: column !important;
     width: 100% !important;
   }
 
-  /* All buttons in team actions */
-  .admin-team-actions > *,
-  .admin-team-actions button,
-  .admin-team-actions label,
-  .admin-team-actions .admin-team-photo-upload,
-  .admin-team-actions .admin-team-remove-button,
-  .admin-team-actions .admin-edit-button,
-  .admin-team-actions .admin-modal-button {
-    width: auto !important;
-    min-width: 180px !important;
-    max-width: 220px !important;
-    grid-column: unset !important;
+  .avatar-modal-buttons button {
+    width: 100% !important;
   }
 
-  /* Change Photo button */
-  .admin-team-photo-upload {
-    min-width: 180px !important;
-    max-width: 220px !important;
+  /* Year picker popover */
+  .year-picker-popover {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(90vw, 380px);
   }
 
-  /* ===========================================
-     PHOTO PREVIEW CHIP - Better layout
-     =========================================== */
-  .admin-new-member-photo-chip {
-    max-width: 320px !important;
-    margin: 0 auto !important;
+  .year-picker-popover::before {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) rotate(45deg);
   }
 
-  .admin-new-member-photo-chip .admin-team-remove-button {
-    min-width: unset !important;
-    max-width: unset !important;
-    width: auto !important;
-    padding: 8px 16px !important;
+  /* Confirm dialogs */
+  .admin-confirm-modal {
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .admin-confirm-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .admin-confirm-actions button {
+    width: 100% !important;
+  }
+
+  .delete-media-preview {
+    max-height: 200px !important;
+  }
+
+  /* Admin blocker */
+  .admin-blocker-inner {
+    max-width: calc(100vw - 48px) !important;
+    text-align: center !important;
   }
 }
 
-/* Extra small screens */
+/* ---------------------------------------------------------
+   SMALL MOBILE (max-width: 768px)
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+  .timeline-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .timeline-year {
+    font-size: 1.4rem;
+  }
+
+  .timeline-year-event {
+    padding: 8px 10px;
+  }
+
+  .event-detail-card {
+    border-radius: 20px;
+    border-width: 3px;
+  }
+
+  .admin-event-modal-media {
+    margin-top: 16px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+
+  .admin-event-media-viewer {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-event-media-side {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .admin-event-media-image {
+    max-width: 100%;
+    max-height: 50vh;
+  }
+
+  .admin-event-caption-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 16px;
+  }
+
+  .admin-event-caption-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------------------------------------------------------
+   EXTRA SMALL (max-width: 640px)
+   --------------------------------------------------------- */
+@media (max-width: 640px) {
+  .about-team-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-team h2 {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+    text-align: center;
+  }
+
+  .about-team-member {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-team-info {
+    text-align: center;
+    align-items: center;
+  }
+}
+
+/* ---------------------------------------------------------
+   TINY (max-width: 520px)
+   --------------------------------------------------------- */
+@media (max-width: 520px) {
+  .topbar--stacked .year-search {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .year-search-input-wrap {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .year-search-button,
+  .year-search-browse-button {
+    flex: 1 1 auto;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .admin-year-label input.year-search-input {
+    width: min(220px, 80vw);
+  }
+
+  .timeline-screen {
+    padding: 12px 12px 32px 28px;
+  }
+
+  .timeline-rail {
+    margin-left: 16px;
+    padding-right: 4px;
+  }
+
+  .timeline-row {
+    padding: 12px 8px 12px 20px;
+    margin-bottom: 12px;
+  }
+
+  .timeline-dot {
+    left: -10px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ---------------------------------------------------------
+   MINI (max-width: 500px)
+   --------------------------------------------------------- */
+@media (max-width: 500px) {
+  .admin-events-table {
+    min-width: 550px !important;
+  }
+
+  .admin-events-table th,
+  .admin-events-table td {
+    padding: 8px 8px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .admin-events-actions {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  .admin-team-row {
+    padding: 16px 12px !important;
+  }
+
+  .admin-team-photo-thumb,
+  .admin-team-photo-placeholder {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .admin-team-info input {
+    padding: 10px 12px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   MICRO (max-width: 400px)
+   --------------------------------------------------------- */
 @media (max-width: 400px) {
+  .brand {
+    font-size: 1rem;
+  }
+
+  .menu-text {
+    display: none;
+  }
+
+  .timeline-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-events-title {
+    font-size: 1.5rem !important;
+  }
+
+  .admin-tabs .admin-tab-button {
+    font-size: 0.7rem !important;
+    padding: 5px 10px !important;
+  }
+
+  .admin-add-button,
+  .admin-about-edit-button {
+    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+  }
+
   .admin-team-actions > *,
   .admin-team-actions button,
   .admin-team-add-row > button,
   .admin-team-add-row .admin-team-photo-upload {
     min-width: 160px !important;
     max-width: 200px !important;
+  }
+
+  .admin-event-modal-title {
+    font-size: 1.1rem !important;
+  }
+
+  .admin-event-modal-save,
+  .admin-event-modal-cancel {
+    min-width: 90px !important;
+    padding: 6px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   DESKTOP SPECIFIC (min-width: 901px)
+   --------------------------------------------------------- */
+@media (min-width: 901px) {
+  .topbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .topbar-brand .brand-button {
+    pointer-events: auto;
+  }
+
+  .admin-event-modal-title {
+    font-size: clamp(1.5rem, 2vw, 1.8rem);
+    max-width: calc(100% - 260px);
+  }
+
+  .admin-event-modal-actions {
+    position: static;
+    flex: 0 0 auto;
   }
 }
