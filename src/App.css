@@ -1,32 +1,42 @@
 /* =========================================================
-   Solar Events — App.css (Optimized & Consolidated)
-   Last updated: January 2026
-   ========================================================= */
-
-/* =========================================================
-   TABLE OF CONTENTS
+   SOLAR EVENTS — App.css
+   Cleaned & Organized: January 2026
+   =========================================================
    
-   1. CSS Variables
-   2. Base / Reset
-   3. App Shell (topbar, main, footer)
-   4. Navigation (menu, drawer)
-   5. Timeline (home view)
-   6. Panels & Cards
-   7. Forms & Inputs
-   8. Buttons
-   9. Admin Layout
-   10. Admin Tables
-   11. Admin Profile & Dashboard
-   12. Admin Team Section
-   13. Admin About Editor
-   14. Admin Modals
-   15. Admin Edit Event Modal
-   16. Admin Media/Article Viewer
-   17. Event Detail Overlay
-   18. Media Overlay (public)
-   19. Year Search & Popover
-   20. Animations
-   21. RESPONSIVE — All Breakpoints (consolidated)
+   TABLE OF CONTENTS
+   -----------------
+   1.  CSS Variables
+   2.  Base Styles
+   3.  App Shell (container, topbar, footer)
+   4.  Navigation (menu button, drawer)
+   5.  Timeline (home view, year groups, scroll indicators)
+   6.  Panels & Cards
+   7.  Forms & Inputs
+   8.  Buttons (primary, secondary, danger)
+   9.  About Page (public view)
+   10. Event Detail Overlay (public view)
+   11. Media Overlay (newspaper article viewer - public)
+   12. Year Search & Browse Popover
+   13. Admin Layout & Header
+   14. Admin Tables
+   15. Admin Profile & Dashboard
+   16. Admin About Editor
+   17. Admin Team Section
+   18. Admin Modals (account, confirm)
+   19. Admin Edit Event Modal
+   20. Admin Article Viewer & Captions
+   21. Avatar Crop Modal
+   22. Loading Blockers & Spinners
+   23. Alerts & Banners
+   24. Animations
+   25. RESPONSIVE: Tablet (max-width: 1024px)
+   26. RESPONSIVE: Mobile (max-width: 900px)
+   27. RESPONSIVE: Small (max-width: 768px)
+   28. RESPONSIVE: Extra Small (max-width: 640px)
+   29. RESPONSIVE: Tiny (max-width: 520px)
+   30. RESPONSIVE: Mini (max-width: 500px)
+   31. RESPONSIVE: Micro (max-width: 400px)
+   
    ========================================================= */
 
 /* =========================================================
@@ -39,7 +49,7 @@
 }
 
 /* =========================================================
-   2. BASE / RESET
+   2. BASE STYLES
    ========================================================= */
 button {
   border-width: 3px;
@@ -60,6 +70,8 @@ video {
 /* =========================================================
    3. APP SHELL
    ========================================================= */
+
+/* --- Main App Container --- */
 .app {
   min-height: 100vh;
   width: 100%;
@@ -77,7 +89,7 @@ video {
   padding-top: var(--topbar-h);
 }
 
-/* --- Topbar --- */
+/* --- Topbar (MERGED: lines 66, 3399, 3553) --- */
 .topbar {
   position: fixed;
   top: 0;
@@ -122,6 +134,7 @@ video {
   z-index: 3;
 }
 
+/* --- Brand --- */
 .brand {
   font-weight: 800;
   letter-spacing: 0.2em;
@@ -138,7 +151,7 @@ video {
   cursor: pointer;
 }
 
-/* Stacked topbar (mobile home) */
+/* --- Topbar Stacked Mode (mobile home) --- */
 .topbar--stacked .topbar-inner {
   display: flex;
   flex-direction: column;
@@ -159,7 +172,7 @@ video {
   justify-content: flex-end;
 }
 
-/* Non-stacked topbar */
+/* --- Topbar Non-Stacked Mode --- */
 .topbar:not(.topbar--stacked) .topbar-inner {
   flex-direction: row;
   align-items: center;
@@ -182,6 +195,10 @@ video {
   margin: 0;
   text-align: center;
   pointer-events: none;
+}
+
+.topbar:not(.topbar--stacked) .topbar-brand .brand-button {
+  pointer-events: auto;
 }
 
 /* --- Main Content Areas --- */
@@ -238,6 +255,8 @@ video {
 /* =========================================================
    4. NAVIGATION
    ========================================================= */
+
+/* --- Menu Button (MERGED: lines 139, 3429) --- */
 .menu-button {
   position: static;
   display: flex;
@@ -269,12 +288,14 @@ video {
   font-weight: 700;
 }
 
+/* --- Navigation Drawer --- */
 .nav-drawer {
   position: fixed;
   top: 0;
   left: 0;
   width: 380px;
   max-width: 80vw;
+  height: 100vh;
   padding-top: 64px;
   padding-bottom: 10px;
   background: rgba(0, 0, 0, 0.92);
@@ -316,6 +337,8 @@ video {
 /* =========================================================
    5. TIMELINE (HOME VIEW)
    ========================================================= */
+
+/* --- Timeline Screen --- */
 .timeline-screen {
   position: relative;
   min-height: calc(100vh - 120px);
@@ -342,6 +365,7 @@ video {
   color: rgba(230, 230, 255, 0.9);
 }
 
+/* --- Timeline Rail & Rows --- */
 .timeline-rail {
   position: relative;
   margin-left: 48px;
@@ -380,7 +404,7 @@ video {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
 }
 
-/* Year-grouped timeline */
+/* --- Year-Grouped Timeline --- */
 .timeline-year-header {
   display: flex;
   align-items: center;
@@ -508,7 +532,7 @@ video {
   transform: translateY(0);
 }
 
-/* Scroll indicators */
+/* --- Scroll Indicators --- */
 .scroll-indicator {
   position: fixed;
   left: 50%;
@@ -530,11 +554,14 @@ video {
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.96);
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.2s ease;
 }
 
 .scroll-indicator--top {
   top: 90px;
 }
+
 .scroll-indicator--bottom {
   bottom: 30px;
 }
@@ -542,68 +569,12 @@ video {
 .scroll-arrow {
   display: block;
   font-size: 1.2rem;
+  margin-top: 0;
   animation: arrow-bounce 1.2s infinite;
 }
 
 .scroll-arrow--up {
   animation-direction: reverse;
-}
-
-/* Timeline alerts & banners */
-.timeline-alert {
-  margin-top: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid transparent;
-}
-
-.timeline-alert--error {
-  background: rgba(188, 48, 82, 0.25);
-  border-color: rgba(255, 145, 168, 0.9);
-  color: #ffe3ec;
-}
-
-.timeline-alert--info {
-  background: rgba(255, 194, 120, 0.18);
-  border-color: rgba(255, 217, 140, 0.95);
-  color: #ffe9c8;
-}
-
-.global-banner {
-  position: fixed;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 19;
-  padding: 14px 22px;
-  border-radius: 999px;
-  max-width: 80vw;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-align: center;
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.7),
-    0 0 18px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-  border: 1px solid transparent;
-}
-
-.global-banner--info {
-  background: rgba(255, 194, 120, 0.22);
-  border-color: rgba(255, 217, 140, 0.95);
-  color: #ffe9c8;
-}
-
-.global-banner--error {
-  background: rgba(188, 48, 82, 0.35);
-  border-color: rgba(255, 145, 168, 0.95);
-  color: #ffe3ec;
 }
 
 /* =========================================================
@@ -621,6 +592,7 @@ video {
   margin-top: 0;
   margin-bottom: 8px;
 }
+
 .panel h2 {
   margin-top: 24px;
   margin-bottom: 6px;
@@ -746,7 +718,714 @@ video {
 }
 
 /* =========================================================
-   9. ADMIN LAYOUT
+   9. ABOUT PAGE (PUBLIC VIEW)
+   ========================================================= */
+.about-sections {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-section-title {
+  margin: 0 0 6px 0;
+  font-size: 1.9rem;
+}
+
+.about-section-text {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+/* --- Team Section --- */
+.about-team {
+  margin-top: 40px;
+}
+
+.about-team h2 {
+  margin: 0 0 24px;
+  font-size: clamp(3.5rem, 2.6vw, 8rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: left;
+}
+
+.about-team-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 64px 32px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.about-team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 16px;
+  background: transparent;
+  border: none;
+}
+
+.about-team-info {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.about-team-photo-wrapper {
+  width: clamp(120px, 16vw, 160px);
+  height: clamp(120px, 16vw, 160px);
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-team-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.about-team-photo-fallback {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #d8d8d8;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  color: transparent;
+}
+
+.about-team-photo-fallback::before {
+  content: '';
+  position: absolute;
+  top: 24%;
+  left: 50%;
+  width: 34%;
+  aspect-ratio: 1 / 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #b0b0b0;
+}
+
+.about-team-photo-fallback::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 68%;
+  height: 38%;
+  transform: translateX(-50%);
+  background: #b0b0b0;
+  border-radius: 60% 60% 40% 40%;
+}
+
+.about-team-name {
+  font-weight: 700;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+}
+
+.about-team-role {
+  font-size: 0.9rem;
+  color: rgba(210, 218, 255, 0.9);
+}
+
+/* =========================================================
+   10. EVENT DETAIL OVERLAY (PUBLIC VIEW)
+   ========================================================= */
+.event-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 2.2vw, 24px) clamp(14px, 2.4vw, 22px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.event-detail-card {
+  position: relative;
+  max-width: 900px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 24px 96px 24px 32px;
+  background: #ffffff;
+  border-radius: 32px;
+  border: 6px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.7);
+  color: #111111;
+  margin-left: 0;
+}
+
+.event-detail-meta,
+.event-detail-title,
+.event-detail-short,
+.event-detail-section,
+.event-detail-footer {
+  grid-column: 1;
+}
+
+.event-detail-meta {
+  margin-bottom: 6px;
+  font-size: clamp(1rem, 1.9vw, 1.5rem);
+  color: #444444;
+  display: flex;
+  align-items: baseline;
+  column-gap: 6px;
+  row-gap: 2px;
+  flex-wrap: wrap;
+  font-weight: 800;
+}
+
+.event-detail-meta-type {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: clamp(0.85rem, 1.9vw, 1.5rem);
+}
+
+.event-detail-title {
+  margin: 4px 0 6px 0;
+  font-size: clamp(1rem, 1.9vw, 1.5rem);
+  font-weight: 600;
+}
+
+.event-detail-short {
+  margin: 2px 0 8px 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  color: #555555;
+}
+
+.event-detail-location {
+  grid-column: 1;
+  margin-bottom: 8px;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: #555555;
+}
+
+.event-detail-section {
+  margin-top: 35px;
+  margin-bottom: 24px;
+}
+
+.event-detail-section h2 {
+  margin: 0 0 6px 0;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+}
+
+/* --- Event Detail Scrollbox --- */
+.event-detail-scrollbox {
+  height: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0;
+  margin-right: -4px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar {
+  width: 6px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+}
+
+.event-detail-scrollbox::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+}
+
+.event-detail-scrollbox p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+}
+
+/* --- Side Action (Articles Button) --- */
+.event-detail-side-action {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.event-detail-circle-button {
+  width: clamp(42px, 4.5vw, 60px);
+  height: clamp(42px, 4.5vw, 60px);
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.event-detail-circle-button:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.event-detail-circle-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+}
+
+.event-detail-articles-icon {
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  line-height: 1;
+}
+
+.event-detail-circle-label {
+  display: block;
+  max-width: 90px;
+  text-align: center;
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
+  line-height: 1.3;
+  color: #333333;
+}
+
+/* --- Footer & Close --- */
+.event-detail-footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.event-detail-cta {
+  padding: clamp(8px, 1.4vw, 12px) clamp(22px, 3vw, 30px);
+  border-radius: 999px;
+  border: none;
+  background: #111111;
+  color: #ffffff;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.event-detail-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 2px solid #e53935;
+  background: #ffffff;
+  color: #e53935;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.event-detail-close:hover {
+  background: #e53935;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.event-detail-close:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.article-overlay-image {
+  max-width: min(980px, 92vw);
+  max-height: 78vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   11. MEDIA OVERLAY (NEWSPAPER ARTICLES - PUBLIC)
+   ========================================================= */
+.media-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.media-overlay-card {
+  position: relative;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  background: #ffffff;
+  color: #111111;
+  border-radius: 24px;
+  border: 5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 16px;
+}
+
+.media-overlay-back {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  background: transparent;
+  border: none;
+  padding: clamp(4px, 0.9vw, 10px) 0;
+  font-size: clamp(0.95rem, 2.4vw, 2rem);
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+}
+
+.media-overlay-back:hover {
+  opacity: 0.8;
+}
+
+.media-overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 2px solid #e53935;
+  background: #ffffff;
+  color: #e53935;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.media-overlay-close:hover {
+  background: #e53935;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.media-overlay-close:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Header --- */
+.media-overlay-header {
+  padding-top: 30px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+
+.media-overlay-title {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+}
+
+.media-overlay-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: #666666;
+}
+
+.media-overlay-status {
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 16px 8px;
+  color: #444444;
+}
+
+.media-overlay-status--error {
+  color: #b71c1c;
+}
+
+/* --- Body & Image --- */
+.media-overlay-body {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0 8px;
+  height: 60vh;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.media-image-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+}
+
+.media-image-scroll {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 4px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.media-image-scroll.is-scrollable {
+  align-items: flex-start;
+}
+
+.media-image-scroll.is-centered {
+  align-items: center;
+}
+
+.media-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* --- Navigation Arrows --- */
+.media-nav-button,
+.media-nav-button--left,
+.media-nav-button--right {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 70px;
+  height: 100%;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333333;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.media-nav-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.media-nav-arrow {
+  display: block;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1;
+}
+
+.media-nav-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444444;
+}
+
+.media-nav-button--left:hover {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
+  color: #000000;
+}
+
+.media-nav-button--right:hover {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.08), transparent);
+  color: #000000;
+}
+
+/* --- Caption --- */
+.media-caption,
+.media-overlay-caption {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  color: #333333;
+}
+
+/* =========================================================
+   12. YEAR SEARCH & BROWSE POPOVER
+   ========================================================= */
+
+/* --- Year Search Container (MERGED: lines 1216, 3435, 3595) --- */
+.year-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.year-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.year-search-input-wrap .year-search-input {
+  width: 85px;
+  max-width: 85px;
+  min-width: 70px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.year-search-input {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem;
+}
+
+.year-search-input::placeholder {
+  color: rgba(200, 210, 255, 0.8);
+}
+
+.year-search-button,
+.year-search-browse-button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.year-search-button {
+  background: #ffffff;
+  color: #000000;
+}
+
+.year-search-browse-button {
+  background: transparent;
+  color: #ffffff;
+}
+
+/* --- Browse Popover (MERGED: lines 1260, 3631, 3930, 3990) --- */
+.year-search-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 8px;
+  left: auto;
+  z-index: 30;
+  width: auto;
+  min-width: 0;
+  max-width: min(92vw, 520px);
+  margin-top: 6px;
+  padding: 16px 12px 10px;
+  border-radius: 16px;
+  background: rgba(4, 6, 18, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.year-search-popover-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.year-search-popover-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(210, 220, 255, 0.8);
+}
+
+/* --- Decade/Year Lists --- */
+.year-search-decade-list,
+.year-search-year-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  max-width: calc((6 * 96px) + (5 * 10px));
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.year-search-decade,
+.year-search-year {
+  min-width: 78px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.year-search-decade:hover,
+.year-search-year:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.year-search-decade.is-selected,
+.year-search-year.is-selected {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* =========================================================
+   13. ADMIN LAYOUT & HEADER
    ========================================================= */
 .admin-view {
   width: 100%;
@@ -766,6 +1445,7 @@ video {
   box-sizing: border-box;
 }
 
+/* Admin buttons base styling */
 .admin-view button,
 .admin-modal button,
 .admin-confirm-modal button {
@@ -775,7 +1455,7 @@ video {
   color: #000000;
 }
 
-/* Admin header & tabs */
+/* --- Header --- */
 .admin-events-header {
   margin-bottom: 20px;
 }
@@ -794,6 +1474,13 @@ video {
   justify-self: start;
 }
 
+.admin-header-actions {
+  justify-self: end;
+  display: flex;
+  gap: 8px;
+}
+
+/* --- Tabs --- */
 .admin-tabs {
   display: inline-flex;
   padding: 3px;
@@ -820,12 +1507,7 @@ video {
   color: #000000;
 }
 
-.admin-header-actions {
-  justify-self: end;
-  display: flex;
-  gap: 8px;
-}
-
+/* --- Add/Edit Buttons --- */
 .admin-add-button,
 .admin-about-edit-button {
   display: inline-flex;
@@ -847,17 +1529,86 @@ video {
   line-height: 1;
 }
 
+.admin-edit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #222222;
+  background: #f4f4f4;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  color: #000000;
+}
+
 .admin-logged-in {
   margin: 8px 0 0;
   font-size: 0.9rem;
   color: rgba(205, 214, 255, 0.85);
 }
 
+/* --- Year Search (Admin) --- */
 .admin-locate-bar {
   margin-top: 8px;
   margin-bottom: 16px;
 }
 
+.admin-year-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-year-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 1rem;
+  color: rgba(245, 247, 255, 0.9);
+}
+
+.admin-year-label input.year-search-input {
+  width: 160px;
+}
+
+.admin-year-search .year-search-button,
+.admin-year-search .year-search-browse-button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.admin-year-search .year-search-button {
+  background: #ffffff;
+  color: #000000;
+}
+
+.admin-year-search .year-search-browse-button {
+  background: transparent;
+  color: #ffffff;
+}
+
+.admin-year-picker {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.admin-year-pill.is-selected {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* --- Dashboard & Login --- */
 .admin-login label {
   display: block;
   margin-bottom: 10px;
@@ -885,7 +1636,7 @@ video {
 }
 
 /* =========================================================
-   10. ADMIN TABLES
+   14. ADMIN TABLES
    ========================================================= */
 .admin-table-wrapper,
 .admin-subpanel {
@@ -919,6 +1670,7 @@ video {
   border: none;
 }
 
+/* --- Tables --- */
 .admin-events-table,
 .admin-accounts-table {
   width: 100%;
@@ -982,20 +1734,6 @@ video {
   justify-content: flex-start;
 }
 
-.admin-edit-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #222222;
-  background: #f4f4f4;
-  cursor: pointer;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  color: #000000;
-}
-
 .admin-empty-cell {
   text-align: center;
   padding: 18px 12px;
@@ -1003,7 +1741,7 @@ video {
 }
 
 /* =========================================================
-   11. ADMIN PROFILE & DASHBOARD
+   15. ADMIN PROFILE & DASHBOARD
    ========================================================= */
 .admin-profile-header-row {
   display: flex;
@@ -1048,7 +1786,7 @@ video {
   color: #111111;
 }
 
-/* Profile card text */
+/* Profile card styling */
 .admin-subpanel.admin-subpanel--profile,
 .admin-subpanel.admin-subpanel--profile h2,
 .admin-subpanel.admin-subpanel--profile h3,
@@ -1100,230 +1838,7 @@ video {
 }
 
 /* =========================================================
-   12. ADMIN TEAM SECTION
-   ========================================================= */
-.admin-team-add {
-  margin-top: 18px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(7, 10, 22, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.admin-team-add h3 {
-  margin: 0 0 8px;
-  font-size: 1.1rem;
-}
-
-.admin-team-add-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.3fr) minmax(0, 1.4fr) auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.admin-team-photo-note {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  color: rgba(210, 218, 255, 0.85);
-}
-
-.admin-team-list {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.admin-team-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 2.2fr) minmax(0, 2.1fr);
-  gap: 16px;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
-
-.admin-team-photo-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.admin-team-photo-thumb {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-}
-
-.admin-team-photo-placeholder {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 20%, #4a526c, #151724 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.admin-team-photo-inner {
-  width: 60%;
-  height: 60%;
-  position: relative;
-}
-
-.admin-team-photo-circle {
-  position: absolute;
-  left: 50%;
-  top: 24%;
-  transform: translateX(-50%);
-  width: 52%;
-  height: 52%;
-  border-radius: 50%;
-  background: #c4c8d2;
-}
-
-.admin-team-photo-bar {
-  position: absolute;
-  left: 50%;
-  bottom: 8%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 36%;
-  border-radius: 999px 999px 30px 30px;
-  background: #8e94a5;
-}
-
-.admin-team-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.admin-team-name-input {
-  font-weight: 600;
-}
-
-.admin-team-role-input {
-  font-size: 0.9rem;
-}
-
-.admin-team-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  min-width: 0;
-}
-
-.admin-team-actions > * {
-  min-width: 0;
-  flex: 0 1 auto;
-}
-
-.admin-team-photo-upload {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  font-size: 0.8rem;
-  cursor: pointer;
-  white-space: nowrap;
-  flex: 1 1 200px;
-  min-width: 160px;
-  max-width: 100%;
-}
-
-.admin-team-photo-upload input[type='file'] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.admin-team-photo-upload span {
-  display: inline-block;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.admin-team-remove-button {
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 2px solid #ffffff;
-  background: #ffffff;
-  color: #000000;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease;
-  flex: 0 1 auto;
-  max-width: 140px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.admin-team-remove-button:hover {
-  background: #ff3b3b;
-  border-color: #ff3b3b;
-  color: #ffffff;
-}
-
-/* New member photo preview chip */
-.admin-new-member-photo-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  max-width: 100%;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-
-.admin-new-member-photo-chip img {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
-  display: block;
-}
-
-.admin-new-member-photo-chip span {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 0.85rem;
-  color: rgba(245, 247, 255, 0.92);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.admin-new-member-photo-chip .admin-team-remove-button {
-  flex: 0 0 auto;
-  padding: 6px 12px;
-  border-radius: 999px;
-}
-
-/* =========================================================
-   13. ADMIN ABOUT EDITOR
+   16. ADMIN ABOUT EDITOR
    ========================================================= */
 .admin-about-content h2 {
   margin-top: 4px;
@@ -1443,130 +1958,237 @@ video {
   padding: 6px 10px;
 }
 
-/* About page (public) */
-.about-sections {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* =========================================================
+   17. ADMIN TEAM SECTION
+   ========================================================= */
+
+/* --- Add New Member Form --- */
+.admin-team-add {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(7, 10, 22, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.about-section-title {
-  margin: 0 0 6px 0;
-  font-size: 1.9rem;
+.admin-team-add h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
 }
 
-.about-section-text {
-  margin: 0;
-  line-height: 1.5;
-  font-size: 0.95rem;
-  color: #ffffff;
-}
-
-.about-team {
-  margin-top: 40px;
-}
-
-.about-team h2 {
-  margin: 0 0 24px;
-  font-size: clamp(3.5rem, 2.6vw, 8rem);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-align: left;
-}
-
-.about-team-grid {
-  margin-top: 10px;
+.admin-team-add-row {
   display: grid;
-  gap: 64px 32px;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.about-team-member {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.3fr) minmax(0, 1.4fr) auto;
   gap: 10px;
-  padding: 8px 6px;
-  border-radius: 16px;
-  background: transparent;
-  border: none;
+  align-items: center;
 }
 
-.about-team-info {
-  margin-top: 10px;
+.admin-team-photo-note {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: rgba(210, 218, 255, 0.85);
+}
+
+/* --- Team Member List --- */
+.admin-team-list {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  text-align: left;
+  gap: 12px;
 }
 
-.about-team-photo-wrapper {
-  width: clamp(120px, 16vw, 160px);
-  height: clamp(120px, 16vw, 160px);
-  border-radius: 50%;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.12);
-  display: flex;
+.admin-team-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 2.2fr) minmax(0, 2.1fr);
+  gap: 16px;
   align-items: center;
-  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-.about-team-photo {
-  width: 100%;
-  height: 100%;
+/* --- Photo --- */
+.admin-team-photo-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-team-photo-thumb {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.7);
 }
 
-.about-team-photo-fallback {
+.admin-team-photo-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 20%, #4a526c, #151724 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-team-photo-inner {
+  width: 60%;
+  height: 60%;
   position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #d8d8d8;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  overflow: hidden;
-  color: transparent;
 }
 
-.about-team-photo-fallback::before {
-  content: '';
+.admin-team-photo-circle {
   position: absolute;
+  left: 50%;
   top: 24%;
-  left: 50%;
-  width: 34%;
-  aspect-ratio: 1 / 1;
   transform: translateX(-50%);
+  width: 52%;
+  height: 52%;
   border-radius: 50%;
-  background: #b0b0b0;
+  background: #c4c8d2;
 }
 
-.about-team-photo-fallback::after {
-  content: '';
+.admin-team-photo-bar {
   position: absolute;
-  bottom: 10%;
   left: 50%;
-  width: 68%;
-  height: 38%;
+  bottom: 8%;
   transform: translateX(-50%);
-  background: #b0b0b0;
-  border-radius: 60% 60% 40% 40%;
+  width: 100%;
+  height: 36%;
+  border-radius: 999px 999px 30px 30px;
+  background: #8e94a5;
 }
 
-.about-team-name {
-  font-weight: 700;
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
+/* --- Info Inputs --- */
+.admin-team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.about-team-role {
+.admin-team-name-input {
+  font-weight: 600;
+}
+
+.admin-team-role-input {
   font-size: 0.9rem;
-  color: rgba(210, 218, 255, 0.9);
+}
+
+/* --- Actions --- */
+.admin-team-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.admin-team-actions > * {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.admin-team-photo-upload {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 1 1 200px;
+  min-width: 160px;
+  max-width: 100%;
+}
+
+.admin-team-photo-upload input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-team-photo-upload span {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-team-remove-button {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+  flex: 0 1 auto;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-team-remove-button:hover {
+  background: #ff3b3b;
+  border-color: #ff3b3b;
+  color: #ffffff;
+}
+
+/* --- New Member Photo Chip --- */
+.admin-new-member-photo-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.admin-new-member-photo-chip img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  display: block;
+}
+
+.admin-new-member-photo-chip span {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: rgba(245, 247, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-new-member-photo-chip .admin-team-remove-button {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 /* =========================================================
-   14. ADMIN MODALS
+   18. ADMIN MODALS (ACCOUNT, CONFIRM)
    ========================================================= */
 
 /* --- Modal Backdrop --- */
@@ -1599,6 +2221,7 @@ video {
   overflow: auto;
 }
 
+/* --- Modal Header (MERGED: lines 888, 2352) --- */
 .admin-modal-header {
   position: relative;
   display: flex;
@@ -1609,6 +2232,7 @@ video {
   padding-right: 0;
 }
 
+/* --- Modal Title (MERGED: lines 895, 2458) --- */
 .admin-modal-title {
   flex: 1 1 auto;
   min-width: 0;
@@ -1618,8 +2242,10 @@ video {
   font-size: 1.9rem;
   line-height: 1.15;
   max-width: calc(100% - 220px);
+  color: #f5f7ff;
 }
 
+/* --- Modal Actions (MERGED: lines 899, 2352) --- */
 .admin-modal-actions {
   position: static;
   flex: 0 0 auto;
@@ -1776,201 +2402,8 @@ video {
   padding-right: 28px;
 }
 
-/* --- Full-page Blocker --- */
-.admin-blocker {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-}
-
-.admin-blocker-inner {
-  background: rgba(9, 12, 26, 0.98);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  padding: 14px 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
-}
-
-.admin-blocker-spinner {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.25);
-  border-top-color: #ffffff;
-  animation: admin-blocker-spin 0.85s linear infinite;
-}
-
-.admin-blocker-text {
-  font-size: 0.9rem;
-  color: #ffffff;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.admin-fullpage-blocker {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.admin-fullpage-blocker-card {
-  padding: 18px 22px;
-  border-radius: 16px;
-  background: rgba(20, 30, 60, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  max-width: 320px;
-  text-align: center;
-}
-
-.admin-fullpage-blocker-title {
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-
-.admin-fullpage-blocker-subtitle {
-  opacity: 0.85;
-  font-size: 0.95rem;
-}
-
-/* --- Avatar Crop Modal --- */
-.avatar-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.avatar-modal {
-  width: min(440px, 90vw);
-  background: #050711;
-  border-radius: 18px;
-  padding: 16px 18px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
-}
-
-.avatar-modal h3 {
-  margin: 0 0 8px;
-}
-
-.avatar-crop-container {
-  margin-top: 8px;
-  position: relative;
-  width: 100%;
-  height: 260px;
-  overflow: hidden;
-  border-radius: 16px;
-  background: #000000;
-}
-
-.avatar-crop-loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 5;
-  pointer-events: none;
-}
-
-.avatar-modal-controls {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.avatar-modal-zoom {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-}
-
-.avatar-modal-zoom input[type='range'] {
-  flex: 1;
-}
-
-.avatar-modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-/* --- Add Newspaper Article Modal --- */
-.admin-modal--add-article .admin-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.admin-modal--add-article .admin-modal-actions {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding-top: 6px;
-}
-
-.admin-modal--add-article .admin-field-label {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.admin-modal--add-article .admin-field-required {
-  display: inline;
-  margin-left: 6px;
-  vertical-align: baseline;
-  line-height: 1;
-}
-
-.admin-modal--add-article .admin-textarea--caption {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  padding: 10px 12px;
-  resize: none;
-  overflow: hidden;
-}
-
-.admin-modal--add-article .admin-textarea--caption::placeholder {
-  color: rgba(0, 0, 0, 0.45);
-}
-
-.admin-modal--add-article .admin-file-input-large {
-  width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-
 /* =========================================================
-   15. ADMIN EDIT EVENT MODAL
+   19. ADMIN EDIT EVENT MODAL
    ========================================================= */
 .admin-event-modal-backdrop {
   padding: 24px 16px;
@@ -1984,30 +2417,30 @@ video {
 }
 
 .admin-event-modal {
-  max-width: 1100px;
-  padding: 0 32px 28px;
-  color: #f5f7ff;
   position: relative;
   width: min(1100px, 100vw - 80px);
+  max-width: 1100px;
   max-height: calc(100vh - 96px);
+  padding: 0 32px 28px;
   background: radial-gradient(circle at top, #141827, #050711 55%);
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+  color: #f5f7ff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
 .admin-event-modal-header {
-  gap: 16px;
-  margin: 0 -32px 12px;
   position: sticky;
   top: 0;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  margin: 0 -32px 12px;
   padding: 16px 26px 14px;
   background: linear-gradient(to bottom, rgba(3, 7, 19, 0.98), rgba(3, 7, 19, 0.94));
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -2061,6 +2494,7 @@ video {
   transform: translateY(-1px);
 }
 
+/* --- Modal Body --- */
 .admin-event-modal-body {
   display: flex;
   flex-direction: column;
@@ -2070,6 +2504,7 @@ video {
   overflow-y: auto;
 }
 
+/* Scrollbar styling */
 .admin-event-modal-body::-webkit-scrollbar,
 .admin-event-modal textarea::-webkit-scrollbar {
   width: 8px;
@@ -2098,7 +2533,7 @@ video {
   scrollbar-color: rgba(148, 163, 184, 0.9) rgba(15, 23, 42, 0.6);
 }
 
-/* Event form fields */
+/* --- Form Fields (MERGED: lines 2446, 2480, 2653) --- */
 .admin-event-field {
   width: 100%;
   margin-bottom: 18px;
@@ -2119,6 +2554,8 @@ video {
 .admin-event-modal select,
 .admin-event-modal textarea {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   border-radius: 14px;
   padding: 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -2127,7 +2564,6 @@ video {
   font-size: 0.95rem;
   box-shadow: none;
   outline: none;
-  box-sizing: border-box;
 }
 
 .admin-event-modal .input:focus,
@@ -2158,8 +2594,19 @@ video {
   margin-top: 4px;
 }
 
+/* Button hover states */
+.admin-event-modal-header .admin-modal-button:first-of-type:hover {
+  background: #1bbf5b;
+  color: #050713;
+}
+
+.admin-event-modal-header .admin-modal-button.admin-modal-button--ghost:hover {
+  background: #e25353;
+  color: #050713;
+}
+
 /* =========================================================
-   16. ADMIN MEDIA/ARTICLE VIEWER
+   20. ADMIN ARTICLE VIEWER & CAPTIONS
    ========================================================= */
 .admin-event-modal-media {
   margin-top: 24px;
@@ -2184,6 +2631,7 @@ video {
   gap: 24px;
 }
 
+/* --- Side Controls --- */
 .admin-event-media-side {
   display: flex;
   flex-direction: column;
@@ -2238,6 +2686,7 @@ video {
   box-shadow: none;
 }
 
+/* --- Navigation Arrows --- */
 .admin-event-media-nav {
   align-self: center;
   width: 40px;
@@ -2270,10 +2719,12 @@ video {
 .admin-event-media-nav--left {
   justify-self: flex-start;
 }
+
 .admin-event-media-nav--right {
   justify-self: flex-end;
 }
 
+/* --- Image --- */
 .admin-event-media-image-wrap {
   flex: 1 1 auto;
   min-width: 0;
@@ -2293,7 +2744,7 @@ video {
   object-fit: contain;
 }
 
-/* Caption section */
+/* --- Caption Section --- */
 .admin-event-caption-header {
   display: flex;
   align-items: center;
@@ -2363,7 +2814,7 @@ video {
   border-color: rgba(0, 0, 0, 0.35);
 }
 
-/* Delete article dialog */
+/* --- Delete Article Dialog --- */
 .delete-media-backdrop {
   position: fixed;
   inset: 0;
@@ -2453,6 +2904,12 @@ video {
   color: #000000;
 }
 
+.delete-dialog-btn-cancel:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
 .delete-dialog-btn-confirm {
   border-color: #e53935;
   color: #e53935;
@@ -2461,11 +2918,6 @@ video {
 .delete-dialog-btn-confirm:hover {
   background: #e53935;
   color: #ffffff;
-}
-
-.delete-dialog-btn-cancel:hover:not(:disabled) {
-  background: #dc2626;
-  border-color: #dc2626;
 }
 
 .delete-dialog-btn:disabled {
@@ -2485,665 +2937,264 @@ video {
   animation: delete-dialog-spin 0.7s linear infinite;
 }
 
-/* =========================================================
-   17. EVENT DETAIL OVERLAY
-   ========================================================= */
-.event-overlay-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 2.2vw, 24px) clamp(14px, 2.4vw, 22px);
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.event-detail-card {
-  position: relative;
-  max-width: 900px;
-  width: 100%;
-  max-height: 88vh;
-  overflow-y: auto;
-  padding: 24px 96px 24px 32px;
-  background: #ffffff;
-  border-radius: 32px;
-  border: 6px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.7);
-  color: #111111;
-  margin-left: 0;
-}
-
-.event-detail-meta,
-.event-detail-title,
-.event-detail-short,
-.event-detail-section,
-.event-detail-footer {
-  grid-column: 1;
-}
-
-.event-detail-meta {
-  margin-bottom: 6px;
-  font-size: clamp(1rem, 1.9vw, 1.5rem);
-  color: #444444;
-  display: flex;
-  align-items: baseline;
-  column-gap: 6px;
-  row-gap: 2px;
-  flex-wrap: wrap;
-  font-weight: 800;
-}
-
-.event-detail-meta-type {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: clamp(0.85rem, 1.9vw, 1.5rem);
-}
-
-.event-detail-title {
-  margin: 4px 0 6px 0;
-  font-size: clamp(1rem, 1.9vw, 1.5rem);
-  font-weight: 600;
-}
-
-.event-detail-short {
-  margin: 2px 0 8px 0;
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-  color: #555555;
-}
-
-.event-detail-location {
-  grid-column: 1;
-  margin-bottom: 8px;
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-  color: #555555;
-}
-
-.event-detail-section {
-  margin-top: 35px;
-  margin-bottom: 24px;
-}
-
-.event-detail-section h2 {
-  margin: 0 0 6px 0;
-  font-size: clamp(1rem, 1.7vw, 1.25rem);
-}
-
-.event-detail-scrollbox {
-  height: 220px;
-  max-height: 220px;
-  overflow-y: auto;
-  padding-right: 0;
-  margin-right: -4px;
-}
-
-.event-detail-scrollbox::-webkit-scrollbar {
-  width: 6px;
-}
-
-.event-detail-scrollbox::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 999px;
-}
-
-.event-detail-scrollbox::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 999px;
-}
-
-.event-detail-scrollbox p {
-  margin: 0;
-  line-height: 1.5;
-  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
-}
-
-.event-detail-side-action {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.event-detail-circle-button {
-  width: clamp(42px, 4.5vw, 60px);
-  height: clamp(42px, 4.5vw, 60px);
-  border-radius: 50%;
-  border: 2px solid #333;
-  background: #ffffff;
-  cursor: pointer;
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 6px;
-}
-
-.event-detail-circle-button:hover {
-  background: #f5f5f5;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-  transform: translateY(-1px);
-}
-
-.event-detail-circle-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
-}
-
-.event-detail-articles-icon {
-  font-size: clamp(1rem, 1.6vw, 1.3rem);
-  line-height: 1;
-}
-
-.event-detail-circle-label {
-  display: block;
-  max-width: 90px;
-  text-align: center;
-  font-size: clamp(0.7rem, 1vw, 0.9rem);
-  line-height: 1.3;
-  color: #333333;
-}
-
-.event-detail-footer {
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
-}
-
-.event-detail-cta {
-  padding: clamp(8px, 1.4vw, 12px) clamp(22px, 3vw, 30px);
-  border-radius: 999px;
-  border: none;
-  background: #111111;
-  color: #ffffff;
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.event-detail-close {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 2px solid #e53935;
-  background: #ffffff;
-  color: #e53935;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease,
-    transform 0.15s ease;
-}
-
-.event-detail-close:hover {
-  background: #e53935;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-.event-detail-close:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.article-overlay-image {
-  max-width: min(980px, 92vw);
-  max-height: 78vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-/* =========================================================
-   18. MEDIA OVERLAY (PUBLIC)
-   ========================================================= */
-.media-overlay-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.media-overlay-card {
-  position: relative;
-  max-width: 1000px;
-  width: 100%;
-  max-height: 90vh;
-  background: #ffffff;
-  color: #111111;
-  border-radius: 24px;
-  border: 5px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  padding: 20px 24px 16px;
-}
-
-.media-overlay-back {
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  background: transparent;
-  border: none;
-  padding: clamp(4px, 0.9vw, 10px) 0;
-  font-size: clamp(0.95rem, 2.4vw, 2rem);
-  font-weight: 600;
-  color: #000000;
-  cursor: pointer;
-}
-
-.media-overlay-back:hover {
-  opacity: 0.8;
-}
-
-.media-overlay-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  border: 2px solid #e53935;
-  background: #ffffff;
-  color: #e53935;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.media-overlay-close:hover {
-  background: #e53935;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-.media-overlay-close:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.media-overlay-header {
-  padding-top: 54px;
-  padding-bottom: 12px;
-  text-align: center;
-}
-
-.media-overlay-title {
-  margin: 0;
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-}
-
-.media-overlay-subtitle {
-  margin: 4px 0 0 0;
-  font-size: 0.9rem;
-  color: #666666;
-}
-
-.media-overlay-status {
-  text-align: center;
-  font-size: 0.95rem;
-  padding: 16px 8px;
-  color: #444444;
-}
-
-.media-overlay-status--error {
-  color: #b71c1c;
-}
-
-.media-overlay-body {
-  display: flex;
-  gap: 8px;
-  padding: 4px 0 8px;
-  height: 60vh;
-  align-items: stretch;
-  min-height: 0;
-}
-
-.media-image-wrapper {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-}
-
-.media-image-scroll {
-  flex: 1 1 auto;
-  height: 100%;
-  overflow-y: auto;
-  padding: 0 4px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.media-image-scroll.is-scrollable {
-  align-items: flex-start;
-}
-
-.media-image-scroll.is-centered {
-  align-items: center;
-}
-
-.media-image {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-}
-
-.media-nav-button,
-.media-nav-button--left,
-.media-nav-button--right {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  flex: 0 0 70px;
-  height: 100%;
-  align-self: stretch;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #111111;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-}
-
-.media-nav-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.media-nav-arrow {
-  display: block;
-  font-size: clamp(2rem, 3vw, 2.6rem);
-  line-height: 1;
-}
-
-.media-nav-label {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #444444;
-}
-
-.media-nav-button--left:hover {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
-  color: #000000;
-}
-
-.media-nav-button--right:hover {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.08), transparent);
-  color: #000000;
-}
-
-.media-caption,
-.media-overlay-caption {
-  width: 100%;
-  text-align: center;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  font-size: clamp(0.8rem, 1vw, 0.95rem);
-  color: #333333;
-}
-
-/* =========================================================
-   19. YEAR SEARCH & POPOVER
-   ========================================================= */
-.year-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  width: auto;
-  z-index: 3;
-  pointer-events: auto;
-  flex: 1 0 auto;
-}
-
-.year-search-input-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.year-search-input-wrap .year-search-input {
-  width: 85px;
-  max-width: 85px;
-  min-width: 70px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.year-search-input {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(0, 0, 0, 0.35);
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 0.9rem;
-}
-
-.year-search-input::placeholder {
-  color: rgba(200, 210, 255, 0.8);
-}
-
-.year-search-button,
-.year-search-browse-button {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.year-search-button {
-  background: #ffffff;
-  color: #000000;
-}
-
-.year-search-browse-button {
-  background: transparent;
-  color: #ffffff;
-}
-
-/* Admin year search */
-.admin-year-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.admin-year-label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 1rem;
-  color: rgba(245, 247, 255, 0.9);
-}
-
-.admin-year-label input.year-search-input {
-  width: 160px;
-}
-
-.admin-year-search .year-search-button,
-.admin-year-search .year-search-browse-button {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 2px solid #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.admin-year-search .year-search-button {
-  background: #ffffff;
-  color: #000000;
-}
-
-.admin-year-search .year-search-browse-button {
-  background: transparent;
-  color: #ffffff;
-}
-
-.admin-year-picker {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.admin-year-pill.is-selected {
-  background: #ffffff;
-  color: #000000;
-}
-
-/* Year picker popover */
-.year-picker-popover {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 20;
-  width: 420px;
-  max-width: 90vw;
-  background: #000000;
-  color: #ffffff;
-  border-radius: 18px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.8),
-    0 0 1px rgba(255, 255, 255, 0.2);
-}
-
-.year-picker-popover::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  right: 20px;
-  width: 20px;
-  height: 20px;
-  background: #000000;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  transform: rotate(45deg);
-}
-
-.year-picker-header {
+/* --- Add Article Modal --- */
+.admin-modal--add-article .admin-modal-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  gap: 16px;
 }
 
-.year-picker-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.year-picker-close {
-  width: 24px;
-  height: 24px;
+.admin-modal--add-article .admin-modal-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border-radius: 999px;
-  cursor: pointer;
+  align-items: flex-start;
+  gap: 10px;
+  padding-top: 6px;
 }
 
-.year-picker-close:hover {
-  background: rgba(255, 255, 255, 0.22);
+.admin-modal--add-article .admin-field-label {
+  display: block;
+  margin-bottom: 6px;
 }
 
-.year-picker-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-height: 240px;
-  overflow-y: auto;
-  padding-right: 4px;
+.admin-modal--add-article .admin-field-required {
+  display: inline;
+  margin-left: 6px;
+  vertical-align: baseline;
+  line-height: 1;
 }
 
-.year-picker-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.year-picker-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 999px;
-}
-
-.year-picker-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-}
-
-.year-pill {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: transparent;
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.year-pill:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.year-pill.is-selected {
+.admin-modal--add-article .admin-textarea--caption {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: #ffffff;
-  color: #000000;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: none;
+  overflow: hidden;
+}
+
+.admin-modal--add-article .admin-textarea--caption::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.admin-modal--add-article .admin-file-input-large {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
 }
 
 /* =========================================================
-   20. ANIMATIONS
+   21. AVATAR CROP MODAL
+   ========================================================= */
+.avatar-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.avatar-modal {
+  width: min(440px, 90vw);
+  background: #050711;
+  border-radius: 18px;
+  padding: 16px 18px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
+}
+
+.avatar-modal h3 {
+  margin: 0 0 8px;
+}
+
+.avatar-crop-container {
+  margin-top: 8px;
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000000;
+}
+
+.avatar-crop-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.avatar-modal-controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.avatar-modal-zoom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.avatar-modal-zoom input[type='range'] {
+  flex: 1;
+}
+
+.avatar-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* =========================================================
+   22. LOADING BLOCKERS & SPINNERS
+   ========================================================= */
+.admin-blocker {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.admin-blocker-inner {
+  background: rgba(9, 12, 26, 0.98);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 14px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
+}
+
+.admin-blocker-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #ffffff;
+  animation: admin-blocker-spin 0.85s linear infinite;
+}
+
+.admin-blocker-text {
+  font-size: 0.9rem;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-fullpage-blocker {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-fullpage-blocker-card {
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: rgba(20, 30, 60, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 320px;
+  text-align: center;
+}
+
+.admin-fullpage-blocker-title {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.admin-fullpage-blocker-subtitle {
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   23. ALERTS & BANNERS
+   ========================================================= */
+.timeline-alert {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+}
+
+.timeline-alert--error {
+  background: rgba(188, 48, 82, 0.25);
+  border-color: rgba(255, 145, 168, 0.9);
+  color: #ffe3ec;
+}
+
+.timeline-alert--info {
+  background: rgba(255, 194, 120, 0.18);
+  border-color: rgba(255, 217, 140, 0.95);
+  color: #ffe9c8;
+}
+
+.global-banner {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 19;
+  padding: 14px 22px;
+  border-radius: 999px;
+  max-width: 80vw;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  border: 1px solid transparent;
+}
+
+.global-banner--info {
+  background: rgba(255, 194, 120, 0.22);
+  border-color: rgba(255, 217, 140, 0.95);
+  color: #ffe9c8;
+}
+
+.global-banner--error {
+  background: rgba(188, 48, 82, 0.35);
+  border-color: rgba(255, 145, 168, 0.95);
+  color: #ffe3ec;
+}
+
+/* =========================================================
+   24. ANIMATIONS
    ========================================================= */
 @keyframes arrow-bounce {
   0%,
@@ -3183,15 +3234,20 @@ video {
 }
 
 /* =========================================================
-   21. RESPONSIVE — All Breakpoints (Consolidated)
+   25. RESPONSIVE: TABLET (max-width: 1024px)
    ========================================================= */
-
-/* ---------------------------------------------------------
-   TABLET (max-width: 1024px)
-   --------------------------------------------------------- */
 @media (max-width: 1024px) {
   .main--about .panel--wide {
     width: calc(100% - 40px);
+  }
+
+  .event-detail-card {
+    margin-left: 0;
+  }
+
+  .event-overlay-backdrop {
+    align-items: center;
+    padding: 32px 16px;
   }
 
   .about-team-grid {
@@ -3199,11 +3255,11 @@ video {
   }
 }
 
-/* ---------------------------------------------------------
-   MOBILE (max-width: 900px)
-   --------------------------------------------------------- */
+/* =========================================================
+   26. RESPONSIVE: MOBILE (max-width: 900px)
+   ========================================================= */
 @media (max-width: 900px) {
-  /* App shell */
+  /* --- App Shell --- */
   .app {
     padding-top: var(--topbar-h-mobile);
   }
@@ -3212,7 +3268,19 @@ video {
     padding: 20px 12px 32px !important;
   }
 
-  /* Topbar */
+  .main--about {
+    padding-top: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .main--about .panel--wide {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+
+  /* --- Topbar Stacked --- */
   .topbar--stacked {
     padding-bottom: 12px;
   }
@@ -3229,21 +3297,14 @@ video {
     flex-wrap: nowrap;
   }
 
-  /* Admin tabs - keep compact */
-  .admin-tabs {
-    width: auto !important;
-    display: inline-flex !important;
-    justify-content: center !important;
-    flex-shrink: 0 !important;
+  .topbar--stacked .year-search-popover {
+    left: 0;
+    right: 0;
+    width: calc(100vw - 36px);
+    max-width: none;
   }
 
-  .admin-tabs .admin-tab-button {
-    width: auto !important;
-    flex: 0 0 auto !important;
-    padding: 6px 14px !important;
-    font-size: 0.8rem !important;
-  }
-
+  /* --- Admin Header --- */
   .admin-header-top {
     display: flex !important;
     flex-direction: column !important;
@@ -3251,14 +3312,6 @@ video {
     gap: 12px !important;
   }
 
-  /* Admin panel */
-  .admin-view > .panel,
-  .admin-view > .panel.admin-panel {
-    padding: 20px 14px !important;
-    border-radius: 18px !important;
-  }
-
-  /* Admin title */
   .admin-events-title {
     font-size: 2rem !important;
     text-align: center !important;
@@ -3273,7 +3326,29 @@ video {
     margin-bottom: 16px !important;
   }
 
-  /* Admin year search - keep horizontal like public portal */
+  /* --- Admin Tabs --- */
+  .admin-tabs {
+    width: auto !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-tabs .admin-tab-button {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    padding: 6px 14px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* --- Admin Panel --- */
+  .admin-view > .panel,
+  .admin-view > .panel.admin-panel {
+    padding: 20px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  /* --- Admin Year Search (horizontal) --- */
   .admin-year-search {
     display: flex !important;
     flex-direction: row !important;
@@ -3307,7 +3382,7 @@ video {
     white-space: nowrap !important;
   }
 
-  /* Admin events table - scrollable */
+  /* --- Admin Events Table (scrollable) --- */
   .admin-events-table,
   .admin-events-table thead,
   .admin-events-table tbody,
@@ -3326,7 +3401,6 @@ video {
   .admin-events-table thead {
     display: table-header-group !important;
   }
-
   .admin-events-table tbody {
     display: table-row-group !important;
   }
@@ -3376,14 +3450,14 @@ video {
     white-space: nowrap !important;
   }
 
-  /* Admin layout */
+  /* --- Admin Layout --- */
   .admin-layout {
     display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
   }
 
-  /* Timeline */
+  /* --- Timeline --- */
   .timeline-screen {
     padding: 14px 16px 40px 40px;
   }
@@ -3422,7 +3496,139 @@ video {
     top: 64px;
   }
 
-  /* Team section mobile */
+  /* --- About Page --- */
+  .about-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 24px;
+  }
+
+  .about-team h2 {
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+  }
+
+  /* --- Event Detail --- */
+  .event-detail-card {
+    padding: 20px 20px 20px 20px;
+    border-width: 4px;
+    border-radius: 24px;
+  }
+
+  .event-detail-side-action {
+    display: none;
+  }
+
+  .event-detail-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* --- Media Overlay --- */
+  .media-overlay-card {
+    padding: 12px 14px;
+    border-radius: 18px;
+    border-width: 4px;
+  }
+
+  .media-overlay-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .media-nav-button,
+  .media-nav-button--left,
+  .media-nav-button--right {
+    display: none;
+  }
+
+  .media-image-scroll {
+    max-height: 50vh;
+  }
+
+  /* --- Edit Event Modal --- */
+  .admin-event-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 24px) !important;
+    padding: 0 16px 20px !important;
+  }
+
+  .admin-event-modal-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 14px 16px 12px !important;
+    margin: 0 -16px 12px !important;
+  }
+
+  .admin-event-modal-title {
+    font-size: 1.3rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    padding-right: 0 !important;
+  }
+
+  .admin-event-modal-header-actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .admin-event-modal-body {
+    padding: 12px 8px 20px !important;
+    gap: 14px !important;
+  }
+
+  .admin-event-modal textarea {
+    min-height: 100px !important;
+    max-height: 150px !important;
+  }
+
+  /* --- Avatar Modal --- */
+  .avatar-modal {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .avatar-crop-container {
+    height: 220px !important;
+  }
+
+  .avatar-modal-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .avatar-modal-buttons button {
+    width: 100% !important;
+  }
+
+  /* --- Confirm Dialogs --- */
+  .admin-confirm-modal {
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .admin-confirm-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .admin-confirm-actions button {
+    width: 100% !important;
+  }
+
+  .delete-media-preview {
+    max-height: 200px !important;
+  }
+
+  /* --- Admin Blocker --- */
+  .admin-blocker-inner {
+    max-width: calc(100vw - 48px) !important;
+    text-align: center !important;
+  }
+
+  /* --- Team Add Form --- */
   .admin-team-add {
     padding: 16px 14px 18px !important;
     border-radius: 16px !important;
@@ -3473,6 +3679,7 @@ video {
     margin-top: 10px !important;
   }
 
+  /* --- Team Member List --- */
   .admin-team-list {
     gap: 16px !important;
     margin-top: 24px !important;
@@ -3516,6 +3723,7 @@ video {
     border-radius: 8px !important;
   }
 
+  /* --- Team Action Buttons --- */
   .admin-team-actions {
     display: flex !important;
     flex-direction: column !important;
@@ -3550,6 +3758,7 @@ video {
     max-width: 220px !important;
   }
 
+  /* --- Team Photo Chip --- */
   .admin-new-member-photo-chip {
     width: 100% !important;
     max-width: 320px !important;
@@ -3578,6 +3787,7 @@ video {
     flex: 0 0 auto !important;
   }
 
+  /* --- Team Section Headers --- */
   .admin-team-section h2,
   .admin-subpanel h2 {
     font-size: 1.4rem !important;
@@ -3591,186 +3801,80 @@ video {
     margin-bottom: 16px !important;
   }
 
-  /* About page */
-  .main--about {
-    padding-top: 16px;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .main--about .panel--wide {
-    width: calc(100% - 24px);
-    max-width: 100%;
-    padding: 24px 16px;
-  }
-
-  .about-team-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 36px 24px;
-  }
-
-  .about-team h2 {
-    font-size: clamp(1.8rem, 6vw, 2.8rem);
-  }
-
-  /* Event detail overlay */
-  .event-detail-card {
-    padding: 20px 20px 20px 20px;
-    border-width: 4px;
-    border-radius: 24px;
-  }
-
-  .event-detail-side-action {
-    display: none;
-  }
-
-  .event-detail-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-
-  /* Media overlay */
-  .media-overlay-card {
-    padding: 12px 14px;
-    border-radius: 18px;
-    border-width: 4px;
-  }
-
-  .media-overlay-body {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .media-nav-button,
-  .media-nav-button--left,
-  .media-nav-button--right {
-    display: none;
-  }
-
-  .media-image-scroll {
-    max-height: 50vh;
-  }
-
-  /* Edit event modal */
-  .admin-event-modal {
-    width: calc(100vw - 24px) !important;
-    max-width: calc(100vw - 24px) !important;
-    max-height: calc(100vh - 24px) !important;
-    padding: 0 16px 20px !important;
-  }
-
-  .admin-event-modal-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 12px !important;
-    padding: 14px 16px 12px !important;
-    margin: 0 -16px 12px !important;
-  }
-
-  .admin-event-modal-title {
-    font-size: 1.3rem !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    text-align: center !important;
-    padding-right: 0 !important;
-  }
-
-  .admin-event-modal-header-actions {
-    width: 100% !important;
-    justify-content: center !important;
-  }
-
-  .admin-event-modal-body {
-    padding: 12px 8px 20px !important;
-    gap: 14px !important;
-  }
-
-  .admin-event-modal textarea {
-    min-height: 100px !important;
-    max-height: 150px !important;
-  }
-
-  /* Avatar modal */
-  .avatar-modal {
-    width: calc(100vw - 24px) !important;
-    max-width: calc(100vw - 24px) !important;
-  }
-
-  .avatar-crop-container {
-    height: 220px !important;
-  }
-
-  .avatar-modal-buttons {
-    flex-direction: column !important;
-    width: 100% !important;
-  }
-
-  .avatar-modal-buttons button {
-    width: 100% !important;
-  }
-
-  /* Year picker popover */
-  .year-picker-popover {
+  /* --- Year Picker Popover --- */
+  .year-search-popover {
     left: 50%;
     right: auto;
     transform: translateX(-50%);
     width: min(90vw, 380px);
   }
 
-  .year-picker-popover::before {
+  .year-search-popover::before {
     left: 50%;
     right: auto;
     transform: translateX(-50%) rotate(45deg);
   }
 
-  /* Confirm dialogs */
-  .admin-confirm-modal {
-    max-width: calc(100vw - 32px) !important;
+  .year-search-decade-list,
+  .year-search-year-list {
+    max-width: none !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
   }
 
-  .admin-confirm-actions {
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
-
-  .admin-confirm-actions button {
-    width: 100% !important;
-  }
-
-  .delete-media-preview {
-    max-height: 200px !important;
-  }
-
-  /* Admin blocker */
-  .admin-blocker-inner {
-    max-width: calc(100vw - 48px) !important;
-    text-align: center !important;
+  .year-search-decade,
+  .year-search-year {
+    min-width: 78px !important;
   }
 }
 
-/* ---------------------------------------------------------
-   SMALL MOBILE (max-width: 768px)
-   --------------------------------------------------------- */
+/* =========================================================
+   27. RESPONSIVE: SMALL (max-width: 768px)
+   ========================================================= */
 @media (max-width: 768px) {
+  .timeline-screen {
+    padding: 50px 0 80px 72px;
+  }
+
+  .timeline-header {
+    top: 50px;
+    margin-bottom: 40px;
+  }
+
   .timeline-header h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
-  .timeline-year {
-    font-size: 1.4rem;
-  }
-
-  .timeline-year-event {
-    padding: 8px 10px;
+  .nav-item {
+    font-size: 1.3rem;
   }
 
   .event-detail-card {
+    padding: 20px 96px 20px 20px;
     border-radius: 20px;
     border-width: 3px;
   }
 
+  .admin-header-top {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+  }
+
+  .admin-events-title,
+  .admin-tabs,
+  .admin-header-actions {
+    justify-self: center;
+  }
+
+  .main--about {
+    padding: 80px 16px 32px;
+  }
+
+  .panel.panel--wide {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+
+  /* --- Admin Media Viewer --- */
   .admin-event-modal-media {
     margin-top: 16px;
     padding-bottom: 24px;
@@ -3808,10 +3912,30 @@ video {
   }
 }
 
-/* ---------------------------------------------------------
-   EXTRA SMALL (max-width: 640px)
-   --------------------------------------------------------- */
+/* =========================================================
+   28. RESPONSIVE: EXTRA SMALL (max-width: 640px)
+   ========================================================= */
 @media (max-width: 640px) {
+  .media-nav-button,
+  .media-nav-button--left,
+  .media-nav-button--right {
+    flex: 0 0 40px;
+  }
+
+  .media-nav-label {
+    display: none;
+  }
+
+  .event-detail-circle-button {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .event-detail-circle-label {
+    font-size: 0.7rem;
+  }
+
   .about-team-grid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -3831,11 +3955,15 @@ video {
     text-align: center;
     align-items: center;
   }
+
+  .about-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-/* ---------------------------------------------------------
-   TINY (max-width: 520px)
-   --------------------------------------------------------- */
+/* =========================================================
+   29. RESPONSIVE: TINY (max-width: 520px)
+   ========================================================= */
 @media (max-width: 520px) {
   .topbar--stacked .year-search {
     flex-wrap: wrap;
@@ -3881,9 +4009,9 @@ video {
   }
 }
 
-/* ---------------------------------------------------------
-   MINI (max-width: 500px)
-   --------------------------------------------------------- */
+/* =========================================================
+   30. RESPONSIVE: MINI (max-width: 500px)
+   ========================================================= */
 @media (max-width: 500px) {
   .admin-events-table {
     min-width: 550px !important;
@@ -3916,9 +4044,9 @@ video {
   }
 }
 
-/* ---------------------------------------------------------
-   MICRO (max-width: 400px)
-   --------------------------------------------------------- */
+/* =========================================================
+   31. RESPONSIVE: MICRO (max-width: 400px)
+   ========================================================= */
 @media (max-width: 400px) {
   .brand {
     font-size: 1rem;
@@ -3967,9 +4095,9 @@ video {
   }
 }
 
-/* ---------------------------------------------------------
-   DESKTOP SPECIFIC (min-width: 901px)
-   --------------------------------------------------------- */
+/* =========================================================
+   DESKTOP ONLY (min-width: 901px)
+   ========================================================= */
 @media (min-width: 901px) {
   .topbar-brand {
     position: absolute;
@@ -3990,5 +4118,17 @@ video {
   .admin-event-modal-actions {
     position: static;
     flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 640px) {
+  .about-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-team-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
