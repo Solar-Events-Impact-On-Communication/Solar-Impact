@@ -250,80 +250,186 @@ Set these in Vercel dashboard (Settings → Environment Variables):
 Primary table for solar event data.
 
 ```sql
-CREATE TABLE solar_events (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  event_date DATE NOT NULL,
-  event_type VARCHAR(100) NOT NULL,
-  location VARCHAR(255),
-  title VARCHAR(255) NOT NULL,
-  short_description TEXT,
-  summary TEXT,
-  impact_on_communication TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `solar_events` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `event_date` date NOT NULL,
+  `event_type` varchar(255) NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `short_description` varchar(500) DEFAULT NULL,
+  `summary` text NOT NULL,
+  `impact_on_communication` text,
+  PRIMARY KEY (`id`),
+  KEY `idx_solar_events_date` (`event_date`)
 );
 ```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint unsigned | Auto-increment primary key |
+| `event_date` | date | Date of the solar event |
+| `event_type` | varchar(255) | Type (e.g., "Solar Flare", "Geomagnetic Storm") |
+| `location` | varchar(255) | Geographic location affected (nullable) |
+| `title` | varchar(255) | Event title |
+| `short_description` | varchar(500) | Brief description for timeline cards |
+| `summary` | text | Full event description |
+| `impact_on_communication` | text | How it affected communications |
 
 ### Table: `media_assets`
 Newspaper articles/images linked to events.
 
 ```sql
-CREATE TABLE media_assets (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  event_id INT NOT NULL,
-  url VARCHAR(512) NOT NULL,
-  caption TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (event_id) REFERENCES solar_events(id) ON DELETE CASCADE
+CREATE TABLE `media_assets` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `event_id` bigint unsigned NOT NULL,
+  `url` varchar(500) NOT NULL,
+  `object_key` varchar(512) DEFAULT NULL,
+  `caption` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_media_assets_event` (`event_id`),
+  KEY `idx_media_assets_object_key` (`object_key`),
+  CONSTRAINT `fk_media_assets_event` FOREIGN KEY (`event_id`) 
+    REFERENCES `solar_events` (`id`) ON DELETE CASCADE
 );
 ```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint unsigned | Auto-increment primary key |
+| `event_id` | bigint unsigned | Foreign key to solar_events |
+| `url` | varchar(500) | Full public URL to image in Spaces |
+| `object_key` | varchar(512) | Spaces object key (for deletion) |
+| `caption` | varchar(255) | Image caption |
+
+**Note:** `ON DELETE CASCADE` means deleting an event automatically deletes its media.
 
 ### Table: `about_sections`
 Dynamic content sections for the About page.
 
 ```sql
-CREATE TABLE about_sections (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  display_order INT NOT NULL DEFAULT 0,
-  title VARCHAR(255) NOT NULL,
-  text TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `about_sections` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `display_order` int NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `text` text NOT NULL,
+  PRIMARY KEY (`id`)
 );
 ```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | int unsigned | Auto-increment primary key |
+| `display_order` | int | Order to display sections (lower = first) |
+| `title` | varchar(255) | Section heading |
+| `text` | text | Section content |
 
 ### Table: `team_members`
 Team member profiles.
 
 ```sql
-CREATE TABLE team_members (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  role VARCHAR(255) NOT NULL,
-  image_url VARCHAR(512),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `team_members` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  `role` varchar(200) NOT NULL,
+  `image_url` varchar(500) DEFAULT NULL,
+  `display_order` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
 );
 ```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | int unsigned | Auto-increment primary key |
+| `name` | varchar(150) | Team member's name |
+| `role` | varchar(200) | Their role/title |
+| `image_url` | varchar(500) | URL to profile photo in Spaces |
+| `display_order` | int | Order to display (default: 1) |
 
 ### Table: `admin_users`
 Admin authentication accounts.
 
 ```sql
-CREATE TABLE admin_users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(100) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  security_question VARCHAR(255),
-  security_answer_hash VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `admin_users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `security_question_id` bigint unsigned DEFAULT NULL,
+  `security_answer_hash` varchar(255) DEFAULT NULL,
+  `is_protected` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`username`),
+  KEY `fk_admin_users_sec_question` (`security_question_id`),
+  CONSTRAINT `fk_admin_users_sec_question` FOREIGN KEY (`security_question_id`) 
+    REFERENCES `security_questions` (`id`) ON DELETE RESTRICT
 );
+```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint unsigned | Auto-increment primary key |
+| `username` | varchar(255) | Unique username |
+| `password_hash` | varchar(255) | Bcrypt hashed password |
+| `security_question_id` | bigint unsigned | Foreign key to security_questions |
+| `security_answer_hash` | varchar(255) | Bcrypt hashed security answer |
+| `is_protected` | tinyint(1) | If 1, account cannot be deleted (super admin) |
+
+### Table: `security_questions`
+Predefined security questions for admin accounts.
+
+```sql
+CREATE TABLE `security_questions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `question_text` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | bigint unsigned | Auto-increment primary key |
+| `question_text` | varchar(255) | The security question text |
+
+### Entity Relationship Diagram
+
+```
+┌─────────────────────┐       ┌─────────────────────┐
+│   solar_events      │       │   media_assets      │
+├─────────────────────┤       ├─────────────────────┤
+│ id (PK)             │───┐   │ id (PK)             │
+│ event_date          │   │   │ event_id (FK)       │──┘
+│ event_type          │   └──▶│ url                 │
+│ location            │       │ object_key          │
+│ title               │       │ caption             │
+│ short_description   │       └─────────────────────┘
+│ summary             │
+│ impact_on_communication│
+└─────────────────────┘
+
+┌─────────────────────┐       ┌─────────────────────┐
+│   admin_users       │       │ security_questions  │
+├─────────────────────┤       ├─────────────────────┤
+│ id (PK)             │       │ id (PK)             │
+│ username            │       │ question_text       │
+│ password_hash       │       └─────────────────────┘
+│ security_question_id│───────────────┘
+│ security_answer_hash│
+│ is_protected        │
+└─────────────────────┘
+
+┌─────────────────────┐       ┌─────────────────────┐
+│   about_sections    │       │   team_members      │
+├─────────────────────┤       ├─────────────────────┤
+│ id (PK)             │       │ id (PK)             │
+│ display_order       │       │ name                │
+│ title               │       │ role                │
+│ text                │       │ image_url           │
+└─────────────────────┘       │ display_order       │
+                              └─────────────────────┘
 ```
 
 ### Database Users & Permissions
 
-**`solar_public`** (Read-only):
+**`solar_public`** (Read-only for public API):
 ```sql
 GRANT SELECT ON defaultdb.solar_events TO 'solar_public'@'%';
 GRANT SELECT ON defaultdb.media_assets TO 'solar_public'@'%';
@@ -331,7 +437,7 @@ GRANT SELECT ON defaultdb.about_sections TO 'solar_public'@'%';
 GRANT SELECT ON defaultdb.team_members TO 'solar_public'@'%';
 ```
 
-**`solar_admin_app`** (CRUD):
+**`solar_admin_app`** (CRUD for admin API):
 ```sql
 GRANT SELECT, INSERT, UPDATE, DELETE ON defaultdb.* TO 'solar_admin_app'@'%';
 ```
