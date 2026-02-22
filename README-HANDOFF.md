@@ -113,6 +113,8 @@ Solar Events is a web application that documents historical solar events (solar 
 │                                                                              │
 │  /articles/event-{id}-{timestamp}-{hash}.{ext}   (newspaper scans)          │
 │  /team/member-{id}-{timestamp}-{hash}.{ext}       (team photos)             │
+│  /Background/Videos/Sun.webm                      (SpaceVideos component)   │
+│  /Background/Videos/Earth.webm                    (SpaceVideos component)   │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -136,20 +138,22 @@ Solar Events is a web application that documents historical solar events (solar 
 | react-router-dom | 6.x     | Client-side routing                |
 | Vite             | 7.x     | Build tool & dev server            |
 | react-easy-crop  | 5.x     | Team photo crop-to-circle in admin |
+| Prettier         | 3.x     | Code formatter (dev tool)          |
 
 ### Backend
 
-| Technology         | Version  | Purpose                              |
-| ------------------ | -------- | ------------------------------------ |
-| Node.js            | 20.x LTS | Runtime                              |
-| Express            | 5.x      | Web framework                        |
-| mysql2             | 3.x      | MySQL driver with promise support    |
-| bcryptjs           | 3.x      | Password & security answer hashing   |
-| multer             | 2.x      | Multipart file uploads (event media) |
-| @aws-sdk/client-s3 | 3.x      | DigitalOcean Spaces file storage     |
-| openai             | 6.x      | GPT-4o AI features                   |
-| dotenv             | Latest   | Load .env variables                  |
-| concurrently       | Latest   | Run both API servers in one terminal |
+| Technology         | Version  | Purpose                                                    |
+| ------------------ | -------- | ---------------------------------------------------------- |
+| Node.js            | 20.x LTS | Runtime                                                    |
+| Express            | 5.x      | Web framework                                              |
+| mysql2             | 3.x      | MySQL driver with promise support                          |
+| bcryptjs           | 3.x      | Password & security answer hashing                         |
+| multer             | 2.x      | Multipart file uploads (event media)                       |
+| formidable         | 3.x      | Form parsing library (installed, available for future use) |
+| @aws-sdk/client-s3 | 3.x      | DigitalOcean Spaces file storage                           |
+| openai             | 6.x      | GPT-4o AI features                                         |
+| dotenv             | Latest   | Load .env variables                                        |
+| concurrently       | Latest   | Run both API servers in one terminal                       |
 
 ### Infrastructure
 
@@ -254,8 +258,10 @@ ADMIN_PORT=4001     # admin.js (admin API)
 # CORS
 # =========================
 # Comma-separated list of allowed origins.
+# For LOCAL DEV: include http://localhost:5173 so the admin API accepts Vite dev server requests.
+# For PRODUCTION: omit localhost — use only the live domains.
 # Vercel preview URLs (*.vercel.app) are automatically allowed by the CORS logic in code.
-CORS_ORIGIN=https://www.solarimpacts.org,https://solarimpacts.org
+CORS_ORIGIN=http://localhost:5173,https://www.solarimpacts.org,https://solarimpacts.org
 
 # =========================
 # OpenAI (AI features)
@@ -863,23 +869,31 @@ The frontend is a React 19 application using React Router for client-side routin
 ```
 solar-events/
 │
-├── App.jsx              # App shell: topbar, nav drawer, React Router routes, footer
+├── App.jsx              # App shell: topbar, nav drawer, routing, footer, SpaceVideos
 ├── App.css              # Global styles + topbar styles
 ├── main.jsx             # Entry point — mounts App inside BrowserRouter + StrictMode
 ├── index.css            # Base/reset styles
 ├── index.html           # HTML entry point (Vite)
 ├── utils.js             # Shared utility functions and API URL constants
+├── SpaceVideos.jsx      # Ambient background video overlay component (Sun + Earth)
+├── SpaceVideos.css      # Styles, animations, and responsive rules for space videos
 │
-├── HomePage.jsx         # Timeline, event detail overlay, media overlay (~634 lines)
-├── HomePage.css
-├── AboutPage.jsx        # About page: dynamic sections + team profiles (~124 lines)
-├── AboutPage.css
-├── LivePage.jsx         # Live data dashboard — static placeholder data (~107 lines)
-├── LivePage.css
-├── BirthdayPage.jsx     # Birthday solar event lookup — AI-powered (~344 lines)
-├── BirthdayPage.css
-├── AdminPage.jsx        # Full admin portal (~3,327 lines)
-├── AdminPage.css
+├── Pages/
+│   ├── Home/
+│   │   ├── HomePage.jsx     # Timeline, event detail overlay, media overlay (~634 lines)
+│   │   └── HomePage.css
+│   ├── About/
+│   │   ├── AboutPage.jsx    # About page: dynamic sections + team profiles (~124 lines)
+│   │   └── AboutPage.css
+│   ├── Live/
+│   │   ├── LivePage.jsx     # Live data dashboard — flip-card metrics (~107 lines)
+│   │   └── LivePage.css
+│   ├── Birthday/
+│   │   ├── BirthdayPage.jsx # Birthday solar event lookup — AI-powered (~344 lines)
+│   │   └── BirthdayPage.css
+│   └── Admin/
+│       ├── AdminPage.jsx    # Full admin portal (~3,327 lines)
+│       └── AdminPage.css
 │
 ├── admin.js             # Admin API server — CRUD + auth, port 4001
 ├── database.js          # Public API server — read-only + AI endpoints, port 4000
@@ -891,6 +905,8 @@ solar-events/
 └── .env                 # Credentials — DO NOT COMMIT
 ```
 
+> **Important:** Page components live in `Pages/<PageName>/` subdirectories, not the project root. Import paths in `App.jsx` reflect this, e.g. `import HomePage from './Pages/Home/HomePage'`. The `utils.js` import inside each page component therefore uses `../../utils` (two levels up) rather than `./utils`.
+
 ### 9.2. Component Map
 
 #### `main.jsx` — Entry Point
@@ -899,11 +915,13 @@ Wraps `App` in `<StrictMode>` and `<BrowserRouter>`. React's `StrictMode` intent
 
 #### `App.jsx` — Application Shell (~450 lines)
 
-Owns the topbar, navigation drawer, year-search functionality, and the `<Routes>`. Events are fetched here on mount and passed as props to `HomePage`.
+Owns the topbar, navigation drawer, year-search functionality, and the `<Routes>`. Events are fetched here on mount and passed as props to `HomePage`. Also renders the `<SpaceVideos />` component as a persistent background layer across all routes (except admin, which `SpaceVideos` self-excludes).
 
 **Topbar behavior:** On the timeline page (`/`), the topbar includes the year search form. On other pages, it hides the search form. A `ResizeObserver` detects when topbar elements overflow their container and switches to a "stacked" two-row layout automatically.
 
 **Year search:** Accepts a 4-digit year. If the exact year has no events, it finds the closest year with events and shows an info banner (auto-hides after 5 seconds). The "Browse" button opens a decade popover with clickable year buttons.
+
+**`document.title`:** The page title switches between `"Solar Impacts"` (all public routes) and `"Solar Impacts Admin"` when on `/admin`, controlled by a `useEffect` watching `isAdmin`.
 
 **Key state:**
 
@@ -925,6 +943,50 @@ topbarStacked; // True when topbar wraps to two rows
 /birthday   → BirthdayPage
 /admin      → AdminPage
 ```
+
+#### `SpaceVideos.jsx` — Ambient Background Videos
+
+A purely decorative component that renders looping `.webm` video files of the Sun and Earth as a fixed background layer behind all UI. It is rendered once inside `App.jsx` and appears on all routes except `/admin` (which has no config entry).
+
+**How it works:**
+
+- Uses `useLocation()` from React Router to get the current pathname
+- Looks up the pathname in a `PAGE_CONFIG` object that defines per-route visibility and positioning for the Sun and Earth videos
+- If no config exists for the current route (e.g. `/admin`), the component returns `null` — nothing renders
+- Both videos are tagged `autoPlay loop muted playsInline` and have `aria-hidden="true"` on the container so screen readers ignore them
+
+**CSS layering:** The `.space-videos` container is `position: fixed; inset: 0; z-index: -1; pointer-events: none`. This places it above the CSS `body::before` background image but below all page UI, and `pointer-events: none` ensures it never intercepts any clicks.
+
+**Video source files:** Hosted in DigitalOcean Spaces at:
+
+```
+https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Videos/Sun.webm
+https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Videos/Earth.webm
+```
+
+Note this uses the **CDN subdomain** (`nyc3.cdn.digitaloceanspaces.com`), not the origin URL (`nyc3.digitaloceanspaces.com`). The CDN URL delivers files faster via edge caching.
+
+**Per-route config (editable in `SpaceVideos.jsx`):**
+
+| Route          | Sun                                                | Earth                                  |
+| -------------- | -------------------------------------------------- | -------------------------------------- |
+| `/` (timeline) | Shown — top-right, 55vw, 50% opacity, rotated 180° | Hidden                                 |
+| `/live`        | Shown — top-right, 28vw, 60% opacity               | Shown — bottom-left, 20vw, 60% opacity |
+| `/birthday`    | Shown — top-right, 28vw, 60% opacity               | Shown — bottom-left, 20vw, 60% opacity |
+| `/about`       | Not in config — nothing rendered                   | Not in config                          |
+| `/admin`       | Not in config — nothing rendered                   | Not in config                          |
+
+**Animations (defined in `SpaceVideos.css`):**
+
+- Both videos fade in on load (`spaceVideoFadeIn` — opacity 0→1, scale 0.93→1)
+- Sun floats gently on a 14-second cycle (`spaceFloatSun`)
+- Earth floats on an 18-second cycle (`spaceFloatEarth`) with a slightly different drift pattern
+- `mix-blend-mode: screen` on each video removes the black background from the `.webm` file, leaving only the bright planet visible against the page background
+- `border-radius: 50%` keeps the circular planet shape
+
+**Responsive rules:** At <900px, both videos scale down via `!important` overrides. At <600px, opacity drops to 0.3 to reduce visual distraction on small screens.
+
+**To add a new route or adjust positioning:** Edit the `PAGE_CONFIG` object at the top of `SpaceVideos.jsx`. Each route key maps to `{ sun: { show, style }, earth: { show, style } }` where `style` is any valid inline CSS object.
 
 #### `utils.js` — Shared Helpers
 
@@ -958,15 +1020,21 @@ Receives events from App and renders the timeline. Manages both the event detail
 
 #### `AboutPage.jsx` (~124 lines)
 
-Fetches `/api/about` and `/api/team` in parallel via `Promise.all()` on mount. Renders dynamic text sections and team member photo cards. If a member has no `image_url`, no image element is rendered.
+Fetches `/api/about` and `/api/team` in parallel via `Promise.all()` on mount. Uses a `cancelled` flag in the `useEffect` cleanup to prevent state updates if the component unmounts before fetches complete (prevents React memory leak warnings).
+
+Renders dynamic text sections and team member photo cards. If a member has no `image_url`, a **fallback initials avatar** is shown — it extracts the first letter of each word in the member's name, takes the first two characters, and uppercases them (e.g. "Jane Smith" → "JS"). If the name is missing, it shows "?".
 
 #### `LivePage.jsx` (~107 lines)
 
-Displays static placeholder metric cards (Solar Flare class, Geomagnetic Storm level, Solar Wind, Radiation Belt). Each card includes an explanation of what the metric means. Pending integration with a real-time data source like NOAA SWPC's JSON feeds. No API calls are made — all data is hardcoded.
+Displays four metric cards for solar activity: Latest Solar Flare, Geomagnetic Storm, Solar Wind Speed, and Sunspot Number. All values are **static placeholders** — live integration with NASA/NOAA APIs is not yet implemented.
+
+Each card has a **flip interaction**: on hover the card rotates 180° to reveal a back face with a plain-English explanation of what that metric means and how to interpret its scale. This is implemented entirely with CSS hover states — no JavaScript state is involved.
+
+No API calls are made. All metric values and descriptions are hardcoded in the `LIVE_METRICS` array at the top of the component.
 
 #### `BirthdayPage.jsx` (~344 lines)
 
-Two search modes toggled by the user: "Month / Day" (MM/DD) and "Birth Year" (YYYY). Each mode has its own input validation and calls a different AI endpoint. A `lastSearchRef` prevents duplicate API calls if the user submits the same input while results are already showing.
+Two search modes toggled by the user: "Month / Day" (MM/DD) and "Birth Year" (YYYY). Each mode has its own input, validation, and API call. A `lastSearchRef` prevents duplicate API calls if the user submits the same input while results are already showing. The `/` character is auto-inserted after the month digits in the MM/DD input for convenience.
 
 #### `AdminPage.jsx` (~3,327 lines)
 
@@ -974,7 +1042,7 @@ The entire admin interface in one file.
 
 **`ErrorBoundary` class component:** Wraps the admin event modal. If the modal crashes due to bad data, it renders the error stack trace instead of crashing the whole admin page.
 
-**`AvatarCropModal`:** Uses `react-easy-crop` to let users crop a team photo to a circular area before uploading. The cropped result is converted to a base64 data URI and sent to the server. The original full-size file is never uploaded.
+**`AvatarCropModal`:** Uses `react-easy-crop` to let users crop a team photo to a circular area before uploading. The canvas clips the image to a circle at `image/jpeg` quality 0.9, converts to a base64 data URI, and sends it to the server. The original full-size file is never uploaded. Maximum output size is 2 MB (`MAX_PHOTO_BYTES` constant).
 
 **Login UI flow:**
 
@@ -985,13 +1053,17 @@ The entire admin interface in one file.
 
 **Admin tabs:**
 
-- **Events:** Table of all events. Clicking edit opens `AdminEventModal` which has the full form plus the article image management section at the bottom.
-- **About Page:** Inline editing of about sections. `display_order` controls the order on the public about page — set it manually to any integer.
-- **Team:** Add/edit/remove team members. Photo upload triggers the crop modal workflow.
-- **Accounts** _(super admin only)_: Add/edit/delete admin user accounts.
-- **Profile** _(non-super admins)_: Update own password and security question/answer.
+- **Events:** Searchable table of all events filterable by year. Clicking a row opens `AdminEventModal`. There are two modes within the modal:
+  - **Edit mode** — opens an existing event; article images load immediately from the API and uploads go to the server in real time.
+  - **Create mode** — opens a blank form; article images added during create are **queued locally** (stored in `createQueuedMedia` state with a local object URL for preview) and only uploaded to the server after the event is saved and a real event ID exists. This prevents orphaned media uploads for events that are cancelled before saving.
+- **About Page:** Inline editing of about sections. `display_order` controls the order on the public about page.
+- **Team:** Add/edit/remove team members with photo upload and crop workflow.
+- **Accounts** _(super admin only)_: Add/edit/delete admin user accounts. All fields (username, password, security question, security answer) are required when creating a new account.
+- **Profile** _(non-super admins)_: Update own password and security question/answer independently.
 
-**Global blocker overlay:** While `isSaving` is true, a full-screen semi-transparent overlay is shown to prevent double-submission during saves.
+**Add Article Modal:** Article uploads are handled through a dedicated modal (`addArticleOpen` state) that requires both a file and a caption before allowing submission — both fields show validation errors if missing. In create mode the file is stored locally; in edit mode it uploads immediately to the server.
+
+**Global blocker overlay:** While `isSaving` / `teamBlocking` / `mediaUploadBusy` is true, a full-screen semi-transparent overlay prevents double-submission. Each section has its own blocking state with a text label (e.g. "Saving team member…", "Uploading article image 2 of 3…").
 
 ### 9.3. Dependencies Explained
 
@@ -1006,17 +1078,26 @@ The entire admin interface in one file.
 
 #### Backend (Node.js runtime — not bundled)
 
-| Package               | Why it's needed                                                                                                            |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `express`             | HTTP server and routing (v5)                                                                                               |
-| `cors`                | Sets `Access-Control-Allow-Origin` headers so the Vercel frontend can call the API                                         |
-| `mysql2`              | MySQL client with promise-based API for all database queries                                                               |
-| `dotenv`              | Loads `.env` file into `process.env` at server startup                                                                     |
-| `bcrypt` / `bcryptjs` | Bcrypt password hashing. Both packages installed; `admin.js` uses `bcryptjs`                                               |
-| `multer`              | Parses `multipart/form-data` requests for article uploads. Uses `memoryStorage()` — files held in RAM, not written to disk |
-| `@aws-sdk/client-s3`  | AWS S3-compatible SDK. DigitalOcean Spaces uses the S3 API, so this package works directly                                 |
-| `openai`              | Official OpenAI Node.js SDK for GPT-4o calls                                                                               |
-| `concurrently`        | Dev convenience — runs both `database.js` and `admin.js` simultaneously via `npm run start:api`                            |
+| Package               | Why it's needed                                                                                                                                |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `express`             | HTTP server and routing (v5)                                                                                                                   |
+| `cors`                | Sets `Access-Control-Allow-Origin` headers so the Vercel frontend can call the API                                                             |
+| `mysql2`              | MySQL client with promise-based API for all database queries                                                                                   |
+| `dotenv`              | Loads `.env` file into `process.env` at server startup                                                                                         |
+| `bcrypt` / `bcryptjs` | Bcrypt password hashing. Both packages installed; `admin.js` uses `bcryptjs`                                                                   |
+| `multer`              | Parses `multipart/form-data` requests for article uploads. Uses `memoryStorage()` — files held in RAM, not written to disk                     |
+| `formidable`          | Form parsing library — installed as a dependency but not currently used directly in the main API files; may be used in future file upload work |
+| `@aws-sdk/client-s3`  | AWS S3-compatible SDK. DigitalOcean Spaces uses the S3 API, so this package works directly                                                     |
+| `openai`              | Official OpenAI Node.js SDK for GPT-4o calls                                                                                                   |
+| `concurrently`        | Dev convenience — runs both `database.js` and `admin.js` simultaneously via `npm run start:api`                                                |
+
+#### Dev Tools
+
+| Package                  | Why it's needed                                              |
+| ------------------------ | ------------------------------------------------------------ |
+| `eslint` + plugins       | Lints React JSX, hooks rules, and refresh safety             |
+| `eslint-config-prettier` | Disables ESLint rules that conflict with Prettier formatting |
+| `prettier`               | Code formatter — run manually or integrate with your editor  |
 
 ---
 
@@ -1030,9 +1111,22 @@ DigitalOcean Spaces is an S3-compatible object storage service. The project uses
 newspaper-articles/          ← bucket name
 ├── articles/
 │   └── event-{eventId}-{timestamp}-{12-char-hex}.{ext}
-└── team/
-    └── member-{memberId}-{timestamp}-{10-char-hex}.{ext}
+├── team/
+│   └── member-{memberId}-{timestamp}-{10-char-hex}.{ext}
+└── Background/
+    └── Videos/
+        ├── Sun.webm       ← ambient background video for SpaceVideos component
+        └── Earth.webm     ← ambient background video for SpaceVideos component
 ```
+
+**Two Spaces URL formats — important distinction:**
+
+| Format     | Example                                                          | Used for                                                                                                            |
+| ---------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Origin URL | `https://newspaper-articles.nyc3.digitaloceanspaces.com/...`     | Stored in the database (`media_assets.url`, `team_members.image_url`). Used by the API for deletion key extraction. |
+| CDN URL    | `https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/...` | Hardcoded in `SpaceVideos.jsx` for the background videos. Delivers files via edge cache for faster load times.      |
+
+The CDN URL (`nyc3.cdn.digitaloceanspaces.com`) is not used for dynamically uploaded content because the API builds URLs from `SPACES_ORIGIN_URL`. If you want CDN delivery for article images in the future, you would update `SPACES_ORIGIN_URL` in `.env` to use the CDN subdomain — but be aware this changes all URLs stored in the database going forward.
 
 ### How Article Uploads Work (Multer → Spaces)
 
@@ -1415,6 +1509,16 @@ pm2 restart all                     # Try restarting
 2. The code also allows all `*.vercel.app` URLs for Vercel preview deployments
 3. Check the browser console for the specific blocked origin message
 
+### Background Videos Not Showing
+
+The `SpaceVideos` component loads `.webm` files from the CDN URL in Spaces. If they don't appear:
+
+1. Check the browser console for 403/404 errors on the `.webm` URLs
+2. Verify the files exist in Spaces under `Background/Videos/Sun.webm` and `Background/Videos/Earth.webm`
+3. Confirm the files have `public-read` ACL in the Spaces dashboard
+4. The videos only appear on `/`, `/live`, and `/birthday` — they intentionally don't render on `/about` or `/admin`
+5. On mobile (<600px) the videos render at 30% opacity — this is intentional per the CSS
+
 ### Images Not Loading
 
 1. Verify `SPACES_KEY`, `SPACES_SECRET`, `SPACES_BUCKET`, `SPACES_ORIGIN_URL` in `.env`
@@ -1566,6 +1670,16 @@ pm2 status           # Confirm both online
 └── .env               # ALL credentials — NEVER commit this file
 ```
 
+### Key Frontend Files
+
+```
+SpaceVideos.jsx        # Ambient background videos — edit PAGE_CONFIG to adjust per-route
+Pages/Home/HomePage.jsx    # Timeline + overlays
+Pages/Admin/AdminPage.jsx  # Full admin portal
+utils.js               # API constants + shared date/sort helpers
+vercel.json            # API proxy rules + SPA fallback — must exist for routing to work
+```
+
 ### Port Map
 
 | Port | Server          | Purpose                             |
@@ -1588,4 +1702,4 @@ pm2 status           # Confirm both online
 
 ---
 
-_Document Version: 3.0 — February 2026_
+_Document Version: 4.0 — February 2026_
