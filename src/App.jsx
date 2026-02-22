@@ -13,7 +13,7 @@ import AboutPage from './Pages/About/AboutPage';
 import LivePage from './Pages/Live/LivePage';
 import BirthdayPage from './Pages/Birthday/BirthdayPage';
 import AdminPage from './Pages/Admin/AdminPage';
-/* import SpaceVideos from './SpaceVideos'; */
+import BackgroundVideos from './BackgroundVideos';
 
 /* ---- Derived YEAR helpers for the topbar search ---- */
 function buildYearData(events) {
@@ -218,7 +218,7 @@ export default function App() {
   return (
     <div className="app">
       {/* ---- SPACE VIDEOS (ambient background layer) ---- */}
-      <SpaceVideos />
+      <BackgroundVideos />
 
       {/* ---- TOPBAR ---- */}
       <header
