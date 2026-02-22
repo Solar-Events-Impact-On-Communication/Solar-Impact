@@ -13,7 +13,7 @@ import AboutPage from './Pages/About/AboutPage';
 import LivePage from './Pages/Live/LivePage';
 import BirthdayPage from './Pages/Birthday/BirthdayPage';
 import AdminPage from './Pages/Admin/AdminPage';
-import SpaceVideos from './SpaceVideos';
+/* import SpaceVideos from './SpaceVideos'; */
 
 /* ---- Derived YEAR helpers for the topbar search ---- */
 function buildYearData(events) {
