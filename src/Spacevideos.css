@@ -1,0 +1,112 @@
+/* =========================================================
+   Solar Events — SpaceVideos.css
+   Ambient background video overlays
+   ========================================================= */
+
+/* Fixed container sits above body::before background (z-index: -1)
+   but below all page UI. pointer-events: none ensures it never
+   blocks any clicks or interactions. */
+.space-videos {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Base video styles shared by sun and earth */
+.space-video {
+  position: absolute;
+  mix-blend-mode: screen; /* removes black background cleanly */
+  border-radius: 50%; /* keeps circular shape */
+}
+
+/* Sun — slightly brighter, slower float */
+.space-video--sun {
+  filter: brightness(1.05);
+  animation:
+    spaceVideoFadeIn 2s ease forwards,
+    spaceFloatSun 14s ease-in-out 2s infinite;
+}
+
+/* Earth — natural saturation, longer float cycle */
+.space-video--earth {
+  filter: brightness(0.95) saturate(1.1);
+  animation:
+    spaceVideoFadeIn 2.6s ease forwards,
+    spaceFloatEarth 18s ease-in-out 2.6s infinite;
+}
+
+/* =========================================================
+   Float animations — gentle organic drift
+   ========================================================= */
+@keyframes spaceFloatSun {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  25% {
+    transform: translate(-8px, -12px) scale(1.01);
+  }
+  50% {
+    transform: translate(4px, -6px) scale(1.02);
+  }
+  75% {
+    transform: translate(-4px, 8px) scale(1.01);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes spaceFloatEarth {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  30% {
+    transform: translate(6px, -10px) scale(1.01);
+  }
+  60% {
+    transform: translate(-8px, -4px) scale(1.015);
+  }
+  80% {
+    transform: translate(4px, 8px) scale(1.005);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* Fade + scale in on first render */
+@keyframes spaceVideoFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   Responsive — scale down on smaller screens
+   ========================================================= */
+@media (max-width: 900px) {
+  .space-video--sun {
+    width: 52vw !important;
+  }
+  .space-video--earth {
+    width: 44vw !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .space-video--sun {
+    width: 65vw !important;
+    opacity: 0.3 !important;
+  }
+  .space-video--earth {
+    width: 55vw !important;
+    opacity: 0.3 !important;
+  }
+}

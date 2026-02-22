@@ -1,5 +1,5 @@
 //
-// admin.js — Admin Authentication + Event/Media/About/Team Management API
+// admin.js â€” Admin Authentication + Event/Media/About/Team Management API
 //
 
 // =========================================================
@@ -836,6 +836,77 @@ function registerMediaRoutes(appInstance, pool, uploadInstance) {
 
         if (result.affectedRows === 0) {
           return sendNotFound(res, 'Media asset not found.');
+        }
+
+        res.json({ success: true });
+      } catch (err) {
+        console.error('[ADMIN] Error deleting media asset:', err);
+        res.status(500).json({ error: 'Failed to delete media asset' });
+      }
+    })
+  );
+
+  // Nested routes — match the URL shape the frontend actually uses:
+  // PUT  /api/admin/events/:eventId/media/:mediaId  (caption update)
+  // DELETE /api/admin/events/:eventId/media/:mediaId
+
+  appInstance.put(
+    '/api/admin/events/:eventId/media/:mediaId',
+    asyncRoute(async (req, res) => {
+      try {
+        const mediaId = req.params.mediaId;
+        const { caption } = req.body || {};
+
+        const [result] = await pool.query(`UPDATE media_assets SET caption = ? WHERE id = ?`, [
+          caption || null,
+          mediaId,
+        ]);
+
+        if (result.affectedRows === 0) {
+          return sendNotFound(res, 'Media asset not found.');
+        }
+
+        res.json({ success: true });
+      } catch (err) {
+        console.error('[ADMIN] Error updating media caption:', err);
+        res.status(500).json({ error: 'Failed to update media caption' });
+      }
+    })
+  );
+
+  appInstance.delete(
+    '/api/admin/events/:eventId/media/:mediaId',
+    asyncRoute(async (req, res) => {
+      try {
+        const mediaId = req.params.mediaId;
+
+        // Fetch the URL first so we can delete the file from Spaces
+        const [rows] = await pool.query(`SELECT url FROM media_assets WHERE id = ?`, [mediaId]);
+
+        if (!rows.length) {
+          return sendNotFound(res, 'Media asset not found.');
+        }
+
+        // Delete the DB record
+        await pool.query(`DELETE FROM media_assets WHERE id = ?`, [mediaId]);
+
+        // Best-effort delete from Spaces — don't fail the request if this errors
+        try {
+          const currentUrl = rows[0].url || null;
+          if (currentUrl) {
+            const { bucket, publicBase } = requireSpacesBucketAndPublicBase();
+            const base = stripTrailingSlashes(publicBase);
+            if (String(currentUrl).startsWith(base + '/')) {
+              const key = String(currentUrl).slice((base + '/').length);
+              const spaces = buildSpacesClient();
+              await spaces.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+            }
+          }
+        } catch (deleteErr) {
+          console.warn(
+            '[ADMIN] Warning: failed to delete Spaces object:',
+            deleteErr?.message || deleteErr
+          );
         }
 
         res.json({ success: true });
