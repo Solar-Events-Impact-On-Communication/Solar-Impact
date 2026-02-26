@@ -9,42 +9,42 @@ export default function LivePage() {
     flare: {
       id: 'flare',
       label: 'LATEST SOLAR FLARE',
-      value: 'X1.2',
-      sub: 'April 5, 2024',
-      status: 'elevated',
-      statusLabel: 'Elevated Activity',
+      value: 'Data Not Available',
+      sub: 'N/A',
+      status: 'normal',
+      statusLabel: 'N/A',
       description:
-        'Solar flares are rated A, B, C, M, or X — each letter is 10× stronger than the last. X is the most powerful class. Flares can disrupt radio communications, GPS, and power grids.',
+        "Solar flares are sudden bursts of radiation from the Sun's surface, rated A, B, C, M, or X with each letter being 10x stronger than the last. X is the most powerful class. They reach Earth in about 8 minutes and can disrupt radio communications, GPS accuracy, and power grids with a possibility for aurora displays.",
     },
     storm: {
       id: 'storm',
       label: 'GEOMAGNETIC STORM',
-      value: 'G2',
-      sub: 'Moderate',
-      status: 'moderate',
-      statusLabel: 'Moderate',
+      value: 'Data Not Available',
+      sub: 'N/A',
+      status: 'normal',
+      statusLabel: 'N/A',
       description:
-        'Geomagnetic storms are rated G1–G5. Higher ratings mean stronger disruptions to Earth.',
+        "Geomagnetic storms occur when energy from the solar wind interacts with Earth's magnetic field.They are rated G1 through G5 with G5 being the highest. G1 and G2 storms can affect satellite operations and cause auroras visible at high latitudes. G3 and above can disrupt power grids and degrade GPS accuracy.",
     },
     wind: {
       id: 'wind',
       label: 'SOLAR WIND SPEED',
-      value: '532',
-      sub: 'km/s',
+      value: 'Data Not Available',
+      sub: 'N/A',
       status: 'normal',
-      statusLabel: 'Normal Range',
+      statusLabel: 'N/A',
       description:
-        'Solar wind speed is measured in km/s. Very high speeds can trigger geomagnetic storms.',
+        "Solar wind is a constant stream of charged particles flowing outward from the Sun, measured in km/s. Typical speeds range from 300 to 500 km/s. Speeds above 700 km/s are considered high and can compress Earth's magnetic field, triggering geomagnetic storms.",
     },
     sunspot: {
       id: 'sunspot',
       label: 'SUNSPOT NUMBER',
-      value: '79',
-      sub: 'Daily count',
+      value: 'Data Not Available',
+      sub: 'N/A',
       status: 'normal',
-      statusLabel: 'Solar Maximum Cycle',
+      statusLabel: 'N/A',
       description:
-        'Sunspot counts vary from 0 (quiet) to over 200 (very active). The Sun follows an 11-year cycle.',
+        "Sunspots are temporary dark regions on the Sun's surface caused by intense magnetic activity. Their daily count ranges from 0 during solar minimum to over 200 at solar maximum. The Sun follows an 11-year activity cycle, with more sunspots meaning more flares and solar storms.",
     },
   });
 
@@ -87,13 +87,20 @@ export default function LivePage() {
       .then((res) => {
         const f = res.data[0];
         const flareClass = f?.max_class ?? 'N/A';
-        const flareDate = f?.max_time
-          ? new Date(f.max_time).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          : 'Unknown';
+        let flareDate = 'Unknown';
+        if (f?.max_time) {
+          try {
+            const raw = f.max_time.replace(' ', 'T').replace(/Z?$/, 'Z');
+            const d = new Date(raw);
+            if (!isNaN(d.getTime())) {
+              flareDate = d.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              });
+            }
+          } catch (_) {}
+        }
         updateMetric('flare', { value: flareClass, sub: flareDate, ...flareStatus(flareClass) });
       })
       .catch(console.error);
@@ -123,6 +130,7 @@ export default function LivePage() {
         const speed = item.speed ?? 'N/A';
         updateMetric('wind', {
           value: speed,
+          sub: 'km/s',
           status: speed < 400 ? 'slow' : speed < 700 ? 'normal' : 'fast',
           statusLabel: speed < 400 ? 'Below Normal' : speed < 700 ? 'Normal Range' : 'High Speed',
         });
@@ -133,9 +141,17 @@ export default function LivePage() {
     axios
       .get(NOAA_API_URL + 'json/solar-cycle/observed-solar-cycle-indices.json')
       .then((res) => {
-        const ssn = res.data[res.data.length - 1]?.ssn ?? 0;
+        const latest = res.data[res.data.length - 1];
+        const ssn = latest?.ssn ?? 0;
+        const ssnDate = latest?.time_tag
+          ? new Date(latest.time_tag).toLocaleDateString('en-US', {
+              month: 'long',
+              year: 'numeric',
+            })
+          : 'Latest Reading';
         updateMetric('sunspot', {
           value: ssn,
+          sub: ssnDate,
           status: ssn < 50 ? 'quiet' : ssn < 150 ? 'active' : 'very-active',
           statusLabel:
             ssn < 50 ? 'Solar Minimum' : ssn < 150 ? 'Normal Activity' : 'Solar Maximum Cycle',
@@ -152,10 +168,7 @@ export default function LivePage() {
           LIVE DATA FEED
         </div>
         <h1 className="live-page-title">Solar Activity Monitor</h1>
-        <p className="live-page-desc">
-          Real-time solar weather data. Values shown are placeholders — live integration coming
-          soon.
-        </p>
+        <p className="live-page-desc">Real-time solar weather data sourced from NASA & NOAA</p>
         <div className="live-page-rule" />
       </div>
       <div className="live-grid">
@@ -186,8 +199,8 @@ export default function LivePage() {
       <div className="live-notice">
         <div className="live-notice-icon">⚠</div>
         <div className="live-notice-text">
-          <strong>Placeholder Data</strong> — values are static for demo. Live data will come from
-          NASA/NOAA APIs.
+          <strong>Data is sourced live from NASA & NOAA</strong> — Values may be unavailable during
+          periods of API downtime.
         </div>
       </div>
     </div>
