@@ -90,9 +90,9 @@
 /* Row grid: spine col + content col */
 .tl-row {
   display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 0 20px;
-  margin-bottom: 24px;
+  grid-template-columns: 32px 1fr;
+  gap: 0 28px;
+  margin-bottom: 56px;
 }
 
 .tl-spine {
@@ -103,17 +103,18 @@
 }
 
 .tl-spine-line-top {
-  width: 1px;
+  width: 2px;
+  min-height: 40px;
   flex: 1;
-  background: var(--border);
+  background: var(--border-bright);
 }
 
 .tl-spine-node {
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--border-bright);
-  border: 2px solid var(--text-dim);
+  background: var(--text-dim);
+  border: 3px solid var(--text-muted);
   flex-shrink: 0;
   transition:
     background 0.2s,
@@ -123,13 +124,14 @@
 .tl-row--open .tl-spine-node {
   background: var(--solar);
   border-color: var(--solar);
-  box-shadow: 0 0 8px var(--solar-dim);
+  box-shadow: 0 0 12px var(--solar-dim);
 }
 
 .tl-spine-line {
-  width: 1px;
+  width: 2px;
+  min-height: 40px;
   flex: 1;
-  background: var(--border);
+  background: var(--border-bright);
 }
 
 /* Year button */
@@ -164,7 +166,7 @@
 }
 .tl-year-num {
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -172,7 +174,7 @@
 }
 .tl-year-count {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
 }
@@ -230,13 +232,13 @@
 }
 .tl-event-date {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--solar);
   letter-spacing: 0.05em;
 }
 .tl-event-type {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   color: var(--data);
   background: var(--data-dim);
   padding: 3px 10px;
@@ -245,19 +247,19 @@
 }
 .tl-event-location {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   color: var(--text-dim);
   letter-spacing: 0.03em;
 }
 .tl-event-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   color: var(--text);
   line-height: 1.3;
 }
 .tl-event-desc {
-  font-size: 0.92rem;
+  font-size: 1.08rem;
   color: var(--text-muted);
   line-height: 1.6;
   display: -webkit-box;
@@ -267,7 +269,7 @@
 }
 .tl-event-cta {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   color: var(--data);
   letter-spacing: 0.06em;
   margin-top: 4px;
@@ -353,7 +355,7 @@
     margin-left: 0;
   }
   .tl-year-num {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 }
 

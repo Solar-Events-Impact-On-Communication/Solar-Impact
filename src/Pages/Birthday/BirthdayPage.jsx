@@ -52,15 +52,45 @@ export default function BirthdayPage() {
 
   const handleDateInput = (e) => {
     let val = e.target.value.replace(/[^\d/]/g, '');
+
+    // Auto-insert slash after 2 month digits
     if (val.length === 2 && !val.includes('/') && dateInput.length < 2) val = val + '/';
+
     if (val.length > 5) val = val.slice(0, 5);
+
+    const parts = val.split('/');
+    const rawMonth = parts[0] || '';
+    const rawDay = parts.length > 1 ? parts[1] : null;
+
+    // Block month > 12 once both digits are entered
+    if (rawMonth.length === 2) {
+      const m = parseInt(rawMonth, 10);
+      if (m > 12) return;
+    }
+
+    // Block day > 31 (also block first digit > 3 to prevent e.g. "4X")
+    if (rawDay !== null) {
+      if (rawDay.length >= 1) {
+        const firstDigit = parseInt(rawDay[0], 10);
+        if (firstDigit > 3) return;
+      }
+      if (rawDay.length === 2) {
+        const d = parseInt(rawDay, 10);
+        if (d > 31) return;
+      }
+    }
+
     setDateInput(val);
     setDateInputError('');
   };
 
   const handleYearInput = (e) => {
-    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    setYearInput(val);
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 4);
+
+    // Block years above current year once 4 digits are entered
+    if (raw.length === 4 && parseInt(raw, 10) > CURRENT_YEAR) return;
+
+    setYearInput(raw);
     setYearInputError('');
   };
 
@@ -122,8 +152,14 @@ export default function BirthdayPage() {
 
   const submitYear = async () => {
     const yearNum = parseInt(yearInput, 10);
-    if (!yearInput || isNaN(yearNum) || yearNum < 1 || yearNum > CURRENT_YEAR) {
-      setYearInputError(`Please enter a valid year between 1 and ${CURRENT_YEAR}.`);
+    if (
+      !yearInput ||
+      yearInput.length < 4 ||
+      isNaN(yearNum) ||
+      yearNum < 1 ||
+      yearNum > CURRENT_YEAR
+    ) {
+      setYearInputError(`Please enter a valid 4-digit year between 0001 and ${CURRENT_YEAR}.`);
       return;
     }
 
