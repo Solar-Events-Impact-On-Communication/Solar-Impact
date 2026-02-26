@@ -83,7 +83,7 @@ export default function LivePage() {
   useEffect(() => {
     // Flare
     axios
-      .get(NOAA_API_KEY + 'json/goes/primary/xray-flares-latest.json')
+      .get(NOAA_API_URL + 'json/goes/primary/xray-flares-latest.json')
       .then((res) => {
         const f = res.data[0];
         const flareClass = f?.max_class ?? 'N/A';
@@ -100,7 +100,7 @@ export default function LivePage() {
 
     // Geomagnetic storm
     axios
-      .get(NOAA_API_KEY + 'products/noaa-scales.json')
+      .get(NOAA_API_URL + 'products/noaa-scales.json')
       .then((res) => {
         const entry = Object.values(res.data)[1]?.G;
         if (entry)
@@ -115,7 +115,7 @@ export default function LivePage() {
 
     // Solar wind
     axios
-      .get(NOAA_API_KEY + 'products/solar-wind/plasma-1-day.json')
+      .get(NOAA_API_URL + 'products/solar-wind/plasma-1-day.json')
       .then((res) => {
         const headers = res.data[0];
         const latest = res.data[res.data.length - 1];
@@ -131,7 +131,7 @@ export default function LivePage() {
 
     // Sunspot
     axios
-      .get(NOAA_API_KEY + 'json/solar-cycle/observed-solar-cycle-indices.json')
+      .get(NOAA_API_URL + 'json/solar-cycle/observed-solar-cycle-indices.json')
       .then((res) => {
         const ssn = res.data[res.data.length - 1]?.ssn ?? 0;
         updateMetric('sunspot', {
