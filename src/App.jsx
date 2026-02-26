@@ -231,8 +231,7 @@ export default function App() {
             onClick={() => handleNavClick('/')}
             type="button"
           >
-            <span className="brand-mark">☀</span>
-            <span className="brand-text">SOLAR EVENTS</span>
+            <span className="brand-text">SPACE WEATHER HISTORY</span>
           </button>
 
           <div
@@ -442,7 +441,7 @@ export default function App() {
 
       {/* ---- FOOTER ---- */}
       <footer className="footer">
-        <span className="footer-copy">© {new Date().getFullYear()} Solar Events</span>
+        <span className="footer-copy">© {new Date().getFullYear()} Space Weather History</span>
         <span className="footer-divider">·</span>
         <span className="footer-tagline">
           Documenting the sun's impact on communication throughout human history

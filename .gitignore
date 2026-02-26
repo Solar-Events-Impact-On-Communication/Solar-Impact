@@ -43,3 +43,6 @@ ca-certificate.crt
 # Backend (moved to separate repo)
 api/
 lib/
+
+# Ignore dev read me file
+README-HANDOFF.md

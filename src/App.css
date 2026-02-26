@@ -133,8 +133,8 @@ a {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
-  letter-spacing: 0.18em;
+  font-size: clamp(1.1rem, 1.4vw, 1.5rem);
+  letter-spacing: 0.07em;
   color: var(--text);
   background: none;
   border: none;
@@ -575,7 +575,24 @@ a {
    ========================================================= */
 @media (max-width: 600px) {
   .brand {
-    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    font-size: clamp(0.6rem, 3.2vw, 0.78rem);
+    letter-spacing: 0.06em;
+  }
+  .menu-button {
+    padding: 7px 10px;
+    font-size: 0.72rem;
+  }
+  .menu-text {
+    font-size: 0.72rem;
+  }
+  .menu-icon span {
+    width: 14px;
+  }
+
+  /* On single-line pages, shift brand right so it clears the menu button */
+  .topbar:not(.topbar--timeline) .topbar-brand {
+    left: 60%;
+    transform: translateX(-50%);
   }
 }
 
@@ -591,7 +608,8 @@ a {
     width: 16px;
   }
   .brand {
-    font-size: clamp(0.95rem, 3vw, 1.2rem);
+    font-size: clamp(0.75rem, 2.4vw, 1.1rem);
+    letter-spacing: 0.08em;
   }
   .nav-drawer {
     padding-top: calc(var(--topbar-h) + 12px);
@@ -621,10 +639,22 @@ a {
     transform: none;
     text-align: center;
     align-self: center;
+    letter-spacing: 0.18em;
   }
   .topbar--timeline .topbar-tools-row {
     width: 100%;
     justify-content: space-between;
+  }
+  /* Wider menu button on stacked row */
+  .topbar--timeline .menu-button {
+    padding: 8px 28px;
+    font-size: 0.95rem;
+  }
+  .topbar--timeline .menu-text {
+    font-size: 0.95rem;
+  }
+  .topbar--timeline .menu-icon span {
+    width: 20px;
   }
   .topbar--timeline .year-search {
     margin-left: 0;
@@ -642,9 +672,26 @@ a {
   .topbar {
     height: var(--topbar-h);
   }
-  .topbar--timeline .topbar-brand {
+  /* Non-timeline pages: keep absolute center (no right-side tools) */
+  .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+  /* Timeline desktop: brand offset left of true center to account for
+     year tools being wider than the menu button on the right */
+  .topbar--timeline .topbar-brand {
+    position: absolute;
+    left: 42%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .topbar--timeline .topbar-inner {
+    display: flex;
+    align-items: center;
+  }
+  .topbar--timeline .topbar-tools-row {
+    width: 100%;
+    justify-content: space-between;
   }
 }
