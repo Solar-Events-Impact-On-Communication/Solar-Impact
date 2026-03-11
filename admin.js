@@ -866,7 +866,7 @@ function registerMediaRoutes(appInstance, pool, uploadInstance) {
           return sendNotFound(res, 'Media asset not found.');
         }
 
-        res.json({ success: true });
+        res.json({ success: true, caption: caption?.trim() || null });
       } catch (err) {
         console.error('[ADMIN] Error updating media caption:', err);
         res.status(500).json({ error: 'Failed to update media caption' });
