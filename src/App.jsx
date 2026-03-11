@@ -231,7 +231,12 @@ export default function App() {
             onClick={() => handleNavClick('/')}
             type="button"
           >
-            <span className="brand-text">SPACE WEATHER HISTORY</span>
+            <span className="brand-text brand-text--full">SPACE WEATHER HISTORY</span>
+            <span className="brand-text brand-text--short">
+              SPACE WEATHER
+              <br />
+              HISTORY
+            </span>
           </button>
 
           <div

@@ -164,6 +164,9 @@ a {
   color: var(--solar);
   line-height: 1;
 }
+.brand-text--short {
+  display: none;
+}
 
 .topbar-tools-row {
   width: 100%;
@@ -589,17 +592,24 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
-  /* Brand — single rule, compact */
-  .brand {
-    font-size: clamp(0.5rem, 2.5vw, 0.65rem);
-    letter-spacing: 0.01em;
+  /* Brand — show 2-line short version on small screens */
+  .brand-text--full {
+    display: none;
   }
-  .topbar-brand {
-    overflow: hidden;
-    max-width: 45%;
+  .brand-text--short {
+    display: inline;
+  }
+  .brand {
+    font-size: clamp(0.6rem, 2.4vw, 0.72rem);
+    letter-spacing: 0.06em;
+    text-align: center;
+    line-height: 1.2;
   }
   .brand-mark {
     display: none;
+  }
+  .topbar:not(.topbar--timeline) {
+    height: 56px;
   }
   /* Menu button */
   .menu-button {
