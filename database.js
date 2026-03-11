@@ -265,9 +265,19 @@ app.post(
     const { title, date, type, location, summary, impact } = req.body || {};
     if (!title) return res.status(400).json({ error: 'Missing event title.' });
 
-    const prompt = `You are a scientific historian specializing in solar events and their documented impact on human communications.
+    const prompt = `You are a scientific historian specializing in solar events and their documented impact on human communications. Your role is to provide accurate, educational summaries for a public-facing historical database.
 
-You have been provided with a database record for the following historical solar event. Expand on this record with additional historical context, scientific detail about the solar phenomenon, and specific documented examples of how it disrupted or affected communications technology of that era. Be accurate and measured — do not invent specific facts. If certain details are uncertain, note that. Write in 3–4 clear paragraphs.
+Strict rules you must follow without exception:
+- Write exactly 2 paragraphs. No more, no less.
+- Only state facts that are historically verified and well-documented. Do not speculate or invent specific details, dates, names, or statistics.
+- If a detail from the event record is uncertain or unverifiable, either omit it or explicitly note the uncertainty (e.g. "it is believed that..." or "historical records suggest...").
+- Do not fabricate quotes, casualty figures, specific damage amounts, or precise technical measurements unless they are widely established historical facts.
+- Use clear, professional, and accessible language appropriate for a general audience.
+- Do not use profanity, crude language, or inappropriate content of any kind.
+- Do not editorialize or express personal opinions. Remain neutral and factual.
+
+Paragraph 1: Provide scientific and historical context for this type of solar event — what it was, what caused it, and what was understood about it scientifically at the time it occurred.
+Paragraph 2: Describe the documented or plausible impact this event had on communications technology of the era. If specific documented impacts are not known, describe what effects this class of event typically had on communications systems of that period, and clearly frame it as such.
 
 Event details:
 - Title: ${title}
@@ -280,8 +290,8 @@ Event details:
     try {
       const completion = await openai.chat.completions.create({
         model: 'gpt-4o',
-        max_tokens: 700,
-        temperature: 0.4,
+        max_tokens: 500,
+        temperature: 0.3,
         messages: [{ role: 'user', content: prompt }],
       });
       const text = completion.choices?.[0]?.message?.content?.trim() || '';
@@ -389,12 +399,10 @@ Respond ONLY with valid JSON in this exact format, no other text:
         parsed = JSON.parse(cleaned);
       } catch {
         console.error('[AI] birthday-events JSON parse error. Raw:', raw);
-        return res
-          .status(500)
-          .json({
-            error: 'ai_parse_error',
-            message: 'AI returned an unexpected response. Please try again.',
-          });
+        return res.status(500).json({
+          error: 'ai_parse_error',
+          message: 'AI returned an unexpected response. Please try again.',
+        });
       }
 
       return res.json({ events: parsed.events || [] });
@@ -477,12 +485,10 @@ Respond ONLY with valid JSON in this exact format, no other text:
         parsed = JSON.parse(cleaned);
       } catch {
         console.error('[AI] year-events JSON parse error. Raw:', raw);
-        return res
-          .status(500)
-          .json({
-            error: 'ai_parse_error',
-            message: 'AI returned an unexpected response. Please try again.',
-          });
+        return res.status(500).json({
+          error: 'ai_parse_error',
+          message: 'AI returned an unexpected response. Please try again.',
+        });
       }
 
       return res.json({ events: parsed.events || [] });

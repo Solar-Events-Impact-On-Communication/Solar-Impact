@@ -12,7 +12,7 @@
 }
 .live-page-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 1rem;
   letter-spacing: 0.2em;
   color: var(--success);
   margin-bottom: 12px;
@@ -31,14 +31,14 @@
 .live-page-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
   color: var(--text);
   line-height: 1.1;
   margin-bottom: 12px;
 }
 .live-page-desc {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.6;
   max-width: 540px;
   margin-bottom: 24px;
@@ -122,7 +122,7 @@
 
 .live-card-label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   letter-spacing: 0.12em;
   color: var(--text);
   margin-bottom: 2px;
@@ -137,7 +137,7 @@
   flex-shrink: 0;
 }
 .live-card-unit {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text);
 }
 .live-card-footer {
@@ -168,7 +168,7 @@
 }
 .live-card-status-label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   color: var(--text);
   letter-spacing: 0.05em;
 }
@@ -176,7 +176,7 @@
 /* Hover hint */
 .live-card-hint {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   color: var(--data);
   letter-spacing: 0.06em;
   margin-left: auto;
@@ -186,13 +186,13 @@
 /* Back content */
 .live-card-back-label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   letter-spacing: 0.12em;
   color: var(--solar);
   flex-shrink: 0;
 }
 .live-card-back-desc {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text);
   line-height: 1.6;
   overflow: hidden;
@@ -220,7 +220,7 @@
   padding-top: 2px;
 }
 .live-notice-text {
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -235,5 +235,38 @@
   }
   .live-grid {
     grid-template-columns: 1fr;
+  }
+  .live-page-label {
+    font-size: 0.82rem;
+  }
+  .live-page-desc {
+    font-size: 1rem;
+  }
+  .live-card-label {
+    font-size: 0.72rem;
+  }
+  .live-card-status-label {
+    font-size: 0.75rem;
+  }
+  .live-card-hint {
+    font-size: 0.68rem;
+  }
+  .live-card-back-desc {
+    font-size: 0.85rem;
+  }
+  .live-notice-text {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .live-page-title {
+    font-size: clamp(1.9rem, 9vw, 2.4rem);
+  }
+  .live-page-desc {
+    font-size: 0.9rem;
+  }
+  .live-card-value {
+    font-size: 2.4rem;
   }
 }

@@ -12,7 +12,7 @@
 }
 .about-page-label {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   letter-spacing: 0.2em;
   color: var(--solar);
   margin-bottom: 12px;
@@ -20,7 +20,7 @@
 .about-page-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
   color: var(--text);
   line-height: 1.1;
   margin-bottom: 24px;
@@ -36,7 +36,7 @@
 .about-error,
 .about-empty {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   padding: 24px 0;
   display: flex;
@@ -68,7 +68,7 @@
 }
 .about-section-index {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   padding-top: 6px;
   letter-spacing: 0.05em;
@@ -76,14 +76,14 @@
 .about-section-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.45rem;
   color: var(--text);
   margin-bottom: 12px;
 }
 .about-section-text {
   color: var(--text);
   line-height: 1.75;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 .about-team-header {
@@ -92,7 +92,7 @@
 .about-team-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--text);
   margin-top: 10px;
 }
@@ -144,12 +144,12 @@
 .about-member-name {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text);
 }
 .about-member-role {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text);
   letter-spacing: 0.05em;
 }
@@ -162,5 +162,52 @@
   .about-section {
     grid-template-columns: 32px 1fr;
     gap: 0 12px;
+  }
+  .about-page-label {
+    font-size: 0.85rem;
+  }
+  .about-section-title {
+    font-size: 1.2rem;
+  }
+  .about-section-text {
+    font-size: 0.95rem;
+  }
+  .about-team-title {
+    font-size: 1.3rem;
+  }
+  .about-member-name {
+    font-size: 1rem;
+  }
+  .about-member-role {
+    font-size: 0.82rem;
+  }
+  .about-loading,
+  .about-error,
+  .about-empty {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .about-page-title {
+    font-size: clamp(1.8rem, 9vw, 2.2rem);
+  }
+  .about-section-title {
+    font-size: 1.1rem;
+  }
+  .about-section-text {
+    font-size: 0.88rem;
+  }
+  .about-section-index {
+    font-size: 0.75rem;
+  }
+  .about-team-title {
+    font-size: 1.15rem;
+  }
+  .about-member-name {
+    font-size: 0.92rem;
+  }
+  .about-member-role {
+    font-size: 0.75rem;
   }
 }

@@ -17,9 +17,9 @@
   --bg-hover: #1a2133;
   --border: rgba(180, 200, 255, 0.08);
   --border-bright: rgba(180, 200, 255, 0.16);
-  --text: #dde3f5;
-  --text-muted: #6b7490;
-  --text-dim: #3d4460;
+  --text: #ffffff;
+  --text-muted: #c8cfe0;
+  --text-dim: #8892aa;
   --solar: #e8860a;
   --solar-dim: rgba(232, 134, 10, 0.15);
   --data: #4a9eff;
@@ -27,8 +27,8 @@
   --danger: #e05252;
   --success: #3ecf8e;
 
-  --topbar-h: 64px;
-  --topbar-h-stacked: 76px;
+  --topbar-h: 80px;
+  --topbar-h-stacked: 96px;
 
   --font-display: 'Syne', sans-serif;
   --font-mono: 'DM Mono', monospace;
@@ -54,9 +54,15 @@ body {
   background: transparent;
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1301px) {
+  body {
+    font-size: 20px;
+  }
 }
 
 body::before {
@@ -133,8 +139,8 @@ a {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.1rem, 1.4vw, 1.5rem);
-  letter-spacing: 0.07em;
+  font-size: clamp(1.3rem, 1.8vw, 2rem);
+  letter-spacing: 0.04em;
   color: var(--text);
   background: none;
   border: none;
@@ -174,7 +180,7 @@ a {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
-  padding: 11px 19px;
+  padding: 14px 22px;
   font-family: var(--font-mono);
   font-size: 1rem;
   letter-spacing: 0.1em;
@@ -312,19 +318,19 @@ a {
 }
 
 .year-search-input {
-  width: 9ch;
-  min-width: 9ch;
-  max-width: 9ch;
-  height: 34px;
+  width: 10ch;
+  min-width: 10ch;
+  max-width: 10ch;
+  height: 48px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--text);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   text-align: center;
   letter-spacing: 0.05em;
-  padding: 0 10px;
+  padding: 0 12px;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -334,14 +340,14 @@ a {
 
 .year-search-button,
 .year-search-browse {
-  height: 34px;
-  padding: 0 12px;
+  height: 48px;
+  padding: 0 20px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--bg-raised);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 1.05rem;
   letter-spacing: 0.05em;
   white-space: nowrap;
   display: inline-flex;
@@ -575,18 +581,31 @@ a {
    ========================================================= */
 @media (max-width: 600px) {
   .brand {
-    font-size: clamp(0.6rem, 3.2vw, 0.78rem);
+    font-size: clamp(0.75rem, 3.8vw, 1rem);
     letter-spacing: 0.06em;
   }
   .menu-button {
-    padding: 7px 10px;
-    font-size: 0.72rem;
+    padding: 8px 12px;
+    font-size: 0.78rem;
   }
   .menu-text {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
   }
   .menu-icon span {
     width: 14px;
+  }
+  .year-search-input {
+    height: 34px;
+    font-size: 0.82rem;
+    width: 8ch;
+    min-width: 8ch;
+    max-width: 8ch;
+  }
+  .year-search-button,
+  .year-search-browse {
+    height: 34px;
+    font-size: 0.82rem;
+    padding: 0 10px;
   }
 
   /* On single-line pages, shift brand right so it clears the menu button */
@@ -596,20 +615,30 @@ a {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
   .menu-button {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    padding: 9px 16px;
+    font-size: 0.88rem;
   }
   .menu-text {
-    font-size: 0.82rem;
+    font-size: 0.88rem;
   }
   .menu-icon span {
     width: 16px;
   }
   .brand {
-    font-size: clamp(0.75rem, 2.4vw, 1.1rem);
-    letter-spacing: 0.08em;
+    font-size: clamp(0.9rem, 2.4vw, 1.3rem);
+    letter-spacing: 0.06em;
+  }
+  .year-search-input {
+    height: 40px;
+    font-size: 0.95rem;
+  }
+  .year-search-button,
+  .year-search-browse {
+    height: 40px;
+    font-size: 0.95rem;
+    padding: 0 14px;
   }
   .nav-drawer {
     padding-top: calc(var(--topbar-h) + 12px);
@@ -622,15 +651,15 @@ a {
     top: var(--topbar-h-stacked);
   }
 
-  /* Stacking only on homepage/timeline */
+  /* Stacking on homepage/timeline at wider breakpoint to prevent overlap */
   .topbar--timeline {
     height: auto;
-    padding: 10px 16px 8px;
+    padding: 14px 20px 12px;
   }
   .topbar--timeline .topbar-inner {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 10px;
     height: auto;
   }
   .topbar--timeline .topbar-brand {
@@ -639,22 +668,23 @@ a {
     transform: none;
     text-align: center;
     align-self: center;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.12em;
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
   }
   .topbar--timeline .topbar-tools-row {
     width: 100%;
     justify-content: space-between;
   }
-  /* Wider menu button on stacked row */
+  /* Menu button on stacked row */
   .topbar--timeline .menu-button {
-    padding: 8px 28px;
+    padding: 10px 22px;
     font-size: 0.95rem;
   }
   .topbar--timeline .menu-text {
     font-size: 0.95rem;
   }
   .topbar--timeline .menu-icon span {
-    width: 20px;
+    width: 18px;
   }
   .topbar--timeline .year-search {
     margin-left: 0;
@@ -665,7 +695,7 @@ a {
   }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1301px) {
   .topbar-inner {
     flex-direction: row;
   }
@@ -678,11 +708,10 @@ a {
     left: 50%;
     transform: translateX(-50%);
   }
-  /* Timeline desktop: brand offset left of true center to account for
-     year tools being wider than the menu button on the right */
+  /* Timeline desktop: brand at true center */
   .topbar--timeline .topbar-brand {
     position: absolute;
-    left: 42%;
+    left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
   }

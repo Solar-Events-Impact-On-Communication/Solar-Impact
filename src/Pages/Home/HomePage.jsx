@@ -330,10 +330,6 @@ function EventDetailOverlay({ event, onClose, onViewArticles }) {
     setAiText('');
     setAiError('');
     setShowAiPanel(false);
-    if (tellMeMoreCache.has(event.id)) {
-      setAiText(tellMeMoreCache.get(event.id));
-      setShowAiPanel(true);
-    }
   }, [event?.id]);
 
   if (!event) return null;

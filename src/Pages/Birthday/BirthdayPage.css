@@ -13,7 +13,7 @@
 .birthday-page-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
   color: var(--text);
   line-height: 1.1;
   margin-bottom: 12px;
@@ -21,7 +21,7 @@
 }
 .birthday-page-desc {
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -39,7 +39,7 @@
 }
 .birthday-form-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.88rem;
   letter-spacing: 0.15em;
   color: var(--text);
   margin-bottom: 16px;
@@ -55,14 +55,14 @@
 }
 
 .birthday-input {
-  height: 42px;
-  width: 120px;
+  height: 46px;
+  width: 130px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 1.05rem;
   text-align: center;
   letter-spacing: 0.1em;
   padding: 0 12px;
@@ -74,14 +74,14 @@
 }
 
 .birthday-btn {
-  height: 42px;
-  padding: 0 20px;
+  height: 46px;
+  padding: 0 22px;
   background: var(--data-dim);
   border: 1px solid var(--data);
   border-radius: var(--radius-sm);
   color: var(--data);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
   transition: background 0.15s;
@@ -92,7 +92,7 @@
 .birthday-hint {
   margin-top: 10px;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.85rem;
   color: var(--text);
   letter-spacing: 0.03em;
 }
@@ -115,21 +115,14 @@
   opacity: 0.3;
 }
 .birthday-results-text {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--text-muted);
 }
 .birthday-results-sub {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .birthday-page {
-    padding: 32px 20px 60px;
-  }
 }
 
 /* ---- Mode toggle ---- */
@@ -147,7 +140,7 @@
   padding: 10px 28px;
   border-radius: calc(var(--radius-sm) - 2px);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   background: none;
@@ -172,7 +165,7 @@
 .birthday-input-error {
   margin-top: 8px;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   color: #e05c5c;
   letter-spacing: 0.03em;
 }
@@ -239,13 +232,13 @@
 }
 .birthday-events-title-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.88rem;
   letter-spacing: 0.15em;
   color: var(--text);
 }
 .birthday-events-count {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.88rem;
   letter-spacing: 0.08em;
   color: var(--text-muted);
 }
@@ -261,10 +254,10 @@
 }
 .birthday-event-year {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--data);
-  min-width: 44px;
+  min-width: 48px;
   padding-top: 2px;
   flex-shrink: 0;
 }
@@ -280,22 +273,22 @@
   flex-wrap: wrap;
 }
 .birthday-event-title {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--text);
 }
 .birthday-event-type {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: var(--text-muted);
   background: var(--bg-raised);
   border: 1px solid var(--border);
   border-radius: 3px;
-  padding: 2px 7px;
+  padding: 2px 8px;
 }
 .birthday-event-desc {
-  font-size: 0.84rem;
+  font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
@@ -306,7 +299,7 @@
   padding-top: 16px;
   border-top: 1px solid var(--border);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
   text-align: center;
@@ -314,8 +307,69 @@
 
 /* Responsive */
 @media (max-width: 640px) {
+  .birthday-page {
+    padding: 32px 20px 60px;
+  }
   .birthday-event-card {
     flex-direction: column;
     gap: 8px;
+  }
+  .birthday-page-desc {
+    font-size: 1rem;
+  }
+  .birthday-form-label {
+    font-size: 0.78rem;
+  }
+  .birthday-btn {
+    font-size: 0.85rem;
+    height: 42px;
+  }
+  .birthday-input {
+    height: 42px;
+    font-size: 0.95rem;
+  }
+  .birthday-mode-btn {
+    font-size: 0.8rem;
+    padding: 8px 18px;
+  }
+  .birthday-event-title {
+    font-size: 0.95rem;
+  }
+  .birthday-event-desc {
+    font-size: 0.9rem;
+  }
+  .birthday-hint {
+    font-size: 0.75rem;
+  }
+  .birthday-results-text {
+    font-size: 0.92rem;
+  }
+  .birthday-results-sub {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .birthday-page-title {
+    font-size: clamp(1.8rem, 9vw, 2.2rem);
+  }
+  .birthday-page-desc {
+    font-size: 0.88rem;
+  }
+  .birthday-btn {
+    font-size: 0.78rem;
+    padding: 0 14px;
+  }
+  .birthday-input {
+    width: 110px;
+  }
+  .birthday-event-year {
+    font-size: 0.88rem;
+  }
+  .birthday-event-title {
+    font-size: 0.88rem;
+  }
+  .birthday-event-desc {
+    font-size: 0.82rem;
   }
 }
