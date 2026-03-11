@@ -14,7 +14,7 @@
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -40,7 +40,7 @@
   border: none;
   border-radius: var(--radius-sm);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.15s;
@@ -59,7 +59,7 @@
   border: none;
   border-radius: var(--radius-sm);
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: opacity 0.15s;
 }
@@ -73,7 +73,7 @@
   border: 1px solid var(--danger);
   border-radius: var(--radius-sm);
   color: var(--danger);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -87,7 +87,7 @@
   border: 1px solid var(--border-bright);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition:
     border-color 0.15s,
@@ -99,13 +99,13 @@
 }
 
 .helper {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.5;
 }
 .error {
   color: var(--danger);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* =========================================================
@@ -133,14 +133,14 @@
 }
 .panel h1 {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: 800;
   color: var(--text);
   letter-spacing: 0.06em;
   margin-bottom: 6px;
 }
 .panel h2 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 8px;
@@ -178,7 +178,7 @@
   flex-direction: column;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -217,14 +217,14 @@
 }
 .admin-events-title {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--text);
 }
 .admin-logged-in {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   letter-spacing: 0.06em;
 }
@@ -255,7 +255,7 @@
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
@@ -296,7 +296,7 @@
   border-radius: var(--radius-sm);
   color: var(--data);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   letter-spacing: 0.08em;
   font-weight: 500;
   cursor: pointer;
@@ -324,7 +324,7 @@
   border: 1px solid var(--data);
   border-radius: var(--radius-sm);
   color: var(--data);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
@@ -362,7 +362,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   letter-spacing: 0.08em;
   color: var(--text-muted);
 }
@@ -378,7 +378,7 @@
   background: var(--bg-raised);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   letter-spacing: 0.06em;
   cursor: pointer;
   transition:
@@ -410,7 +410,7 @@
 }
 .admin-year-search-popover-label {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -430,7 +430,7 @@
   border-radius: 999px;
   background: transparent;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text);
   cursor: pointer;
   transition: all 0.15s;
@@ -464,7 +464,7 @@
 .admin-accounts-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.93rem;
+  font-size: 1rem;
 }
 .admin-events-table th,
 .admin-accounts-table th {
@@ -473,7 +473,7 @@
   border-bottom: 1px solid var(--border-bright);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -499,7 +499,7 @@
   padding: 32px;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.93rem;
   letter-spacing: 0.06em;
 }
 .admin-events-th-edit {
@@ -523,7 +523,7 @@
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
@@ -589,7 +589,7 @@
 }
 .admin-modal-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--text);
@@ -609,7 +609,7 @@
   background: var(--data-dim);
   color: var(--data);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   letter-spacing: 0.06em;
   font-weight: 500;
   cursor: pointer;
@@ -706,7 +706,7 @@
 }
 .admin-event-media-title {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -749,7 +749,7 @@
 }
 .admin-event-media-side-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   letter-spacing: 0.06em;
   color: var(--text-muted);
   text-align: center;
@@ -761,7 +761,7 @@
   border: 1px solid var(--border-bright);
   background: var(--bg);
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -822,7 +822,7 @@
 }
 .admin-event-caption-title {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -862,27 +862,27 @@
   align-items: baseline;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
 }
 .admin-field-label--big {
-  font-size: 0.88rem;
+  font-size: 0.93rem;
 }
 .admin-field-required {
   color: var(--danger);
 }
 .admin-field-note {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
   color: var(--text-dim);
 }
 .admin-field-error-text {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--danger);
   margin-top: 2px;
 }
@@ -892,7 +892,7 @@
   border: 1px solid var(--border-bright);
   border-radius: var(--radius-sm);
   background: var(--bg-raised);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   width: 100%;
   cursor: pointer;
@@ -927,7 +927,7 @@
   background: var(--bg-raised);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   cursor: pointer;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   transition:
@@ -948,7 +948,7 @@
 }
 .admin-subpanel h2 {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text);
@@ -971,7 +971,7 @@
 }
 .profile-section-title {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -982,7 +982,7 @@
   gap: 8px;
 }
 .profile-static-value {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text);
   padding: 9px 12px;
   background: var(--bg-raised);
@@ -1012,7 +1012,7 @@
 }
 .admin-about-section-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -1020,13 +1020,13 @@
   margin-bottom: 4px;
 }
 .admin-about-section-title {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 4px;
 }
 .admin-about-section-text {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -1052,7 +1052,7 @@
 }
 .admin-about-edit-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1063,7 +1063,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 .admin-about-order-select {
@@ -1101,7 +1101,7 @@
 }
 .admin-panel-section h2 {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text);
@@ -1109,7 +1109,7 @@
 }
 .admin-panel-section h3 {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1141,7 +1141,7 @@
 .admin-team-photo-note {
   margin-top: 8px;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.93rem;
 }
 
 .admin-team-photo-upload {
@@ -1155,7 +1155,7 @@
   border-radius: var(--radius-sm);
   background: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   cursor: pointer;
   transition:
@@ -1177,7 +1177,7 @@
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--danger);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   cursor: pointer;
   transition:
     background 0.15s,
@@ -1204,7 +1204,7 @@
   object-fit: cover;
 }
 .admin-new-member-photo-chip span {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
 }
 
@@ -1307,14 +1307,14 @@
 }
 .admin-confirm-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--text);
   margin-bottom: 8px;
 }
 .admin-confirm-text {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-muted);
   margin-bottom: 24px;
   line-height: 1.6;
@@ -1352,13 +1352,13 @@
 }
 .delete-media-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 8px;
 }
 .delete-media-text {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 16px;
@@ -1387,7 +1387,7 @@
   padding: 9px 18px;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.93rem;
   letter-spacing: 0.06em;
   font-weight: 500;
   cursor: pointer;
@@ -1521,7 +1521,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   letter-spacing: 0.06em;
   color: var(--text-muted);
 }
@@ -1532,4 +1532,224 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE — Admin Page
+   ========================================================= */
+
+@media (max-width: 640px) {
+  /* Panel padding */
+  .admin-panel,
+  .admin-confirm-modal,
+  .delete-media-dialog,
+  .avatar-modal {
+    padding: 20px 16px;
+  }
+
+  /* Inputs and buttons */
+  .input {
+    font-size: 0.92rem;
+  }
+  .primary {
+    font-size: 0.88rem;
+    padding: 9px 16px;
+  }
+  .primary-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .danger-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .cancel-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .helper,
+  .error {
+    font-size: 0.85rem;
+  }
+
+  /* Panel headings */
+  .panel h1 {
+    font-size: 1.4rem;
+  }
+  .panel h2 {
+    font-size: 1.1rem;
+  }
+  .admin-events-title {
+    font-size: 1.15rem;
+  }
+  .admin-subpanel h2,
+  .admin-panel-section h2 {
+    font-size: 1rem;
+  }
+
+  /* Tabs */
+  .admin-tab-bar {
+    padding: 0 8px;
+  }
+  .admin-tab-button {
+    font-size: 0.75rem;
+    padding: 14px 14px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Table */
+  .admin-events-table,
+  .admin-accounts-table {
+    font-size: 0.88rem;
+  }
+  .admin-events-table th,
+  .admin-accounts-table th {
+    font-size: 0.72rem;
+  }
+  .admin-empty-cell {
+    font-size: 0.8rem;
+  }
+  .admin-edit-button {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+  }
+
+  /* Modals */
+  .admin-modal {
+    padding: 20px 16px;
+  }
+  .admin-modal-title {
+    font-size: 1.1rem;
+  }
+  .admin-modal-button {
+    font-size: 0.8rem;
+    padding: 7px 14px;
+  }
+  .admin-add-button {
+    font-size: 0.78rem;
+    padding: 7px 12px;
+  }
+  .admin-confirm-title {
+    font-size: 1rem;
+  }
+  .admin-confirm-text {
+    font-size: 0.88rem;
+  }
+  .delete-media-title {
+    font-size: 1.05rem;
+  }
+  .delete-media-text {
+    font-size: 0.88rem;
+  }
+  .delete-dialog-btn {
+    font-size: 0.82rem;
+    padding: 8px 14px;
+  }
+
+  /* Form fields */
+  .admin-field-label {
+    font-size: 0.72rem;
+  }
+  .admin-field-label--big {
+    font-size: 0.8rem;
+  }
+  .admin-field-note {
+    font-size: 0.72rem;
+  }
+  .admin-field-error-text {
+    font-size: 0.75rem;
+  }
+
+  /* Year search */
+  .admin-year-label {
+    font-size: 0.78rem;
+  }
+  .year-search-browse-button {
+    font-size: 0.78rem;
+  }
+  .admin-year-search-popover {
+    min-width: 240px;
+  }
+  .admin-year-search-popover-label {
+    font-size: 0.75rem;
+  }
+  .admin-year-decade-pill,
+  .admin-year-year-pill {
+    font-size: 0.82rem;
+    padding: 5px 10px;
+  }
+
+  /* About admin */
+  .admin-about-section-title {
+    font-size: 0.95rem;
+  }
+  .admin-about-section-text {
+    font-size: 0.88rem;
+  }
+  .admin-about-section-label {
+    font-size: 0.72rem;
+  }
+  .admin-about-edit-label {
+    font-size: 0.72rem;
+  }
+
+  /* Team */
+  .admin-team-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .admin-team-info {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .admin-team-actions {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  .admin-team-photo-note {
+    font-size: 0.8rem;
+  }
+
+  /* Profile */
+  .profile-section-title {
+    font-size: 0.78rem;
+  }
+  .profile-static-value {
+    font-size: 0.88rem;
+  }
+
+  /* Blocker */
+  .admin-blocker-text {
+    font-size: 0.85rem;
+  }
+
+  /* Logged in label */
+  .admin-logged-in {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .admin-tab-button {
+    font-size: 0.68rem;
+    padding: 12px 10px;
+    letter-spacing: 0.05em;
+  }
+  .panel h1 {
+    font-size: 1.2rem;
+  }
+  .admin-events-title {
+    font-size: 1rem;
+  }
+  .input {
+    font-size: 0.88rem;
+  }
+  .admin-modal-title {
+    font-size: 1rem;
+  }
+  .admin-year-decade-pill,
+  .admin-year-year-pill {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
 }
