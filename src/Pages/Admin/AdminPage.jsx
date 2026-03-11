@@ -985,7 +985,7 @@ export default function AdminView() {
       const res = await fetch(
         `${ADMIN_API_BASE}/api/admin/events/${editingEvent.id}/media/${mediaId}`,
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ caption: newCaption?.trim() ? newCaption.trim() : null }),
@@ -996,8 +996,9 @@ export default function AdminView() {
         setMediaCaptionError(data.error || 'Failed to update caption.');
         return false;
       }
+      const savedCaption = newCaption?.trim() || null;
       setEventMedia((prev) =>
-        prev.map((m) => (m.id === mediaId ? { ...m, caption: data.caption } : m))
+        prev.map((m) => (m.id === mediaId ? { ...m, caption: savedCaption } : m))
       );
       return true;
     } catch (err) {
