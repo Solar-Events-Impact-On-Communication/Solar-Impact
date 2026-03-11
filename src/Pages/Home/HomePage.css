@@ -828,39 +828,47 @@
   }
 
   /* Newspaper viewer - mobile */
+  .media-toprow {
+    padding: 8px 36px 8px 8px;
+    gap: 6px;
+  }
   .media-back-btn {
-    font-size: 0.72rem;
-    padding: 5px 9px;
+    font-size: 0.65rem;
+    padding: 4px 7px;
+    letter-spacing: 0.02em;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .media-header-info {
+    flex: 1;
+    min-width: 0;
   }
   .media-header-title {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
   .media-header-date {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
   .media-counter {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    flex-shrink: 0;
   }
   .media-nav {
     width: 28px;
     font-size: 1rem;
   }
   .media-nav-label {
-    font-size: 0.58rem;
+    font-size: 0.56rem;
   }
   .media-caption {
     font-size: 0.72rem;
     padding: 8px 12px;
   }
-  .media-toprow {
-    padding: 10px 40px 10px 10px;
-    gap: 8px;
-  }
   .media-close {
     width: 28px;
     height: 28px;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     font-size: 0.8rem;
   }
 }
@@ -967,8 +975,8 @@
 .media-toprow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 56px 14px 16px;
+  gap: 16px;
+  padding: 18px 64px 18px 20px;
   border-bottom: 1px solid var(--border);
 }
 .media-back-btn {
@@ -978,9 +986,9 @@
   border-radius: var(--radius-sm);
   color: var(--text);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 1rem;
   letter-spacing: 0.05em;
-  padding: 8px 14px;
+  padding: 10px 18px;
   white-space: nowrap;
   transition:
     color 0.15s,
@@ -1041,12 +1049,12 @@
 
 .media-nav {
   flex-shrink: 0;
-  width: 40px;
+  width: 52px;
   background: transparent;
   border: none;
   border-right: 1px solid var(--border);
   color: var(--text-muted);
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1070,7 +1078,7 @@
 }
 .media-nav-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   letter-spacing: 0.05em;
   color: var(--text);
 }
@@ -1098,10 +1106,10 @@
 }
 
 .media-caption {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-top: 1px solid var(--border);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 1rem;
   color: var(--text);
   font-style: italic;
   text-align: center;
