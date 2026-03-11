@@ -985,7 +985,7 @@ export default function AdminView() {
       const res = await fetch(
         `${ADMIN_API_BASE}/api/admin/events/${editingEvent.id}/media/${mediaId}`,
         {
-          method: 'PATCH',
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ caption: newCaption?.trim() ? newCaption.trim() : null }),
