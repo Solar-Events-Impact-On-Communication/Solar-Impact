@@ -611,6 +611,12 @@ a {
   .topbar:not(.topbar--timeline) {
     height: 56px;
   }
+  .topbar:not(.topbar--timeline) .topbar-brand {
+    left: 62%;
+  }
+  .menu-button {
+    padding: 6px 8px;
+  }
   /* Menu button */
   .menu-button {
     padding: 6px 10px;
