@@ -148,7 +148,7 @@ a {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.3rem, 1.8vw, 2rem);
+  font-size: clamp(1rem, 1.5vw, 1.6rem);
   letter-spacing: 0.04em;
   color: var(--text);
   background: none;
@@ -589,35 +589,37 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
+  /* Brand — single rule, compact */
   .brand {
-    font-size: clamp(0.75rem, 3.8vw, 1rem);
-    letter-spacing: 0.06em;
+    font-size: clamp(0.68rem, 3.2vw, 0.88rem);
+    letter-spacing: 0.03em;
   }
+  /* Menu button */
   .menu-button {
-    padding: 8px 12px;
-    font-size: 0.78rem;
+    padding: 6px 10px;
+    font-size: 0.72rem;
   }
   .menu-text {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
   }
   .menu-icon span {
-    width: 14px;
+    width: 13px;
   }
+  /* Year search */
   .year-search-input {
-    height: 34px;
-    font-size: 0.82rem;
-    width: 8ch;
-    min-width: 8ch;
-    max-width: 8ch;
+    height: 30px;
+    font-size: 0.76rem;
+    width: 7ch;
+    min-width: 7ch;
+    max-width: 7ch;
   }
   .year-search-button,
   .year-search-browse {
-    height: 34px;
-    font-size: 0.82rem;
-    padding: 0 10px;
+    height: 30px;
+    font-size: 0.76rem;
+    padding: 0 8px;
   }
-
-  /* On single-line pages, constrain brand so it doesn't overlap menu button */
+  /* Non-timeline pages: static brand between menu btn and right edge */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: static;
     transform: none;
@@ -626,10 +628,6 @@ a {
   }
   .topbar:not(.topbar--timeline) .topbar-inner {
     justify-content: space-between;
-  }
-  .brand {
-    font-size: clamp(0.72rem, 3.5vw, 0.95rem);
-    letter-spacing: 0.04em;
   }
 }
 
@@ -649,14 +647,17 @@ a {
     letter-spacing: 0.06em;
   }
   .year-search-input {
-    height: 40px;
-    font-size: 0.95rem;
+    height: 34px;
+    font-size: 0.82rem;
+    width: 8ch;
+    min-width: 8ch;
+    max-width: 8ch;
   }
   .year-search-button,
   .year-search-browse {
-    height: 40px;
-    font-size: 0.95rem;
-    padding: 0 14px;
+    height: 34px;
+    font-size: 0.82rem;
+    padding: 0 10px;
   }
   .nav-drawer {
     padding-top: calc(var(--topbar-h) + 12px);
@@ -687,7 +688,7 @@ a {
     text-align: center;
     align-self: center;
     letter-spacing: 0.12em;
-    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    font-size: clamp(0.85rem, 2.8vw, 1.2rem);
   }
   .topbar--timeline .topbar-tools-row {
     width: 100%;
@@ -695,11 +696,11 @@ a {
   }
   /* Menu button on stacked row */
   .topbar--timeline .menu-button {
-    padding: 10px 22px;
-    font-size: 0.95rem;
+    padding: 7px 14px;
+    font-size: 0.8rem;
   }
   .topbar--timeline .menu-text {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
   }
   .topbar--timeline .menu-icon span {
     width: 18px;
