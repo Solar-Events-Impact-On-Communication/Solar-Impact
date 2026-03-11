@@ -592,7 +592,7 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
-  /* Brand — show 2-line short version on small screens */
+  /* Brand: 2-line short version */
   .brand-text--full {
     display: none;
   }
@@ -608,16 +608,23 @@ a {
   .brand-mark {
     display: none;
   }
+
+  /* Topbar height for 2-line brand */
   .topbar:not(.topbar--timeline) {
     height: 56px;
   }
+  /* Shift brand right to clear menu button */
   .topbar:not(.topbar--timeline) .topbar-brand {
+    position: absolute;
     left: 62%;
+    transform: translateX(-50%);
   }
+
+  /* Menu button: icon only, MENU text visually hidden for screen readers */
   .menu-button {
     padding: 6px 8px;
+    font-size: 0.72rem;
   }
-  /* Hide MENU text visually but keep for screen readers */
   .menu-text {
     position: absolute;
     width: 1px;
@@ -629,17 +636,10 @@ a {
     white-space: nowrap;
     border: 0;
   }
-  /* Menu button */
-  .menu-button {
-    padding: 6px 10px;
-    font-size: 0.72rem;
-  }
-  .menu-text {
-    font-size: 0.72rem;
-  }
   .menu-icon span {
     width: 13px;
   }
+
   /* Year search */
   .year-search-input {
     height: 30px;
@@ -653,13 +653,6 @@ a {
     height: 30px;
     font-size: 0.76rem;
     padding: 0 8px;
-  }
-  /* Non-timeline pages: keep brand absolutely centered, just smaller */
-  .topbar:not(.topbar--timeline) .topbar-brand {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 50%;
   }
 }
 
