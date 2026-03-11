@@ -838,6 +838,9 @@
     letter-spacing: 0.02em;
     flex-shrink: 1;
     min-width: 0;
+    white-space: normal;
+    max-width: 72px;
+    line-height: 1.2;
   }
   .media-header-info {
     flex: 1;
