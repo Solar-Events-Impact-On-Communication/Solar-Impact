@@ -438,6 +438,8 @@ export default function AdminView() {
   const [avatarImageSrc, setAvatarImageSrc] = useState('');
   const [teamBlocking, setTeamBlocking] = useState(false);
   const [teamBlockingText, setTeamBlockingText] = useState('');
+  const [teamDeleteConfirmOpen, setTeamDeleteConfirmOpen] = useState(false);
+  const [teamDeleteTargetId, setTeamDeleteTargetId] = useState(null);
 
   const openAvatarModalFor = (memberId, file) => {
     if (!file) return;
@@ -467,7 +469,7 @@ export default function AdminView() {
     try {
       setTeamBlocking(true);
       setTeamBlockingText('Uploading profile photo…');
-      const res = await fetch(`/api/admin/team/${memberId}/photo`, {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team/${memberId}/photo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -505,7 +507,7 @@ export default function AdminView() {
     try {
       setTeamBlocking(true);
       setTeamBlockingText('Removing profile photo…');
-      const res = await fetch(`/api/admin/team/${memberId}/photo`, {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team/${memberId}/photo`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -523,7 +525,7 @@ export default function AdminView() {
     try {
       setTeamLoading(true);
       setTeamError('');
-      const res = await fetch('/api/admin/team', { credentials: 'include' });
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team`, { credentials: 'include' });
       if (!res.ok) throw new Error(`Failed to load team: ${res.status}`);
       const data = await res.json();
       setAdminTeam(data);
@@ -545,7 +547,7 @@ export default function AdminView() {
       setAddingMember(true);
       setTeamBlocking(true);
       setTeamBlockingText('Adding team member…');
-      const res = await fetch('/api/admin/team', {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -596,7 +598,7 @@ export default function AdminView() {
       setSavingMemberId(member.id);
       setTeamBlocking(true);
       setTeamBlockingText('Saving team member…');
-      const res = await fetch(`/api/admin/team/${member.id}`, {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team/${member.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -615,12 +617,20 @@ export default function AdminView() {
     }
   };
 
-  const handleDeleteTeamMember = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this team member?')) return;
+  const handleDeleteTeamMember = (id) => {
+    setTeamDeleteTargetId(id);
+    setTeamDeleteConfirmOpen(true);
+  };
+
+  const confirmDeleteTeamMember = async () => {
+    const id = teamDeleteTargetId;
+    if (!id) return;
+    setTeamDeleteConfirmOpen(false);
+    setTeamDeleteTargetId(null);
     try {
       setTeamBlocking(true);
       setTeamBlockingText('Deleting team member…');
-      const res = await fetch(`/api/admin/team/${id}`, {
+      const res = await fetch(`${ADMIN_API_BASE}/api/admin/team/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -996,9 +1006,8 @@ export default function AdminView() {
         setMediaCaptionError(data.error || 'Failed to update caption.');
         return false;
       }
-      const savedCaption = newCaption?.trim() || null;
       setEventMedia((prev) =>
-        prev.map((m) => (m.id === mediaId ? { ...m, caption: savedCaption } : m))
+        prev.map((m) => (m.id === mediaId ? { ...m, caption: newCaption?.trim() || null } : m))
       );
       return true;
     } catch (err) {
@@ -2508,6 +2517,36 @@ export default function AdminView() {
                 onSave={handleAvatarSave}
                 onLoaded={() => setCropperBlocking(false)}
               />
+              {teamDeleteConfirmOpen && (
+                <div className="admin-modal-backdrop admin-modal-backdrop--confirm">
+                  <div className="admin-confirm-modal">
+                    <div className="admin-confirm-title">Delete Team Member</div>
+                    <div className="admin-confirm-text">
+                      Are you sure you want to delete this team member? This action cannot be
+                      undone.
+                    </div>
+                    <div className="admin-confirm-actions">
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--ghost"
+                        onClick={() => {
+                          setTeamDeleteConfirmOpen(false);
+                          setTeamDeleteTargetId(null);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--danger"
+                        onClick={confirmDeleteTeamMember}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

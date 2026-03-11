@@ -14,7 +14,7 @@
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -40,7 +40,7 @@
   border: none;
   border-radius: var(--radius-sm);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.15s;
@@ -59,7 +59,7 @@
   border: none;
   border-radius: var(--radius-sm);
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: opacity 0.15s;
 }
@@ -73,7 +73,7 @@
   border: 1px solid var(--danger);
   border-radius: var(--radius-sm);
   color: var(--danger);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -87,7 +87,7 @@
   border: 1px solid var(--border-bright);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition:
     border-color 0.15s,
@@ -99,13 +99,13 @@
 }
 
 .helper {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   line-height: 1.5;
 }
 .error {
   color: var(--danger);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 /* =========================================================
@@ -140,7 +140,7 @@
   margin-bottom: 6px;
 }
 .panel h2 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 8px;
@@ -178,7 +178,7 @@
   flex-direction: column;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -224,7 +224,7 @@
 }
 .admin-logged-in {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   letter-spacing: 0.06em;
 }
@@ -255,7 +255,7 @@
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
@@ -296,7 +296,7 @@
   border-radius: var(--radius-sm);
   color: var(--data);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   font-weight: 500;
   cursor: pointer;
@@ -324,7 +324,7 @@
   border: 1px solid var(--data);
   border-radius: var(--radius-sm);
   color: var(--data);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
@@ -362,7 +362,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--text-muted);
 }
@@ -378,7 +378,7 @@
   background: var(--bg-raised);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   cursor: pointer;
   transition:
@@ -410,7 +410,7 @@
 }
 .admin-year-search-popover-label {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -430,7 +430,7 @@
   border-radius: 999px;
   background: transparent;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--text);
   cursor: pointer;
   transition: all 0.15s;
@@ -464,7 +464,7 @@
 .admin-accounts-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.93rem;
+  font-size: 0.85rem;
 }
 .admin-events-table th,
 .admin-accounts-table th {
@@ -473,7 +473,7 @@
   border-bottom: 1px solid var(--border-bright);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -499,7 +499,7 @@
   padding: 32px;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
 }
 .admin-events-th-edit {
@@ -523,7 +523,7 @@
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
@@ -589,13 +589,13 @@
 }
 .admin-modal-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--text);
 }
 .admin-modal-title--small {
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 .admin-modal-actions {
   display: flex;
@@ -609,7 +609,7 @@
   background: var(--data-dim);
   color: var(--data);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   font-weight: 500;
   cursor: pointer;
@@ -706,7 +706,7 @@
 }
 .admin-event-media-title {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -749,7 +749,7 @@
 }
 .admin-event-media-side-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   letter-spacing: 0.06em;
   color: var(--text-muted);
   text-align: center;
@@ -822,7 +822,7 @@
 }
 .admin-event-caption-title {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -862,27 +862,27 @@
   align-items: baseline;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
 }
 .admin-field-label--big {
-  font-size: 0.88rem;
+  font-size: 0.78rem;
 }
 .admin-field-required {
   color: var(--danger);
 }
 .admin-field-note {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
   color: var(--text-dim);
 }
 .admin-field-error-text {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--danger);
   margin-top: 2px;
 }
@@ -892,7 +892,7 @@
   border: 1px solid var(--border-bright);
   border-radius: var(--radius-sm);
   background: var(--bg-raised);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   width: 100%;
   cursor: pointer;
@@ -927,7 +927,7 @@
   background: var(--bg-raised);
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   cursor: pointer;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   transition:
@@ -971,7 +971,7 @@
 }
 .profile-section-title {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -982,7 +982,7 @@
   gap: 8px;
 }
 .profile-static-value {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--text);
   padding: 9px 12px;
   background: var(--bg-raised);
@@ -1012,7 +1012,7 @@
 }
 .admin-about-section-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -1020,13 +1020,13 @@
   margin-bottom: 4px;
 }
 .admin-about-section-title {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 4px;
 }
 .admin-about-section-text {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -1052,7 +1052,7 @@
 }
 .admin-about-edit-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1063,7 +1063,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 .admin-about-order-select {
@@ -1109,7 +1109,7 @@
 }
 .admin-panel-section h3 {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1141,7 +1141,7 @@
 .admin-team-photo-note {
   margin-top: 8px;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
 }
 
 .admin-team-photo-upload {
@@ -1155,7 +1155,7 @@
   border-radius: var(--radius-sm);
   background: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   cursor: pointer;
   transition:
@@ -1177,7 +1177,7 @@
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--danger);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
   transition:
     background 0.15s,
@@ -1204,7 +1204,7 @@
   object-fit: cover;
 }
 .admin-new-member-photo-chip span {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
@@ -1271,8 +1271,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
-  min-width: 200px;
+  flex: 0 0 260px;
+  width: 260px;
 }
 .admin-team-name-input,
 .admin-team-role-input {
@@ -1285,6 +1285,7 @@
   gap: 6px;
   flex-wrap: wrap;
   align-items: center;
+  margin-left: auto;
 }
 
 /* =========================================================
@@ -1306,14 +1307,14 @@
 }
 .admin-confirm-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--text);
   margin-bottom: 8px;
 }
 .admin-confirm-text {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   margin-bottom: 24px;
   line-height: 1.6;
@@ -1351,13 +1352,13 @@
 }
 .delete-media-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 8px;
 }
 .delete-media-text {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 16px;
@@ -1386,7 +1387,7 @@
   padding: 9px 18px;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   font-weight: 500;
   cursor: pointer;
@@ -1462,7 +1463,7 @@
 }
 .admin-blocker-text {
   font-family: var(--font-mono);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   letter-spacing: 0.06em;
   color: var(--text-muted);
 }
@@ -1520,7 +1521,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   color: var(--text-muted);
 }
