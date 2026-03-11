@@ -148,7 +148,7 @@ a {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1rem, 1.5vw, 1.6rem);
+  font-size: clamp(0.85rem, 1.2vw, 1.4rem);
   letter-spacing: 0.04em;
   color: var(--text);
   background: none;
@@ -591,8 +591,8 @@ a {
 @media (max-width: 600px) {
   /* Brand — single rule, compact */
   .brand {
-    font-size: clamp(0.68rem, 3.2vw, 0.88rem);
-    letter-spacing: 0.03em;
+    font-size: clamp(0.55rem, 2.8vw, 0.72rem);
+    letter-spacing: 0.02em;
   }
   /* Menu button */
   .menu-button {
@@ -640,7 +640,7 @@ a {
     width: 16px;
   }
   .brand {
-    font-size: clamp(0.9rem, 2.4vw, 1.3rem);
+    font-size: clamp(0.75rem, 2vw, 1.1rem);
     letter-spacing: 0.06em;
   }
   .year-search-input {
