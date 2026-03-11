@@ -556,7 +556,8 @@ function MediaOverlay({
 
         <div className="media-toprow">
           <button type="button" className="media-back-btn" onClick={onBackToSummary}>
-            ← Back to Summary
+            <span className="media-back-arrow">←</span>
+            <span className="media-back-label"> Back to Summary</span>
           </button>
           <div className="media-header-info">
             <div className="media-header-title">{event?.title || 'Event'} — Newspaper Articles</div>

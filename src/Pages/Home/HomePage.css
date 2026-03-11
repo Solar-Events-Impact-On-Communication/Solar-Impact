@@ -833,14 +833,14 @@
     gap: 6px;
   }
   .media-back-btn {
-    font-size: 0.65rem;
-    padding: 4px 7px;
-    letter-spacing: 0.02em;
-    flex-shrink: 1;
+    font-size: 1rem;
+    padding: 6px 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
     min-width: 0;
-    white-space: normal;
-    max-width: 72px;
-    line-height: 1.2;
+  }
+  .media-back-label {
+    display: none;
   }
   .media-header-info {
     flex: 1;
@@ -1000,6 +1000,9 @@
 .media-back-btn:hover {
   color: var(--text);
   border-color: var(--border-bright);
+}
+.media-back-label {
+  /* visible on desktop, hidden on mobile via media query */
 }
 
 .media-header-info {
