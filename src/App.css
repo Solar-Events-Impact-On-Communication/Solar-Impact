@@ -591,8 +591,15 @@ a {
 @media (max-width: 600px) {
   /* Brand — single rule, compact */
   .brand {
-    font-size: clamp(0.55rem, 2.8vw, 0.72rem);
-    letter-spacing: 0.02em;
+    font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+    letter-spacing: 0.01em;
+  }
+  .topbar-brand {
+    overflow: hidden;
+    max-width: 45%;
+  }
+  .brand-mark {
+    display: none;
   }
   /* Menu button */
   .menu-button {
