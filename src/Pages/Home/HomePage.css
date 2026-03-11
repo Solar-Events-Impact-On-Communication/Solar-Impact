@@ -725,6 +725,27 @@
 }
 
 @media (max-width: 640px) {
+  /* Timeline article cards — shrink to fit mobile */
+  .tl-event-date {
+    font-size: 0.78rem;
+  }
+  .tl-event-type {
+    font-size: 0.7rem;
+    padding: 2px 7px;
+  }
+  .tl-event-location {
+    font-size: 0.7rem;
+  }
+  .tl-event-title {
+    font-size: 1rem;
+  }
+  .tl-event-desc {
+    font-size: 0.85rem;
+  }
+  .tl-event-cta {
+    font-size: 0.75rem;
+  }
+
   .ev-card,
   .media-card {
     border-radius: var(--radius);

@@ -50,6 +50,13 @@
   padding: 0;
 }
 
+html {
+  background-color: #07090f;
+  color-scheme: dark;
+  /* Forces black overscroll/rubber-band area on all mobile browsers */
+  overflow-x: hidden;
+}
+
 body {
   background: transparent;
   color: var(--text);
@@ -57,6 +64,8 @@ body {
   font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Ensures overscroll bounce area matches app background on iOS/Android */
+  overscroll-behavior: none;
 }
 
 @media (min-width: 1301px) {
@@ -608,10 +617,19 @@ a {
     padding: 0 10px;
   }
 
-  /* On single-line pages, shift brand right so it clears the menu button */
+  /* On single-line pages, constrain brand so it doesn't overlap menu button */
   .topbar:not(.topbar--timeline) .topbar-brand {
-    left: 60%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
+    flex: 1;
+    text-align: center;
+  }
+  .topbar:not(.topbar--timeline) .topbar-inner {
+    justify-content: space-between;
+  }
+  .brand {
+    font-size: clamp(0.72rem, 3.5vw, 0.95rem);
+    letter-spacing: 0.04em;
   }
 }
 
