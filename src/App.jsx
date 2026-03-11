@@ -259,7 +259,9 @@ export default function App() {
                   <span />
                   <span />
                 </span>
-                <span className="menu-text">MENU</span>
+                <span className="menu-text" aria-hidden="false">
+                  MENU
+                </span>
               </button>
             </div>
 
