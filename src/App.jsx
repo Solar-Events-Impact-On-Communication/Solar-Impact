@@ -360,6 +360,30 @@ export default function App() {
         </div>
       )}
 
+      {/* ---- MAIN CONTENT ---- */}
+      <main
+        className={`main ${isTimeline ? 'main--timeline' : ''} ${isAbout ? 'main--about' : ''} ${isAdmin ? 'main--admin' : ''}`}
+      >
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                events={events}
+                loading={loadingEvents}
+                loadError={eventsError}
+                scrollToYear={scrollToYear}
+                onScrollToYearHandled={() => setScrollToYear(null)}
+              />
+            }
+          />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/live" element={<LivePage />} />
+          <Route path="/birthday" element={<BirthdayPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </main>
+
       {/* ---- NAV DRAWER ---- */}
       <nav ref={navDrawerRef} className={`nav-drawer ${menuOpen ? 'nav-drawer--open' : ''}`}>
         <button className="nav-item" onClick={() => handleNavClick('/')} type="button">
@@ -421,30 +445,6 @@ export default function App() {
           <span>About</span>
         </button>
       </nav>
-
-      {/* ---- MAIN CONTENT ---- */}
-      <main
-        className={`main ${isTimeline ? 'main--timeline' : ''} ${isAbout ? 'main--about' : ''} ${isAdmin ? 'main--admin' : ''}`}
-      >
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                events={events}
-                loading={loadingEvents}
-                loadError={eventsError}
-                scrollToYear={scrollToYear}
-                onScrollToYearHandled={() => setScrollToYear(null)}
-              />
-            }
-          />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/live" element={<LivePage />} />
-          <Route path="/birthday" element={<BirthdayPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </main>
 
       {/* ---- FOOTER ---- */}
       <footer className="footer">
