@@ -60,6 +60,7 @@ html {
 body {
   background: transparent;
   color: var(--text);
+  padding-bottom: env(safe-area-inset-bottom);
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.6;
@@ -116,10 +117,8 @@ a {
   left: 0;
   right: 0;
   z-index: 10000;
-  background: rgba(7, 9, 15, 0.92);
+  background: #07090f;
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   height: var(--topbar-h);
   padding: 0 20px;
   display: block;
