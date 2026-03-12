@@ -247,7 +247,7 @@ a {
   left: 0;
   width: 260px;
   height: auto;
-  z-index: 190;
+  z-index: 210;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
   padding-top: calc(var(--topbar-h) + 12px);
