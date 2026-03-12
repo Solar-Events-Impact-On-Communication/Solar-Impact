@@ -210,7 +210,7 @@
 }
 .admin-header-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 0;
@@ -221,10 +221,6 @@
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--text);
-  flex: 1;
-  min-width: 200px;
-  white-space: normal;
-  word-break: break-word;
 }
 .admin-logged-in {
   font-family: var(--font-mono);
@@ -660,60 +656,92 @@
    EVENT EDIT MODAL (wide)
    ========================================================= */
 
-/* Backdrop: full-screen fixed overlay — blocks all interaction beneath */
 .admin-modal-backdrop--event {
   align-items: center;
-  justify-content: center;
-  padding: 24px 16px 80px; /* 80px bottom clears the footer */
-  overflow: hidden; /* backdrop does NOT scroll */
 }
-
-/* Modal: floating card, fills available space between top padding and footer */
 .admin-event-modal {
   max-width: 900px;
-  width: 100%;
-  max-height: 100%; /* constrained by backdrop padding */
-  border-radius: var(--radius-lg);
-  padding: 0;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: cardIn 0.22s ease;
 }
-
-/* Sticky header — Save/Cancel always visible while body scrolls */
 .admin-event-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
   flex-shrink: 0;
-  padding: 18px 28px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-bright);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
-
 .admin-event-modal-actions {
   display: flex;
   gap: 8px;
 }
-
-/* Body: the only scrollable region — two columns on desktop */
 .admin-event-modal-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   min-height: 0;
-  padding: 24px 28px 32px;
 }
-
-/* Form and media: natural height, parent body handles scrolling */
+@media (max-width: 700px) {
+  /* Backdrop: full screen, no padding, no flex constraints */
+  .admin-modal-backdrop--event {
+    display: block;
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Modal: full width, naturally tall — grows to fit all content */
+  .admin-modal-backdrop--event .admin-modal.admin-event-modal {
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    max-height: none;
+    height: auto;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    margin: 0;
+  }
+  /* Sticky header */
+  .admin-event-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-bright);
+    padding: 14px 16px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  /* Body: single column, natural height, no overflow clipping */
+  .admin-event-modal-body {
+    grid-template-columns: 1fr;
+    overflow: visible;
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    padding: 16px;
+    gap: 20px;
+  }
+  /* Form and media: natural height, no internal scroll */
+  .admin-event-modal-form {
+    overflow-y: visible;
+    padding-right: 0;
+    height: auto;
+  }
+  .admin-event-modal-media {
+    overflow-y: visible;
+    height: auto;
+  }
+}
 .admin-event-modal-form {
-  overflow-y: visible;
-  padding-right: 0;
+  overflow-y: auto;
+  padding-right: 8px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -722,29 +750,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  overflow-y: visible;
-}
-
-/* Mobile: single column, full-width card */
-@media (max-width: 700px) {
-  .admin-modal-backdrop--event {
-    padding: 16px 0 80px;
-    align-items: flex-start;
-  }
-  .admin-event-modal {
-    max-width: 100%;
-    border-radius: 0;
-    max-height: calc(100vh - 16px - 80px);
-  }
-  .admin-event-modal-header {
-    padding: 14px 16px;
-    border-radius: 0;
-  }
-  .admin-event-modal-body {
-    grid-template-columns: 1fr;
-    padding: 16px 16px 32px;
-    gap: 20px;
-  }
+  overflow-y: auto;
 }
 .admin-event-media-title {
   font-family: var(--font-mono);
@@ -1639,50 +1645,124 @@
    ========================================================= */
 
 @media (max-width: 640px) {
-  /* Panel padding */
-  .admin-panel,
+  /* Confirm/delete/avatar modals keep their padding */
   .admin-confirm-modal,
   .delete-media-dialog,
   .avatar-modal {
     padding: 20px 16px;
   }
 
-  /* Media viewer — keep horizontal, shrink side panels */
-  .admin-event-media-side {
-    min-width: 44px;
-    padding: 8px 4px;
-    gap: 8px;
+  /* ── Tabs: flush full-width, right below mobile topbar ── */
+  .admin-tab-bar {
+    margin: 0;
+    padding: 0 4px;
+    border-radius: 0;
+    top: 56px;
   }
-  .admin-event-media-side-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.02em;
-  }
-  .admin-event-media-circle {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
-  }
-  .admin-event-media-image-wrap {
-    min-height: 120px;
+  .admin-tab-button {
+    font-size: 0.75rem;
+    padding: 14px 10px;
+    letter-spacing: 0.06em;
   }
 
-  /* Caption section — stack title and buttons vertically */
-  .admin-event-caption-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  /* ── Tab content: natural scroll, footer-safe padding ── */
+  .admin-panel {
+    padding: 0;
   }
-  .admin-event-caption-actions {
-    width: 100%;
+  .admin-tab-content {
+    overflow-y: visible;
+    padding: 16px 12px 80px;
+  }
+
+  /* ── Header: title + action button inline ── */
+  .admin-header-top {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .admin-events-title {
+    font-size: 1.1rem;
+  }
+  .admin-header-actions {
+    flex-shrink: 0;
+    margin-left: 0;
     display: flex;
     gap: 6px;
+    flex-wrap: nowrap;
   }
-  .admin-event-caption-actions .primary-button,
-  .admin-event-caption-actions .cancel-button {
-    flex: 1;
+  .admin-add-button,
+  .admin-about-edit-button {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    white-space: nowrap;
   }
 
-  /* Inputs and buttons */
+  /* ── Tables: horizontal scroll ── */
+  .admin-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-events-table,
+  .admin-accounts-table {
+    font-size: 0.88rem;
+    min-width: 500px;
+  }
+  .admin-events-table th,
+  .admin-accounts-table th {
+    font-size: 0.72rem;
+  }
+  .admin-empty-cell {
+    font-size: 0.8rem;
+  }
+  .admin-edit-button {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+  }
+
+  /* ── Account/article modals: pushed below topbar, clears footer ── */
+  .admin-modal-backdrop {
+    padding-top: 64px;
+    padding-bottom: 56px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .admin-modal {
+    padding: 20px 16px;
+    max-height: calc(100vh - 64px - 56px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-modal-title {
+    font-size: 1.1rem;
+  }
+  .admin-modal-button {
+    font-size: 0.8rem;
+    padding: 7px 14px;
+  }
+
+  /* ── Confirm/delete dialogs ── */
+  .admin-confirm-title {
+    font-size: 1rem;
+  }
+  .admin-confirm-text {
+    font-size: 0.88rem;
+  }
+  .delete-media-title {
+    font-size: 1.05rem;
+  }
+  .delete-media-text {
+    font-size: 0.88rem;
+  }
+  .delete-dialog-btn {
+    font-size: 0.82rem;
+    padding: 8px 14px;
+  }
+
+  /* ── Inputs and buttons ── */
   .input {
     font-size: 0.92rem;
   }
@@ -1707,103 +1787,7 @@
     font-size: 0.85rem;
   }
 
-  /* Panel headings */
-  .panel h1 {
-    font-size: 1.4rem;
-  }
-  .panel h2 {
-    font-size: 1.1rem;
-  }
-  .admin-events-title {
-    font-size: 1.15rem;
-  }
-  .admin-subpanel h2,
-  .admin-panel-section h2 {
-    font-size: 1rem;
-  }
-
-  /* Tabs */
-  .admin-tab-bar {
-    padding: 0 8px;
-    top: 56px;
-  }
-
-  /* Scrollable viewport below tab bar — content cannot scroll above it */
-  .admin-tab-content {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    max-height: calc(100vh - 56px - 52px - 60px);
-    padding: 20px 16px 80px;
-  }
-  .admin-panel {
-    padding: 0;
-  }
-  .admin-tab-button {
-    font-size: 0.75rem;
-    padding: 14px 14px;
-    letter-spacing: 0.08em;
-  }
-
-  /* Table */
-  .admin-events-table,
-  .admin-accounts-table {
-    font-size: 0.88rem;
-  }
-  .admin-events-table th,
-  .admin-accounts-table th {
-    font-size: 0.72rem;
-  }
-  .admin-empty-cell {
-    font-size: 0.8rem;
-  }
-  .admin-edit-button {
-    font-size: 0.78rem;
-    padding: 4px 8px;
-  }
-
-  /* Modals */
-  .admin-modal {
-    padding: 20px 16px;
-  }
-  .admin-modal-title {
-    font-size: 1.1rem;
-  }
-  .admin-modal-button {
-    font-size: 0.8rem;
-    padding: 7px 14px;
-  }
-  .admin-add-button {
-    font-size: 0.72rem;
-    padding: 5px 9px;
-  }
-  .admin-about-edit-button {
-    font-size: 0.72rem;
-    padding: 5px 9px;
-  }
-  .admin-header-top {
-    gap: 6px;
-  }
-  .admin-header-actions {
-    margin-left: 0;
-  }
-  .admin-confirm-title {
-    font-size: 1rem;
-  }
-  .admin-confirm-text {
-    font-size: 0.88rem;
-  }
-  .delete-media-title {
-    font-size: 1.05rem;
-  }
-  .delete-media-text {
-    font-size: 0.88rem;
-  }
-  .delete-dialog-btn {
-    font-size: 0.82rem;
-    padding: 8px 14px;
-  }
-
-  /* Form fields */
+  /* ── Form fields ── */
   .admin-field-label {
     font-size: 0.72rem;
   }
@@ -1817,7 +1801,54 @@
     font-size: 0.75rem;
   }
 
-  /* Year search */
+  /* ── Panel headings ── */
+  .panel h1 {
+    font-size: 1.4rem;
+  }
+  .panel h2 {
+    font-size: 1.1rem;
+  }
+  .admin-subpanel h2,
+  .admin-panel-section h2 {
+    font-size: 1rem;
+  }
+
+  /* ── Media viewer inside event modal ── */
+  .admin-event-media-side {
+    min-width: 44px;
+    padding: 8px 4px;
+    gap: 8px;
+  }
+  .admin-event-media-side-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.02em;
+  }
+  .admin-event-media-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+  .admin-event-media-image-wrap {
+    min-height: 120px;
+  }
+
+  /* ── Caption section ── */
+  .admin-event-caption-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .admin-event-caption-actions {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+  }
+  .admin-event-caption-actions .primary-button,
+  .admin-event-caption-actions .cancel-button {
+    flex: 1;
+  }
+
+  /* ── Year search ── */
   .admin-year-label {
     font-size: 0.78rem;
   }
@@ -1836,7 +1867,7 @@
     padding: 5px 10px;
   }
 
-  /* About admin */
+  /* ── About admin ── */
   .admin-about-section-title {
     font-size: 0.95rem;
   }
@@ -1850,7 +1881,7 @@
     font-size: 0.72rem;
   }
 
-  /* Team */
+  /* ── Team ── */
   .admin-team-row {
     flex-wrap: wrap;
     gap: 10px;
@@ -1867,7 +1898,7 @@
     font-size: 0.8rem;
   }
 
-  /* Profile */
+  /* ── Profile ── */
   .profile-section-title {
     font-size: 0.78rem;
   }
@@ -1875,12 +1906,12 @@
     font-size: 0.88rem;
   }
 
-  /* Blocker */
+  /* ── Blocker ── */
   .admin-blocker-text {
     font-size: 0.85rem;
   }
 
-  /* Logged in label */
+  /* ── Logged in label ── */
   .admin-logged-in {
     font-size: 0.75rem;
   }

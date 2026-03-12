@@ -172,8 +172,8 @@ export default function AdminView() {
   const [eventMediaIndex, setEventMediaIndex] = useState(0);
   const [eventMediaLoading, setEventMediaLoading] = useState(false);
   const [eventMediaError, setEventMediaError] = useState('');
-  const [_newMediaUrl, setNewMediaUrl] = useState('');
-  const [_newMediaCaption, setNewMediaCaption] = useState('');
+  const [newMediaUrl, setNewMediaUrl] = useState('');
+  const [newMediaCaption, setNewMediaCaption] = useState('');
 
   const [deleteEventOpen, setDeleteEventOpen] = useState(false);
   const [deleteEventTarget, setDeleteEventTarget] = useState(null);
@@ -414,7 +414,7 @@ export default function AdminView() {
     }
   }, [adminDecades, adminPickerDecade, adminTab]);
 
-  // Lock body scroll whenever any modal is open
+  // Lock body scroll when any modal is open so the table can't scroll behind it
   useEffect(() => {
     const anyOpen = eventModalOpen || accountModalOpen;
     if (anyOpen) {
@@ -422,7 +422,7 @@ export default function AdminView() {
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
-      document.body.style.top = \`-\${scrollY}px\`;
+      document.body.style.top = `-${scrollY}px`;
     } else {
       const top = document.body.style.top;
       document.body.style.overflow = '';
@@ -441,7 +441,7 @@ export default function AdminView() {
 
   // --- About page state ---
   const [aboutSections, setAboutSections] = useState([]);
-  const [_aboutLoading, setAboutLoading] = useState(false);
+  const [aboutLoading, setAboutLoading] = useState(false);
   const [aboutError, setAboutError] = useState('');
   const [aboutEditMode, setAboutEditMode] = useState(false);
   const [aboutSaving, setAboutSaving] = useState(false);
@@ -457,7 +457,7 @@ export default function AdminView() {
     setTimeout(() => setUploadToast(''), 4000);
   };
   const [newMember, setNewMember] = useState({ name: '', role: '' });
-  const [_newMemberPhotoFile, setNewMemberPhotoFile] = useState(null);
+  const [newMemberPhotoFile, setNewMemberPhotoFile] = useState(null);
   const [newMemberPhotoPreview, setNewMemberPhotoPreview] = useState('');
   const [newMemberCroppedDataUrl, setNewMemberCroppedDataUrl] = useState('');
   const newMemberFileInputRef = useRef(null);
@@ -602,7 +602,7 @@ export default function AdminView() {
       if (newMemberPhotoPreview) {
         try {
           URL.revokeObjectURL(newMemberPhotoPreview);
-        } catch (_e) { /* intentional */ }
+        } catch {}
       }
       setNewMemberPhotoPreview('');
       if (newMemberFileInputRef.current) newMemberFileInputRef.current.value = '';
@@ -771,7 +771,7 @@ export default function AdminView() {
       if (m?.previewUrl) {
         try {
           URL.revokeObjectURL(m.previewUrl);
-        } catch (_e) { /* intentional */ }
+        } catch {}
       }
     });
     setCreateQueuedMedia([]);
@@ -830,7 +830,7 @@ export default function AdminView() {
         if (m?.previewUrl) {
           try {
             URL.revokeObjectURL(m.previewUrl);
-          } catch (_e) { /* intentional */ }
+          } catch {}
         }
       });
     }
@@ -927,7 +927,7 @@ export default function AdminView() {
             if (m.previewUrl) {
               try {
                 URL.revokeObjectURL(m.previewUrl);
-              } catch (_e) { /* intentional */ }
+              } catch {}
             }
           }
           setCreateQueuedMedia([]);
@@ -967,8 +967,8 @@ export default function AdminView() {
     }
   };
 
-  const _handleAddMedia = async () => {
-    if (!editingEvent || !_newMediaUrl.trim()) return;
+  const handleAddMedia = async () => {
+    if (!editingEvent || !newMediaUrl.trim()) return;
     try {
       setEventMediaLoading(true);
       setEventMediaError('');
@@ -976,7 +976,7 @@ export default function AdminView() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ url: _newMediaUrl.trim(), caption: _newMediaCaption.trim() || null }),
+        body: JSON.stringify({ url: newMediaUrl.trim(), caption: newMediaCaption.trim() || null }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const created = await res.json();
@@ -2411,7 +2411,7 @@ export default function AdminView() {
                             if (newMemberPhotoPreview) {
                               try {
                                 URL.revokeObjectURL(newMemberPhotoPreview);
-                              } catch (_e) { /* intentional */ }
+                              } catch {}
                             }
                             setNewMemberPhotoPreview('');
                             if (newMemberFileInputRef.current)
@@ -3044,7 +3044,7 @@ export default function AdminView() {
 
 /* ---- Admin Event Modal ---- */
 function AdminEventModal({
-  event: _event,
+  event,
   form,
   setForm,
   saving,
@@ -3053,23 +3053,23 @@ function AdminEventModal({
   setMediaIndex,
   mediaLoading,
   mediaError,
-  newMediaUrl: _newMediaUrl,
-  setNewMediaUrl: _setNewMediaUrl,
-  newMediaCaption: _newMediaCaption,
-  setNewMediaCaption: _setNewMediaCaption,
+  newMediaUrl,
+  setNewMediaUrl,
+  newMediaCaption,
+  setNewMediaCaption,
   onClose,
   onSave,
-  onAddMedia: _onAddMedia,
+  onAddMedia,
   onDeleteMedia,
-  onUpdateMediaCaption: _onUpdateMediaCaption,
+  onUpdateMediaCaption,
   mediaCaptionBusy,
   mediaCaptionError,
   uploadBusy,
-  uploadError: _uploadError,
+  uploadError,
   onOpenAddArticleModal,
   isCreating,
   onSaveCaption,
-  onUpdateQueuedCaption: _onUpdateQueuedCaption,
+  onUpdateQueuedCaption,
 }) {
   const hasMedia = Array.isArray(media) && media.length > 0;
   const multipleMedia = Array.isArray(media) && media.length > 1;
@@ -3132,12 +3132,10 @@ function AdminEventModal({
     });
   }, [media, setMediaIndex]);
 
-  // Reset caption state when the selected media item changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setCaptionEditing(false);
     setCaptionDraft(currentMedia?.caption || '');
-  }, [currentMedia?.id]); // intentionally omitting caption to avoid re-running on caption saves
+  }, [currentMedia?.id]);
 
   const handleBackdropClick = () => {
     if (!saving && !uploadBusy) onClose();
