@@ -1739,7 +1739,7 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     max-height: calc(100vh - 56px - 52px - 60px);
-    padding: 20px 16px 24px;
+    padding: 20px 16px 80px;
   }
   .admin-panel {
     padding: 0;
