@@ -658,6 +658,7 @@
 
 .admin-modal-backdrop--event {
   align-items: center;
+  z-index: 10001;
 }
 .admin-event-modal {
   max-width: 900px;
