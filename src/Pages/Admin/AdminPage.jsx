@@ -59,27 +59,27 @@ function AvatarCropModal({ isOpen, imageSrc, onClose, onSave, onLoaded }) {
       image.onerror = reject;
     });
 
-    const rawDiameter = Math.min(croppedAreaPixels.width, croppedAreaPixels.height);
-    const diameter = Math.min(rawDiameter, 400); // cap at 400px — sufficient for circular avatars
+    const OUTPUT_SIZE = 400; // avatar display size — no need for larger
     const canvas = document.createElement('canvas');
-    canvas.width = diameter;
-    canvas.height = diameter;
+    canvas.width = OUTPUT_SIZE;
+    canvas.height = OUTPUT_SIZE;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, diameter, diameter);
+    ctx.clearRect(0, 0, OUTPUT_SIZE, OUTPUT_SIZE);
     ctx.beginPath();
-    ctx.arc(diameter / 2, diameter / 2, diameter / 2, 0, Math.PI * 2);
+    ctx.arc(OUTPUT_SIZE / 2, OUTPUT_SIZE / 2, OUTPUT_SIZE / 2, 0, Math.PI * 2);
     ctx.closePath();
     ctx.clip();
+    // Draw the full cropped region (any size) scaled down to OUTPUT_SIZE
     ctx.drawImage(
       image,
       croppedAreaPixels.x,
       croppedAreaPixels.y,
-      diameter,
-      diameter,
+      croppedAreaPixels.width,
+      croppedAreaPixels.height,
       0,
       0,
-      diameter,
-      diameter
+      OUTPUT_SIZE,
+      OUTPUT_SIZE
     );
     const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
     await onSave(dataUrl);

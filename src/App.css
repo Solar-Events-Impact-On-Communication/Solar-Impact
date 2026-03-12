@@ -260,7 +260,7 @@ a {
   gap: 2px;
 }
 .nav-drawer--open {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 .nav-item {
