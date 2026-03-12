@@ -1622,1073 +1622,1096 @@ export default function AdminView() {
               Team
             </button>
           </div>
-          <div className="admin-events-header">
-            <div className="admin-header-top">
-              <h1 className="admin-events-title">{activeTitle}</h1>
-              <div className="admin-header-actions">
-                {adminTab === 'events' && (
-                  <button type="button" className="admin-add-button" onClick={openAddEventModal}>
-                    Add Event <span className="admin-add-plus">+</span>
-                  </button>
-                )}
-                {adminTab === 'accounts' && isSuperAdmin && (
-                  <button
-                    type="button"
-                    className="admin-add-button"
-                    onClick={openCreateAccountModal}
-                  >
-                    Add Account <span className="admin-add-plus">+</span>
-                  </button>
-                )}
-                {adminTab === 'about' && !aboutEditMode && (
-                  <button
-                    type="button"
-                    className="admin-about-edit-button"
-                    onClick={() => {
-                      if (!aboutSections.length) loadAdminAbout();
-                      setAboutEditMode(true);
-                    }}
-                  >
-                    <span className="admin-edit-icon">✎</span> Edit About Page
-                  </button>
-                )}
-                {adminTab === 'about' && aboutEditMode && (
-                  <>
+          <div className="admin-tab-content">
+            <div className="admin-events-header">
+              <div className="admin-header-top">
+                <h1 className="admin-events-title">{activeTitle}</h1>
+                <div className="admin-header-actions">
+                  {adminTab === 'events' && (
+                    <button type="button" className="admin-add-button" onClick={openAddEventModal}>
+                      Add Event <span className="admin-add-plus">+</span>
+                    </button>
+                  )}
+                  {adminTab === 'accounts' && isSuperAdmin && (
                     <button
                       type="button"
-                      className="admin-about-edit-button admin-about-edit-button--ghost"
-                      onClick={handleCancelAboutEdit}
-                      disabled={aboutSaving}
+                      className="admin-add-button"
+                      onClick={openCreateAccountModal}
                     >
-                      Cancel
+                      Add Account <span className="admin-add-plus">+</span>
                     </button>
+                  )}
+                  {adminTab === 'about' && !aboutEditMode && (
                     <button
                       type="button"
                       className="admin-about-edit-button"
-                      onClick={handleSaveAboutChanges}
-                      disabled={aboutSaving}
-                    >
-                      {aboutSaving ? 'Saving…' : 'Save'}
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-            <p className="admin-logged-in">
-              Logged in as <strong>{loggedInUser.username}</strong>
-            </p>
-          </div>
-
-          {/* ---- EVENTS TAB ---- */}
-          {adminTab === 'events' && (
-            <>
-              <div className="admin-locate-bar">
-                <form
-                  className="admin-year-search"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const trimmed = adminYearQuery.trim();
-                    if (!trimmed) {
-                      setAdminYearFilter(null);
-                      return;
-                    }
-                    const cleaned = trimmed.replace(/\D/g, '').slice(0, 4);
-                    if (!cleaned) {
-                      setAdminYearFilter(null);
-                      return;
-                    }
-                    setAdminYearFilter(cleaned);
-                  }}
-                  noValidate
-                >
-                  <label className="admin-year-label">
-                    <span>Filter by Year</span>
-                    <input
-                      type="text"
-                      className="year-search-input"
-                      placeholder="YYYY"
-                      inputMode="numeric"
-                      maxLength={4}
-                      pattern="\d{4}"
-                      value={adminYearQuery}
-                      onChange={(e) => {
-                        const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
-                        setAdminYearQuery(cleaned);
+                      onClick={() => {
+                        if (!aboutSections.length) loadAdminAbout();
+                        setAboutEditMode(true);
                       }}
-                    />
-                  </label>
-                  <button type="submit" className="year-search-button">
-                    Search
-                  </button>
-                  <button
-                    type="button"
-                    className="year-search-browse-button"
-                    onClick={() => setShowAdminYearPicker((prev) => !prev)}
-                  >
-                    Browse
-                  </button>
-                </form>
-                {showAdminYearPicker && (
-                  <div className="admin-year-search-popover">
-                    <div className="admin-year-search-popover-section">
-                      <div className="admin-year-search-popover-label">Select Decade</div>
-                      <div className="admin-year-decade-list">
-                        {adminDecades.map((decade) => (
-                          <button
-                            key={decade}
-                            type="button"
-                            className={
-                              'admin-year-decade-pill' +
-                              (adminPickerDecade === decade ? ' is-active' : '')
-                            }
-                            onClick={() => setAdminPickerDecade(decade)}
-                          >
-                            {decade}s
-                          </button>
-                        ))}
-                        {adminDecades.length === 0 && (
-                          <span className="helper">No events available yet.</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="admin-year-search-popover-section">
-                      <div className="admin-year-search-popover-label">Select Year</div>
-                      <div className="admin-year-year-list">
-                        {adminUniqueYears
-                          .filter(
-                            (y) =>
-                              adminPickerDecade !== null &&
-                              Math.floor(Number(y) / 10) * 10 === adminPickerDecade
-                          )
-                          .map((y) => (
-                            <button
-                              key={y}
-                              type="button"
-                              className={
-                                'admin-year-year-pill' +
-                                (adminYearFilter === y ? ' is-selected' : '')
-                              }
-                              onClick={() => {
-                                setAdminYearFilter(y);
-                                setAdminYearQuery(y);
-                                setShowAdminYearPicker(false);
-                              }}
-                            >
-                              {y}
-                            </button>
-                          ))}
-                        {adminPickerDecade !== null &&
-                          adminUniqueYears.filter(
-                            (y) => Math.floor(Number(y) / 10) * 10 === adminPickerDecade
-                          ).length === 0 && (
-                            <span className="helper">No years in this decade yet.</span>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              {adminYearFilter && (
-                <p className="helper">
-                  Showing events for year <strong>{adminYearFilter}</strong>. Clear the search to
-                  see all events.
-                </p>
-              )}
-              {eventsLoading && <p className="helper">Loading events…</p>}
-              {eventsError && (
-                <p className="helper" style={{ color: '#ffb3b3' }}>
-                  {eventsError}
-                </p>
-              )}
-              {!eventsLoading && !eventsError && (
-                <div className="admin-table-wrapper">
-                  <table className="admin-events-table">
-                    <thead>
-                      <tr>
-                        <th className="admin-events-th-edit">Actions</th>
-                        <th>Date</th>
-                        <th>Event Type</th>
-                        <th>Short Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredAdminEvents.length === 0 ? (
-                        <tr>
-                          <td colSpan={4} className="admin-empty-cell">
-                            No events found for the current filter.
-                          </td>
-                        </tr>
-                      ) : (
-                        filteredAdminEvents.map((evt) => (
-                          <tr key={evt.id}>
-                            <td className="admin-events-edit-cell">
-                              <div className="admin-events-actions">
-                                <button
-                                  type="button"
-                                  className="admin-edit-button"
-                                  onClick={() => openEventModal(evt)}
-                                >
-                                  <span className="admin-edit-icon">✎</span>
-                                  <span className="admin-edit-text">Edit Event</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  className="admin-edit-button admin-edit-button--danger"
-                                  onClick={() => openDeleteEventDialog(evt)}
-                                >
-                                  <span className="admin-edit-icon">🗑</span>
-                                  <span className="admin-edit-text">Delete Event</span>
-                                </button>
-                              </div>
-                            </td>
-                            <td>{formatEventDateLabelWithYear(evt.event_date)}</td>
-                            <td>{evt.event_type || '—'}</td>
-                            <td>{evt.short_description || '—'}</td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </>
-          )}
-
-          {/* ---- DELETE EVENT CONFIRM ---- */}
-          {deleteEventOpen && deleteEventTarget && (
-            <div className="delete-media-backdrop" onClick={closeDeleteEventDialog}>
-              <div className="delete-media-dialog" onClick={(e) => e.stopPropagation()}>
-                <h3 className="delete-media-title">Delete Event?</h3>
-                <p className="delete-media-text">
-                  This will permanently delete:
-                  <br />• the event
-                  <br />• all linked newspaper articles
-                  <br />• the article images in DigitalOcean Spaces
-                </p>
-                <div className="delete-media-preview">
-                  <div className="helper" style={{ color: '#fff' }}>
-                    <strong>{deleteEventTarget.title}</strong>
-                    <br />
-                    {formatEventDateLabelWithYear(deleteEventTarget.event_date)}
-                  </div>
-                </div>
-                <div className="delete-media-actions">
-                  <button
-                    type="button"
-                    className="delete-dialog-btn delete-dialog-btn-cancel"
-                    onClick={closeDeleteEventDialog}
-                    disabled={deleteEventBusy}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className="delete-dialog-btn delete-dialog-btn-confirm"
-                    onClick={confirmDeleteEvent}
-                    disabled={deleteEventBusy}
-                  >
-                    {deleteEventBusy ? (
-                      <>
-                        <span className="delete-dialog-spinner" />
-                        Deleting…
-                      </>
-                    ) : (
-                      'Delete Event'
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ---- EDIT EVENT MODAL ---- */}
-          {eventModalOpen && (
-            <ErrorBoundary>
-              <AdminEventModal
-                event={editingEvent}
-                form={eventForm}
-                setForm={setEventForm}
-                saving={eventSaving}
-                media={isCreatingEvent ? createQueuedMedia : eventMedia}
-                mediaIndex={isCreatingEvent ? createMediaIndex : eventMediaIndex}
-                setMediaIndex={isCreatingEvent ? setCreateMediaIndex : setEventMediaIndex}
-                mediaLoading={eventMediaLoading}
-                mediaError={eventMediaError}
-                onClose={closeEventModal}
-                onSave={handleSaveEvent}
-                uploadBusy={mediaUploadBusy}
-                uploadError={mediaUploadError}
-                onUpdateMediaCaption={handleUpdateMediaCaption}
-                mediaCaptionBusy={mediaCaptionBusy}
-                mediaCaptionError={mediaCaptionError}
-                onOpenAddArticleModal={openAddArticleModal}
-                isCreating={isCreatingEvent}
-                onUpdateQueuedCaption={(localId, newCaption) => {
-                  setCreateQueuedMedia((prev) =>
-                    prev.map((m) => (m.localId === localId ? { ...m, caption: newCaption } : m))
-                  );
-                }}
-                onDeleteMedia={(item) => {
-                  if (isCreatingEvent) {
-                    setCreateQueuedMedia((prev) => {
-                      const next = prev.filter((m) => m.localId !== item.localId);
-                      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
-                      setCreateMediaIndex((idx) =>
-                        next.length ? Math.min(idx, next.length - 1) : 0
-                      );
-                      return next;
-                    });
-                    return;
-                  }
-                  requestDeleteCurrentMedia(item);
-                }}
-                onSaveCaption={handleCaptionSaveForModal}
-              />
-            </ErrorBoundary>
-          )}
-
-          {/* ---- ADD ARTICLE MODAL ---- */}
-          {addArticleOpen && (
-            <div className="admin-modal-backdrop" onClick={closeAddArticleModal}>
-              <div
-                className="admin-modal admin-modal--add-article"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="admin-modal-header">
-                  <h2 className="admin-modal-title admin-modal-title--small">
-                    Add Newspaper Article
-                  </h2>
-                  <div className="admin-modal-actions">
-                    <button
-                      type="button"
-                      className="admin-modal-button admin-modal-button--ghost"
-                      onClick={closeAddArticleModal}
-                      disabled={mediaUploadBusy}
                     >
-                      Cancel
+                      <span className="admin-edit-icon">✎</span> Edit About Page
                     </button>
-                    <button
-                      type="button"
-                      className="admin-modal-button"
-                      onClick={uploadAddArticle}
-                      disabled={mediaUploadBusy}
-                    >
-                      {mediaUploadBusy ? 'Uploading…' : 'Upload'}
-                    </button>
-                  </div>
-                </div>
-                <div
-                  className={
-                    'admin-field admin-field--large ' +
-                    (addArticleTriedSubmit && addArticleErrors.file ? 'admin-field--error' : '')
-                  }
-                >
-                  <label className="admin-field-label admin-field-label--big">
-                    Article Image <span className="admin-field-required">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="admin-file-input-large"
-                    onChange={(e) => {
-                      setAddArticleFile(e.target.files?.[0] || null);
-                      setAddArticleErrors((prev) => ({ ...prev, file: '' }));
-                    }}
-                    disabled={mediaUploadBusy}
-                  />
-                  {addArticleTriedSubmit && addArticleErrors.file && (
-                    <span className="admin-field-error-text">{addArticleErrors.file}</span>
                   )}
-                </div>
-                <div
-                  className={
-                    'admin-field admin-field--large ' +
-                    (addArticleTriedSubmit && addArticleErrors.caption ? 'admin-field--error' : '')
-                  }
-                >
-                  <label className="admin-field-label admin-field-label--big">
-                    Caption <span className="admin-field-required">*</span>
-                  </label>
-                  <textarea
-                    className={
-                      'admin-textarea admin-textarea--caption ' +
-                      (addArticleTriedSubmit && addArticleErrors.caption ? 'input--error' : '')
-                    }
-                    value={addArticleCaption}
-                    onChange={(e) => {
-                      setAddArticleCaption(e.target.value);
-                      setAddArticleErrors((prev) => ({ ...prev, caption: '' }));
-                      e.target.style.height = 'auto';
-                      e.target.style.height = `${e.target.scrollHeight}px`;
-                    }}
-                    placeholder="Enter a caption for this article"
-                    rows={2}
-                    disabled={mediaUploadBusy}
-                  />
-                  {addArticleTriedSubmit && addArticleErrors.caption && (
-                    <span className="admin-field-error-text">{addArticleErrors.caption}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ---- ACCOUNTS TAB ---- */}
-          {adminTab === 'accounts' && isSuperAdmin && (
-            <>
-              <p className="helper" style={{ marginTop: 8, marginBottom: 16 }}>
-                Manage admin accounts. Use the edit button to update passwords and security
-                questions.
-              </p>
-              <div className="admin-table-wrapper">
-                <table className="admin-accounts-table">
-                  <thead>
-                    <tr>
-                      <th className="admin-events-th-edit"></th>
-                      <th>Username</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usersLoading && (
-                      <tr>
-                        <td colSpan={2} className="admin-empty-cell">
-                          Loading accounts…
-                        </td>
-                      </tr>
-                    )}
-                    {!usersLoading && usersError && (
-                      <tr>
-                        <td colSpan={2} className="admin-empty-cell">
-                          {usersError}
-                        </td>
-                      </tr>
-                    )}
-                    {!usersLoading && !usersError && adminUsers.length === 0 && (
-                      <tr>
-                        <td colSpan={2} className="admin-empty-cell">
-                          No admin accounts found.
-                        </td>
-                      </tr>
-                    )}
-                    {!usersLoading &&
-                      !usersError &&
-                      adminUsers.length > 0 &&
-                      adminUsers.map((u) => {
-                        const isProtected = !!u.is_protected;
-                        return (
-                          <tr key={u.id}>
-                            <td className="admin-events-edit-cell">
-                              {!isProtected ? (
-                                <button
-                                  type="button"
-                                  className="admin-edit-button"
-                                  onClick={() => openEditAccountModal(u)}
-                                >
-                                  <span className="admin-edit-icon">✎</span>
-                                  <span className="admin-edit-text">Edit Account</span>
-                                </button>
-                              ) : (
-                                <span className="helper" style={{ fontSize: '0.8rem' }}>
-                                  Protected
-                                </span>
-                              )}
-                            </td>
-                            <td>{u.username}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-
-          {/* ---- PROFILE TAB ---- */}
-          {adminTab === 'profile' && !isSuperAdmin && (
-            <div className="admin-subpanel admin-subpanel--profile">
-              <h2>My Profile</h2>
-              <p className="helper">
-                Update your admin password and security question/answer. For security, your current
-                password and answer are never shown.
-              </p>
-              <div className="admin-field" style={{ marginTop: 16 }}>
-                <div className="admin-field-label">
-                  <span>Username</span>
-                </div>
-                <input className="input" value={loggedInUser.username} disabled />
-              </div>
-              <hr className="profile-divider" />
-              <div className="profile-section-header">
-                <h3 className="profile-section-title">Security Question &amp; Answer</h3>
-                {!editingSecurity ? (
-                  <button type="button" className="admin-modal-button" onClick={startSecurityEdit}>
-                    Edit
-                  </button>
-                ) : (
-                  <div className="profile-section-actions">
-                    <button
-                      type="button"
-                      className="admin-modal-button admin-modal-button--danger"
-                      onClick={cancelSecurityEdit}
-                      disabled={profileSaving}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-modal-button"
-                      onClick={saveSecurityEdit}
-                      disabled={profileSaving}
-                    >
-                      Save
-                    </button>
-                  </div>
-                )}
-              </div>
-              {!editingSecurity ? (
-                <>
-                  <div className="admin-field">
-                    <div className="admin-field-label">
-                      <span>Security Question</span>
-                    </div>
-                    <div className="profile-static-value">{currentProfileQuestionText}</div>
-                  </div>
-                  <div className="admin-field">
-                    <div className="admin-field-label">
-                      <span>Security Answer</span>
-                    </div>
-                    <div className="profile-static-value">
-                      <span className="profile-obscured">********</span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className={
-                      'admin-field ' + (profileQuestionMissing ? 'admin-field--error' : '')
-                    }
-                  >
-                    <div className="admin-field-label">
-                      <span>
-                        Security Question<span className="admin-field-required"> *</span>
-                      </span>
-                    </div>
-                    <select
-                      className={`input ${profileQuestionMissing ? 'input--error' : ''}`}
-                      value={profileForm.securityQuestionId || ''}
-                      onChange={(e) =>
-                        setProfileForm((prev) => ({
-                          ...prev,
-                          securityQuestionId: e.target.value || '',
-                        }))
-                      }
-                    >
-                      <option value="">None</option>
-                      {securityQuestions.map((q) => (
-                        <option key={q.id} value={q.id}>
-                          {q.question_text}
-                        </option>
-                      ))}
-                    </select>
-                    {profileQuestionMissing && (
-                      <span className="admin-field-error-text">* Required field missing</span>
-                    )}
-                  </div>
-                  <div
-                    className={'admin-field ' + (profileAnswerMissing ? 'admin-field--error' : '')}
-                  >
-                    <div className="admin-field-label">
-                      <span>
-                        New Security Answer<span className="admin-field-required"> *</span>
-                      </span>
-                    </div>
-                    <div className="admin-password-wrapper">
-                      <input
-                        className={`input ${profileAnswerMissing ? 'input--error' : ''}`}
-                        type="password"
-                        value={profileForm.securityAnswer}
-                        onChange={(e) =>
-                          setProfileForm((prev) => ({ ...prev, securityAnswer: e.target.value }))
-                        }
-                      />
-                    </div>
-                    {profileAnswerMissing && (
-                      <span className="admin-field-error-text">* Required field missing</span>
-                    )}
-                  </div>
-                </>
-              )}
-              <hr className="profile-divider" />
-              <div className="profile-section-header">
-                <h3 className="profile-section-title">Password</h3>
-                {!editingPassword ? (
-                  <button type="button" className="admin-modal-button" onClick={startPasswordEdit}>
-                    Edit
-                  </button>
-                ) : (
-                  <div className="profile-section-actions">
-                    <button
-                      type="button"
-                      className="admin-modal-button admin-modal-button--danger"
-                      onClick={cancelPasswordEdit}
-                      disabled={profileSaving}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-modal-button"
-                      onClick={savePasswordEdit}
-                      disabled={profileSaving}
-                    >
-                      Save
-                    </button>
-                  </div>
-                )}
-              </div>
-              {!editingPassword ? (
-                <div className="admin-field">
-                  <div className="admin-field-label">
-                    <span>Password</span>
-                  </div>
-                  <div className="profile-static-value">
-                    <span className="profile-obscured">********</span>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className={'admin-field ' + (profilePasswordMissing ? 'admin-field--error' : '')}
-                >
-                  <div className="admin-field-label">
-                    <span>
-                      New Password<span className="admin-field-required"> *</span>
-                    </span>
-                  </div>
-                  <div className="admin-password-wrapper">
-                    <input
-                      className={`input ${profilePasswordMissing ? 'input--error' : ''}`}
-                      type="password"
-                      value={profileForm.password}
-                      onChange={(e) =>
-                        setProfileForm((prev) => ({ ...prev, password: e.target.value }))
-                      }
-                    />
-                  </div>
-                  {profilePasswordMissing && (
-                    <span className="admin-field-error-text">* Required field missing</span>
-                  )}
-                </div>
-              )}
-              {profileError && (
-                <p className="helper" style={{ color: '#ffb3b3', marginTop: 10 }}>
-                  {profileError}
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* ---- TEAM TAB ---- */}
-          {adminTab === 'team' && (
-            <div className="admin-panel-section">
-              <h2>Team Members</h2>
-              <p className="helper">
-                Add researchers and developers, then upload a profile photo for each person. Photos
-                are stored as circular avatars on the public About page.
-              </p>
-              {teamLoading && <p>Loading team members…</p>}
-              {teamError && <p className="error">{teamError}</p>}
-              {teamPhotoError && (
-                <p className="error" style={{ marginTop: 6 }}>
-                  {teamPhotoError}
-                </p>
-              )}
-              <div className="admin-team-add">
-                <h3>Add New Member</h3>
-                <div className="admin-team-add-row">
-                  <input
-                    type="text"
-                    className="input"
-                    placeholder="Name"
-                    value={newMember.name}
-                    onChange={(e) => setNewMember((prev) => ({ ...prev, name: e.target.value }))}
-                  />
-                  <input
-                    type="text"
-                    className="input"
-                    placeholder="Role (e.g., Lead Researcher)"
-                    value={newMember.role}
-                    onChange={(e) => setNewMember((prev) => ({ ...prev, role: e.target.value }))}
-                  />
-                  {!newMemberPhotoPreview && !newMemberCroppedDataUrl && (
-                    <label className="admin-team-photo-upload">
-                      <span>Select Photo</span>
-                      <input
-                        ref={newMemberFileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          if (file.size > MAX_PHOTO_BYTES) {
-                            setTeamPhotoError('Images must be 10 MB or smaller.');
-                            if (newMemberFileInputRef.current)
-                              newMemberFileInputRef.current.value = '';
-                            return;
-                          }
-                          setTeamPhotoError('');
-                          const previewUrl = URL.createObjectURL(file);
-                          setNewMemberPhotoPreview(previewUrl);
-                          setNewMemberPhotoFile(file);
-                          openAvatarModalFor('__NEW__', file);
-                        }}
-                      />
-                    </label>
-                  )}
-                  {newMemberPhotoPreview && !avatarModalOpen && (
-                    <div className="admin-new-member-photo-chip">
-                      <img src={newMemberPhotoPreview} alt="Selected" />
-                      <span>
-                        {newMemberCroppedDataUrl ? 'Photo ready' : 'Photo selected (crop pending)'}
-                      </span>
+                  {adminTab === 'about' && aboutEditMode && (
+                    <>
                       <button
                         type="button"
-                        className="admin-team-remove-button"
-                        onClick={() => {
-                          setNewMemberPhotoFile(null);
-                          setNewMemberCroppedDataUrl('');
-                          if (newMemberPhotoPreview) {
-                            try {
-                              URL.revokeObjectURL(newMemberPhotoPreview);
-                            } catch {}
-                          }
-                          setNewMemberPhotoPreview('');
-                          if (newMemberFileInputRef.current)
-                            newMemberFileInputRef.current.value = '';
-                        }}
-                      >
-                        Remove Photo
-                      </button>
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    className="admin-add-button"
-                    onClick={handleAddTeamMember}
-                    disabled={addingMember}
-                  >
-                    {addingMember ? 'Adding…' : 'Add Member'}
-                  </button>
-                </div>
-                <p className="helper admin-team-photo-note">
-                  Recommended: square images at least 512×512, JPG/PNG. You'll be able to crop them
-                  into a circle.
-                </p>
-              </div>
-              {adminTeam.length === 0 && !teamLoading ? (
-                <p className="helper" style={{ marginTop: 16 }}>
-                  No team members found.
-                </p>
-              ) : (
-                <div className="admin-team-list">
-                  {adminTeam.map((member) => {
-                    const isEditing = editingMemberId === member.id;
-                    return (
-                      <div key={member.id} className="admin-team-row">
-                        <div className="admin-team-photo-cell">
-                          {member.image_url ? (
-                            <img
-                              src={member.image_url}
-                              alt={member.name}
-                              className="admin-team-photo-thumb"
-                            />
-                          ) : (
-                            <div className="admin-team-photo-placeholder">
-                              <div className="admin-team-photo-inner">
-                                <div className="admin-team-photo-circle" />
-                                <div className="admin-team-photo-bar" />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <div className="admin-team-info">
-                          <input
-                            type="text"
-                            className={
-                              'input admin-team-name-input' + (!isEditing ? ' input--readonly' : '')
-                            }
-                            value={member.name || ''}
-                            readOnly={!isEditing}
-                            onChange={(e) =>
-                              handleMemberFieldChange(member.id, 'name', e.target.value)
-                            }
-                          />
-                          <input
-                            type="text"
-                            className={
-                              'input admin-team-role-input' + (!isEditing ? ' input--readonly' : '')
-                            }
-                            value={member.role || ''}
-                            readOnly={!isEditing}
-                            onChange={(e) =>
-                              handleMemberFieldChange(member.id, 'role', e.target.value)
-                            }
-                          />
-                        </div>
-                        <div className="admin-team-actions">
-                          <label className="admin-team-photo-upload">
-                            <span>{member.image_url ? 'Change Photo' : 'Add Photo'}</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                openAvatarModalFor(member.id, file);
-                              }}
-                            />
-                          </label>
-                          {member.image_url && (
-                            <button
-                              type="button"
-                              className="admin-team-remove-button"
-                              onClick={() => handlePhotoDelete(member.id)}
-                            >
-                              Remove Photo
-                            </button>
-                          )}
-                          {!isEditing ? (
-                            <>
-                              <button
-                                type="button"
-                                className="primary-button"
-                                onClick={() => setEditingMemberId(member.id)}
-                              >
-                                Edit
-                              </button>
-                              <button
-                                type="button"
-                                className="danger-button"
-                                onClick={() => handleDeleteTeamMember(member.id)}
-                              >
-                                Delete
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <button
-                                type="button"
-                                className="primary-button"
-                                onClick={() => handleSaveTeamMember(member)}
-                                disabled={savingMemberId === member.id}
-                              >
-                                {savingMemberId === member.id ? 'Saving…' : 'Save'}
-                              </button>
-                              <button
-                                type="button"
-                                className="cancel-button"
-                                onClick={() => {
-                                  loadAdminTeam();
-                                  setEditingMemberId(null);
-                                }}
-                                disabled={savingMemberId === member.id}
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                type="button"
-                                className="danger-button"
-                                onClick={() => handleDeleteTeamMember(member.id)}
-                              >
-                                Delete
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <AvatarCropModal
-                isOpen={avatarModalOpen}
-                imageSrc={avatarImageSrc}
-                onClose={closeAvatarModal}
-                onSave={handleAvatarSave}
-                onLoaded={() => setCropperBlocking(false)}
-              />
-              {teamDeleteConfirmOpen && (
-                <div className="admin-modal-backdrop admin-modal-backdrop--confirm">
-                  <div className="admin-confirm-modal">
-                    <div className="admin-confirm-title">Delete Team Member</div>
-                    <div className="admin-confirm-text">
-                      Are you sure you want to delete this team member? This action cannot be
-                      undone.
-                    </div>
-                    <div className="admin-confirm-actions">
-                      <button
-                        type="button"
-                        className="admin-modal-button admin-modal-button--ghost"
-                        onClick={() => {
-                          setTeamDeleteConfirmOpen(false);
-                          setTeamDeleteTargetId(null);
-                        }}
+                        className="admin-about-edit-button admin-about-edit-button--ghost"
+                        onClick={handleCancelAboutEdit}
+                        disabled={aboutSaving}
                       >
                         Cancel
                       </button>
                       <button
                         type="button"
-                        className="admin-modal-button admin-modal-button--danger"
-                        onClick={confirmDeleteTeamMember}
+                        className="admin-about-edit-button"
+                        onClick={handleSaveAboutChanges}
+                        disabled={aboutSaving}
                       >
-                        Delete
+                        {aboutSaving ? 'Saving…' : 'Save'}
                       </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ---- ABOUT PAGE TAB ---- */}
-          {adminTab === 'about' && (
-            <div className="admin-subpanel admin-subpanel--about">
-              <h2>About Page Content</h2>
-              <p className="helper" style={{ marginTop: 12 }}>
-                Use the "Edit About Page" button above to add, reorder, or remove sections. Sections
-                are shown on the public About page in order.
-              </p>
-              {!aboutEditMode && (
-                <div className="admin-about-content">
-                  {aboutSections.length === 0 && (
-                    <p className="helper">
-                      No sections have been added yet. Use "Edit About Page" above to create them.
-                    </p>
+                    </>
                   )}
-                  {aboutSections
-                    .filter((s) => !s.isDeleted)
-                    .sort((a, b) => a.displayOrder - b.displayOrder)
-                    .map((sec) => (
-                      <div key={sec.id ?? sec.localId} className="admin-about-section">
-                        <div className="admin-about-section-label">Section {sec.displayOrder}</div>
-                        <div className="admin-about-section-title">
-                          {sec.title || 'Untitled section'}
-                        </div>
-                        <p className="admin-about-section-text">
-                          {sec.text || 'No text has been added yet.'}
-                        </p>
-                      </div>
-                    ))}
                 </div>
-              )}
-              {aboutEditMode && (
-                <div className="admin-about-edit-list">
-                  {aboutSections
-                    .filter((s) => !s.isDeleted)
-                    .sort((a, b) => a.displayOrder - b.displayOrder)
-                    .map((sec) => {
-                      const activeCount = aboutSections.filter((s) => !s.isDeleted).length;
-                      return (
-                        <div
-                          key={sec.localId}
-                          ref={(el) => {
-                            if (el) aboutSectionRefs.current[sec.localId] = el;
-                          }}
-                          className="admin-about-edit-item"
-                        >
-                          <div className="admin-about-edit-header">
-                            <span className="admin-about-edit-label">
-                              Section {sec.displayOrder}
-                            </span>
-                            <label className="admin-about-order-control">
-                              Position:
-                              <select
-                                className="input admin-about-order-select"
-                                value={sec.displayOrder}
-                                onChange={(e) => {
-                                  applyAboutOrderChange(sec.localId, e.target.value);
-                                  setAboutScrollTarget(sec.localId);
-                                }}
-                              >
-                                {Array.from({ length: activeCount }, (_, i) => i + 1).map((n) => (
-                                  <option key={n} value={n}>
-                                    {n}
-                                  </option>
-                                ))}
-                              </select>
-                            </label>
-                          </div>
-                          <div className="admin-field admin-about-edit-field">
-                            <label className="admin-field-label">
-                              <span>Section Title</span>
-                            </label>
-                            <input
-                              className="input admin-about-input"
-                              value={sec.title}
-                              onChange={(e) =>
-                                handleAboutFieldChange(sec.localId, 'title', e.target.value)
-                              }
-                            />
-                          </div>
-                          <div className="admin-field admin-about-edit-field">
-                            <label className="admin-field-label">
-                              <span>Section Text</span>
-                            </label>
-                            <textarea
-                              className="input admin-about-textarea"
-                              rows={4}
-                              value={sec.text}
-                              onChange={(e) =>
-                                handleAboutFieldChange(sec.localId, 'text', e.target.value)
-                              }
-                            />
-                          </div>
-                          <div className="admin-about-edit-actions">
-                            <button
-                              type="button"
-                              className="admin-modal-button admin-modal-button--danger"
-                              onClick={() => handleAboutDelete(sec.localId)}
-                            >
-                              Delete Section
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  <div className="admin-about-footer-actions">
-                    <button
-                      type="button"
-                      className="admin-modal-button"
-                      onClick={handleAddAboutSection}
-                    >
-                      Add Section
+              </div>
+              <p className="admin-logged-in">
+                Logged in as <strong>{loggedInUser.username}</strong>
+              </p>
+            </div>
+
+            {/* ---- EVENTS TAB ---- */}
+            {adminTab === 'events' && (
+              <>
+                <div className="admin-locate-bar">
+                  <form
+                    className="admin-year-search"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const trimmed = adminYearQuery.trim();
+                      if (!trimmed) {
+                        setAdminYearFilter(null);
+                        return;
+                      }
+                      const cleaned = trimmed.replace(/\D/g, '').slice(0, 4);
+                      if (!cleaned) {
+                        setAdminYearFilter(null);
+                        return;
+                      }
+                      setAdminYearFilter(cleaned);
+                    }}
+                    noValidate
+                  >
+                    <label className="admin-year-label">
+                      <span>Filter by Year</span>
+                      <input
+                        type="text"
+                        className="year-search-input"
+                        placeholder="YYYY"
+                        inputMode="numeric"
+                        maxLength={4}
+                        pattern="\d{4}"
+                        value={adminYearQuery}
+                        onChange={(e) => {
+                          const cleaned = e.target.value.replace(/\D/g, '').slice(0, 4);
+                          setAdminYearQuery(cleaned);
+                        }}
+                      />
+                    </label>
+                    <button type="submit" className="year-search-button">
+                      Search
                     </button>
                     <button
                       type="button"
-                      className="admin-modal-button admin-modal-button--ghost"
-                      onClick={handleCancelAboutEdit}
-                      disabled={aboutSaving}
+                      className="year-search-browse-button"
+                      onClick={() => setShowAdminYearPicker((prev) => !prev)}
+                    >
+                      Browse
+                    </button>
+                  </form>
+                  {showAdminYearPicker && (
+                    <div className="admin-year-search-popover">
+                      <div className="admin-year-search-popover-section">
+                        <div className="admin-year-search-popover-label">Select Decade</div>
+                        <div className="admin-year-decade-list">
+                          {adminDecades.map((decade) => (
+                            <button
+                              key={decade}
+                              type="button"
+                              className={
+                                'admin-year-decade-pill' +
+                                (adminPickerDecade === decade ? ' is-active' : '')
+                              }
+                              onClick={() => setAdminPickerDecade(decade)}
+                            >
+                              {decade}s
+                            </button>
+                          ))}
+                          {adminDecades.length === 0 && (
+                            <span className="helper">No events available yet.</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="admin-year-search-popover-section">
+                        <div className="admin-year-search-popover-label">Select Year</div>
+                        <div className="admin-year-year-list">
+                          {adminUniqueYears
+                            .filter(
+                              (y) =>
+                                adminPickerDecade !== null &&
+                                Math.floor(Number(y) / 10) * 10 === adminPickerDecade
+                            )
+                            .map((y) => (
+                              <button
+                                key={y}
+                                type="button"
+                                className={
+                                  'admin-year-year-pill' +
+                                  (adminYearFilter === y ? ' is-selected' : '')
+                                }
+                                onClick={() => {
+                                  setAdminYearFilter(y);
+                                  setAdminYearQuery(y);
+                                  setShowAdminYearPicker(false);
+                                }}
+                              >
+                                {y}
+                              </button>
+                            ))}
+                          {adminPickerDecade !== null &&
+                            adminUniqueYears.filter(
+                              (y) => Math.floor(Number(y) / 10) * 10 === adminPickerDecade
+                            ).length === 0 && (
+                              <span className="helper">No years in this decade yet.</span>
+                            )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {adminYearFilter && (
+                  <p className="helper">
+                    Showing events for year <strong>{adminYearFilter}</strong>. Clear the search to
+                    see all events.
+                  </p>
+                )}
+                {eventsLoading && <p className="helper">Loading events…</p>}
+                {eventsError && (
+                  <p className="helper" style={{ color: '#ffb3b3' }}>
+                    {eventsError}
+                  </p>
+                )}
+                {!eventsLoading && !eventsError && (
+                  <div className="admin-table-wrapper">
+                    <table className="admin-events-table">
+                      <thead>
+                        <tr>
+                          <th className="admin-events-th-edit">Actions</th>
+                          <th>Date</th>
+                          <th>Event Type</th>
+                          <th>Short Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredAdminEvents.length === 0 ? (
+                          <tr>
+                            <td colSpan={4} className="admin-empty-cell">
+                              No events found for the current filter.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredAdminEvents.map((evt) => (
+                            <tr key={evt.id}>
+                              <td className="admin-events-edit-cell">
+                                <div className="admin-events-actions">
+                                  <button
+                                    type="button"
+                                    className="admin-edit-button"
+                                    onClick={() => openEventModal(evt)}
+                                  >
+                                    <span className="admin-edit-icon">✎</span>
+                                    <span className="admin-edit-text">Edit Event</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="admin-edit-button admin-edit-button--danger"
+                                    onClick={() => openDeleteEventDialog(evt)}
+                                  >
+                                    <span className="admin-edit-icon">🗑</span>
+                                    <span className="admin-edit-text">Delete Event</span>
+                                  </button>
+                                </div>
+                              </td>
+                              <td>{formatEventDateLabelWithYear(evt.event_date)}</td>
+                              <td>{evt.event_type || '—'}</td>
+                              <td>{evt.short_description || '—'}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* ---- DELETE EVENT CONFIRM ---- */}
+            {deleteEventOpen && deleteEventTarget && (
+              <div className="delete-media-backdrop" onClick={closeDeleteEventDialog}>
+                <div className="delete-media-dialog" onClick={(e) => e.stopPropagation()}>
+                  <h3 className="delete-media-title">Delete Event?</h3>
+                  <p className="delete-media-text">
+                    This will permanently delete:
+                    <br />• the event
+                    <br />• all linked newspaper articles
+                    <br />• the article images in DigitalOcean Spaces
+                  </p>
+                  <div className="delete-media-preview">
+                    <div className="helper" style={{ color: '#fff' }}>
+                      <strong>{deleteEventTarget.title}</strong>
+                      <br />
+                      {formatEventDateLabelWithYear(deleteEventTarget.event_date)}
+                    </div>
+                  </div>
+                  <div className="delete-media-actions">
+                    <button
+                      type="button"
+                      className="delete-dialog-btn delete-dialog-btn-cancel"
+                      onClick={closeDeleteEventDialog}
+                      disabled={deleteEventBusy}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
-                      className="admin-modal-button"
-                      onClick={handleSaveAboutChanges}
-                      disabled={aboutSaving}
+                      className="delete-dialog-btn delete-dialog-btn-confirm"
+                      onClick={confirmDeleteEvent}
+                      disabled={deleteEventBusy}
                     >
-                      {aboutSaving ? 'Saving…' : 'Save Changes'}
+                      {deleteEventBusy ? (
+                        <>
+                          <span className="delete-dialog-spinner" />
+                          Deleting…
+                        </>
+                      ) : (
+                        'Delete Event'
+                      )}
                     </button>
                   </div>
                 </div>
-              )}
-              {aboutError && (
-                <p className="helper" style={{ color: '#ffb3b3', marginTop: 10 }}>
-                  {aboutError}
+              </div>
+            )}
+
+            {/* ---- EDIT EVENT MODAL ---- */}
+            {eventModalOpen && (
+              <ErrorBoundary>
+                <AdminEventModal
+                  event={editingEvent}
+                  form={eventForm}
+                  setForm={setEventForm}
+                  saving={eventSaving}
+                  media={isCreatingEvent ? createQueuedMedia : eventMedia}
+                  mediaIndex={isCreatingEvent ? createMediaIndex : eventMediaIndex}
+                  setMediaIndex={isCreatingEvent ? setCreateMediaIndex : setEventMediaIndex}
+                  mediaLoading={eventMediaLoading}
+                  mediaError={eventMediaError}
+                  onClose={closeEventModal}
+                  onSave={handleSaveEvent}
+                  uploadBusy={mediaUploadBusy}
+                  uploadError={mediaUploadError}
+                  onUpdateMediaCaption={handleUpdateMediaCaption}
+                  mediaCaptionBusy={mediaCaptionBusy}
+                  mediaCaptionError={mediaCaptionError}
+                  onOpenAddArticleModal={openAddArticleModal}
+                  isCreating={isCreatingEvent}
+                  onUpdateQueuedCaption={(localId, newCaption) => {
+                    setCreateQueuedMedia((prev) =>
+                      prev.map((m) => (m.localId === localId ? { ...m, caption: newCaption } : m))
+                    );
+                  }}
+                  onDeleteMedia={(item) => {
+                    if (isCreatingEvent) {
+                      setCreateQueuedMedia((prev) => {
+                        const next = prev.filter((m) => m.localId !== item.localId);
+                        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+                        setCreateMediaIndex((idx) =>
+                          next.length ? Math.min(idx, next.length - 1) : 0
+                        );
+                        return next;
+                      });
+                      return;
+                    }
+                    requestDeleteCurrentMedia(item);
+                  }}
+                  onSaveCaption={handleCaptionSaveForModal}
+                />
+              </ErrorBoundary>
+            )}
+
+            {/* ---- ADD ARTICLE MODAL ---- */}
+            {addArticleOpen && (
+              <div className="admin-modal-backdrop" onClick={closeAddArticleModal}>
+                <div
+                  className="admin-modal admin-modal--add-article"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="admin-modal-header">
+                    <h2 className="admin-modal-title admin-modal-title--small">
+                      Add Newspaper Article
+                    </h2>
+                    <div className="admin-modal-actions">
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--ghost"
+                        onClick={closeAddArticleModal}
+                        disabled={mediaUploadBusy}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button"
+                        onClick={uploadAddArticle}
+                        disabled={mediaUploadBusy}
+                      >
+                        {mediaUploadBusy ? 'Uploading…' : 'Upload'}
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      'admin-field admin-field--large ' +
+                      (addArticleTriedSubmit && addArticleErrors.file ? 'admin-field--error' : '')
+                    }
+                  >
+                    <label className="admin-field-label admin-field-label--big">
+                      Article Image <span className="admin-field-required">*</span>
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="admin-file-input-large"
+                      onChange={(e) => {
+                        setAddArticleFile(e.target.files?.[0] || null);
+                        setAddArticleErrors((prev) => ({ ...prev, file: '' }));
+                      }}
+                      disabled={mediaUploadBusy}
+                    />
+                    {addArticleTriedSubmit && addArticleErrors.file && (
+                      <span className="admin-field-error-text">{addArticleErrors.file}</span>
+                    )}
+                  </div>
+                  <div
+                    className={
+                      'admin-field admin-field--large ' +
+                      (addArticleTriedSubmit && addArticleErrors.caption
+                        ? 'admin-field--error'
+                        : '')
+                    }
+                  >
+                    <label className="admin-field-label admin-field-label--big">
+                      Caption <span className="admin-field-required">*</span>
+                    </label>
+                    <textarea
+                      className={
+                        'admin-textarea admin-textarea--caption ' +
+                        (addArticleTriedSubmit && addArticleErrors.caption ? 'input--error' : '')
+                      }
+                      value={addArticleCaption}
+                      onChange={(e) => {
+                        setAddArticleCaption(e.target.value);
+                        setAddArticleErrors((prev) => ({ ...prev, caption: '' }));
+                        e.target.style.height = 'auto';
+                        e.target.style.height = `${e.target.scrollHeight}px`;
+                      }}
+                      placeholder="Enter a caption for this article"
+                      rows={2}
+                      disabled={mediaUploadBusy}
+                    />
+                    {addArticleTriedSubmit && addArticleErrors.caption && (
+                      <span className="admin-field-error-text">{addArticleErrors.caption}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ---- ACCOUNTS TAB ---- */}
+            {adminTab === 'accounts' && isSuperAdmin && (
+              <>
+                <p className="helper" style={{ marginTop: 8, marginBottom: 16 }}>
+                  Manage admin accounts. Use the edit button to update passwords and security
+                  questions.
                 </p>
-              )}
-            </div>
-          )}
+                <div className="admin-table-wrapper">
+                  <table className="admin-accounts-table">
+                    <thead>
+                      <tr>
+                        <th className="admin-events-th-edit"></th>
+                        <th>Username</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {usersLoading && (
+                        <tr>
+                          <td colSpan={2} className="admin-empty-cell">
+                            Loading accounts…
+                          </td>
+                        </tr>
+                      )}
+                      {!usersLoading && usersError && (
+                        <tr>
+                          <td colSpan={2} className="admin-empty-cell">
+                            {usersError}
+                          </td>
+                        </tr>
+                      )}
+                      {!usersLoading && !usersError && adminUsers.length === 0 && (
+                        <tr>
+                          <td colSpan={2} className="admin-empty-cell">
+                            No admin accounts found.
+                          </td>
+                        </tr>
+                      )}
+                      {!usersLoading &&
+                        !usersError &&
+                        adminUsers.length > 0 &&
+                        adminUsers.map((u) => {
+                          const isProtected = !!u.is_protected;
+                          return (
+                            <tr key={u.id}>
+                              <td className="admin-events-edit-cell">
+                                {!isProtected ? (
+                                  <button
+                                    type="button"
+                                    className="admin-edit-button"
+                                    onClick={() => openEditAccountModal(u)}
+                                  >
+                                    <span className="admin-edit-icon">✎</span>
+                                    <span className="admin-edit-text">Edit Account</span>
+                                  </button>
+                                ) : (
+                                  <span className="helper" style={{ fontSize: '0.8rem' }}>
+                                    Protected
+                                  </span>
+                                )}
+                              </td>
+                              <td>{u.username}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+
+            {/* ---- PROFILE TAB ---- */}
+            {adminTab === 'profile' && !isSuperAdmin && (
+              <div className="admin-subpanel admin-subpanel--profile">
+                <h2>My Profile</h2>
+                <p className="helper">
+                  Update your admin password and security question/answer. For security, your
+                  current password and answer are never shown.
+                </p>
+                <div className="admin-field" style={{ marginTop: 16 }}>
+                  <div className="admin-field-label">
+                    <span>Username</span>
+                  </div>
+                  <input className="input" value={loggedInUser.username} disabled />
+                </div>
+                <hr className="profile-divider" />
+                <div className="profile-section-header">
+                  <h3 className="profile-section-title">Security Question &amp; Answer</h3>
+                  {!editingSecurity ? (
+                    <button
+                      type="button"
+                      className="admin-modal-button"
+                      onClick={startSecurityEdit}
+                    >
+                      Edit
+                    </button>
+                  ) : (
+                    <div className="profile-section-actions">
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--danger"
+                        onClick={cancelSecurityEdit}
+                        disabled={profileSaving}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button"
+                        onClick={saveSecurityEdit}
+                        disabled={profileSaving}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {!editingSecurity ? (
+                  <>
+                    <div className="admin-field">
+                      <div className="admin-field-label">
+                        <span>Security Question</span>
+                      </div>
+                      <div className="profile-static-value">{currentProfileQuestionText}</div>
+                    </div>
+                    <div className="admin-field">
+                      <div className="admin-field-label">
+                        <span>Security Answer</span>
+                      </div>
+                      <div className="profile-static-value">
+                        <span className="profile-obscured">********</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className={
+                        'admin-field ' + (profileQuestionMissing ? 'admin-field--error' : '')
+                      }
+                    >
+                      <div className="admin-field-label">
+                        <span>
+                          Security Question<span className="admin-field-required"> *</span>
+                        </span>
+                      </div>
+                      <select
+                        className={`input ${profileQuestionMissing ? 'input--error' : ''}`}
+                        value={profileForm.securityQuestionId || ''}
+                        onChange={(e) =>
+                          setProfileForm((prev) => ({
+                            ...prev,
+                            securityQuestionId: e.target.value || '',
+                          }))
+                        }
+                      >
+                        <option value="">None</option>
+                        {securityQuestions.map((q) => (
+                          <option key={q.id} value={q.id}>
+                            {q.question_text}
+                          </option>
+                        ))}
+                      </select>
+                      {profileQuestionMissing && (
+                        <span className="admin-field-error-text">* Required field missing</span>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        'admin-field ' + (profileAnswerMissing ? 'admin-field--error' : '')
+                      }
+                    >
+                      <div className="admin-field-label">
+                        <span>
+                          New Security Answer<span className="admin-field-required"> *</span>
+                        </span>
+                      </div>
+                      <div className="admin-password-wrapper">
+                        <input
+                          className={`input ${profileAnswerMissing ? 'input--error' : ''}`}
+                          type="password"
+                          value={profileForm.securityAnswer}
+                          onChange={(e) =>
+                            setProfileForm((prev) => ({ ...prev, securityAnswer: e.target.value }))
+                          }
+                        />
+                      </div>
+                      {profileAnswerMissing && (
+                        <span className="admin-field-error-text">* Required field missing</span>
+                      )}
+                    </div>
+                  </>
+                )}
+                <hr className="profile-divider" />
+                <div className="profile-section-header">
+                  <h3 className="profile-section-title">Password</h3>
+                  {!editingPassword ? (
+                    <button
+                      type="button"
+                      className="admin-modal-button"
+                      onClick={startPasswordEdit}
+                    >
+                      Edit
+                    </button>
+                  ) : (
+                    <div className="profile-section-actions">
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--danger"
+                        onClick={cancelPasswordEdit}
+                        disabled={profileSaving}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button"
+                        onClick={savePasswordEdit}
+                        disabled={profileSaving}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {!editingPassword ? (
+                  <div className="admin-field">
+                    <div className="admin-field-label">
+                      <span>Password</span>
+                    </div>
+                    <div className="profile-static-value">
+                      <span className="profile-obscured">********</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className={
+                      'admin-field ' + (profilePasswordMissing ? 'admin-field--error' : '')
+                    }
+                  >
+                    <div className="admin-field-label">
+                      <span>
+                        New Password<span className="admin-field-required"> *</span>
+                      </span>
+                    </div>
+                    <div className="admin-password-wrapper">
+                      <input
+                        className={`input ${profilePasswordMissing ? 'input--error' : ''}`}
+                        type="password"
+                        value={profileForm.password}
+                        onChange={(e) =>
+                          setProfileForm((prev) => ({ ...prev, password: e.target.value }))
+                        }
+                      />
+                    </div>
+                    {profilePasswordMissing && (
+                      <span className="admin-field-error-text">* Required field missing</span>
+                    )}
+                  </div>
+                )}
+                {profileError && (
+                  <p className="helper" style={{ color: '#ffb3b3', marginTop: 10 }}>
+                    {profileError}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* ---- TEAM TAB ---- */}
+            {adminTab === 'team' && (
+              <div className="admin-panel-section">
+                <h2>Team Members</h2>
+                <p className="helper">
+                  Add researchers and developers, then upload a profile photo for each person.
+                  Photos are stored as circular avatars on the public About page.
+                </p>
+                {teamLoading && <p>Loading team members…</p>}
+                {teamError && <p className="error">{teamError}</p>}
+                {teamPhotoError && (
+                  <p className="error" style={{ marginTop: 6 }}>
+                    {teamPhotoError}
+                  </p>
+                )}
+                <div className="admin-team-add">
+                  <h3>Add New Member</h3>
+                  <div className="admin-team-add-row">
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Name"
+                      value={newMember.name}
+                      onChange={(e) => setNewMember((prev) => ({ ...prev, name: e.target.value }))}
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Role (e.g., Lead Researcher)"
+                      value={newMember.role}
+                      onChange={(e) => setNewMember((prev) => ({ ...prev, role: e.target.value }))}
+                    />
+                    {!newMemberPhotoPreview && !newMemberCroppedDataUrl && (
+                      <label className="admin-team-photo-upload">
+                        <span>Select Photo</span>
+                        <input
+                          ref={newMemberFileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            if (file.size > MAX_PHOTO_BYTES) {
+                              setTeamPhotoError('Images must be 10 MB or smaller.');
+                              if (newMemberFileInputRef.current)
+                                newMemberFileInputRef.current.value = '';
+                              return;
+                            }
+                            setTeamPhotoError('');
+                            const previewUrl = URL.createObjectURL(file);
+                            setNewMemberPhotoPreview(previewUrl);
+                            setNewMemberPhotoFile(file);
+                            openAvatarModalFor('__NEW__', file);
+                          }}
+                        />
+                      </label>
+                    )}
+                    {newMemberPhotoPreview && !avatarModalOpen && (
+                      <div className="admin-new-member-photo-chip">
+                        <img src={newMemberPhotoPreview} alt="Selected" />
+                        <span>
+                          {newMemberCroppedDataUrl
+                            ? 'Photo ready'
+                            : 'Photo selected (crop pending)'}
+                        </span>
+                        <button
+                          type="button"
+                          className="admin-team-remove-button"
+                          onClick={() => {
+                            setNewMemberPhotoFile(null);
+                            setNewMemberCroppedDataUrl('');
+                            if (newMemberPhotoPreview) {
+                              try {
+                                URL.revokeObjectURL(newMemberPhotoPreview);
+                              } catch {}
+                            }
+                            setNewMemberPhotoPreview('');
+                            if (newMemberFileInputRef.current)
+                              newMemberFileInputRef.current.value = '';
+                          }}
+                        >
+                          Remove Photo
+                        </button>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="admin-add-button"
+                      onClick={handleAddTeamMember}
+                      disabled={addingMember}
+                    >
+                      {addingMember ? 'Adding…' : 'Add Member'}
+                    </button>
+                  </div>
+                  <p className="helper admin-team-photo-note">
+                    Recommended: square images at least 512×512, JPG/PNG. You'll be able to crop
+                    them into a circle.
+                  </p>
+                </div>
+                {adminTeam.length === 0 && !teamLoading ? (
+                  <p className="helper" style={{ marginTop: 16 }}>
+                    No team members found.
+                  </p>
+                ) : (
+                  <div className="admin-team-list">
+                    {adminTeam.map((member) => {
+                      const isEditing = editingMemberId === member.id;
+                      return (
+                        <div key={member.id} className="admin-team-row">
+                          <div className="admin-team-photo-cell">
+                            {member.image_url ? (
+                              <img
+                                src={member.image_url}
+                                alt={member.name}
+                                className="admin-team-photo-thumb"
+                              />
+                            ) : (
+                              <div className="admin-team-photo-placeholder">
+                                <div className="admin-team-photo-inner">
+                                  <div className="admin-team-photo-circle" />
+                                  <div className="admin-team-photo-bar" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="admin-team-info">
+                            <input
+                              type="text"
+                              className={
+                                'input admin-team-name-input' +
+                                (!isEditing ? ' input--readonly' : '')
+                              }
+                              value={member.name || ''}
+                              readOnly={!isEditing}
+                              onChange={(e) =>
+                                handleMemberFieldChange(member.id, 'name', e.target.value)
+                              }
+                            />
+                            <input
+                              type="text"
+                              className={
+                                'input admin-team-role-input' +
+                                (!isEditing ? ' input--readonly' : '')
+                              }
+                              value={member.role || ''}
+                              readOnly={!isEditing}
+                              onChange={(e) =>
+                                handleMemberFieldChange(member.id, 'role', e.target.value)
+                              }
+                            />
+                          </div>
+                          <div className="admin-team-actions">
+                            <label className="admin-team-photo-upload">
+                              <span>{member.image_url ? 'Change Photo' : 'Add Photo'}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  openAvatarModalFor(member.id, file);
+                                }}
+                              />
+                            </label>
+                            {member.image_url && (
+                              <button
+                                type="button"
+                                className="admin-team-remove-button"
+                                onClick={() => handlePhotoDelete(member.id)}
+                              >
+                                Remove Photo
+                              </button>
+                            )}
+                            {!isEditing ? (
+                              <>
+                                <button
+                                  type="button"
+                                  className="primary-button"
+                                  onClick={() => setEditingMemberId(member.id)}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  type="button"
+                                  className="danger-button"
+                                  onClick={() => handleDeleteTeamMember(member.id)}
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  className="primary-button"
+                                  onClick={() => handleSaveTeamMember(member)}
+                                  disabled={savingMemberId === member.id}
+                                >
+                                  {savingMemberId === member.id ? 'Saving…' : 'Save'}
+                                </button>
+                                <button
+                                  type="button"
+                                  className="cancel-button"
+                                  onClick={() => {
+                                    loadAdminTeam();
+                                    setEditingMemberId(null);
+                                  }}
+                                  disabled={savingMemberId === member.id}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  type="button"
+                                  className="danger-button"
+                                  onClick={() => handleDeleteTeamMember(member.id)}
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                <AvatarCropModal
+                  isOpen={avatarModalOpen}
+                  imageSrc={avatarImageSrc}
+                  onClose={closeAvatarModal}
+                  onSave={handleAvatarSave}
+                  onLoaded={() => setCropperBlocking(false)}
+                />
+                {teamDeleteConfirmOpen && (
+                  <div className="admin-modal-backdrop admin-modal-backdrop--confirm">
+                    <div className="admin-confirm-modal">
+                      <div className="admin-confirm-title">Delete Team Member</div>
+                      <div className="admin-confirm-text">
+                        Are you sure you want to delete this team member? This action cannot be
+                        undone.
+                      </div>
+                      <div className="admin-confirm-actions">
+                        <button
+                          type="button"
+                          className="admin-modal-button admin-modal-button--ghost"
+                          onClick={() => {
+                            setTeamDeleteConfirmOpen(false);
+                            setTeamDeleteTargetId(null);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="admin-modal-button admin-modal-button--danger"
+                          onClick={confirmDeleteTeamMember}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ---- ABOUT PAGE TAB ---- */}
+            {adminTab === 'about' && (
+              <div className="admin-subpanel admin-subpanel--about">
+                <h2>About Page Content</h2>
+                <p className="helper" style={{ marginTop: 12 }}>
+                  Use the "Edit About Page" button above to add, reorder, or remove sections.
+                  Sections are shown on the public About page in order.
+                </p>
+                {!aboutEditMode && (
+                  <div className="admin-about-content">
+                    {aboutSections.length === 0 && (
+                      <p className="helper">
+                        No sections have been added yet. Use "Edit About Page" above to create them.
+                      </p>
+                    )}
+                    {aboutSections
+                      .filter((s) => !s.isDeleted)
+                      .sort((a, b) => a.displayOrder - b.displayOrder)
+                      .map((sec) => (
+                        <div key={sec.id ?? sec.localId} className="admin-about-section">
+                          <div className="admin-about-section-label">
+                            Section {sec.displayOrder}
+                          </div>
+                          <div className="admin-about-section-title">
+                            {sec.title || 'Untitled section'}
+                          </div>
+                          <p className="admin-about-section-text">
+                            {sec.text || 'No text has been added yet.'}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                )}
+                {aboutEditMode && (
+                  <div className="admin-about-edit-list">
+                    {aboutSections
+                      .filter((s) => !s.isDeleted)
+                      .sort((a, b) => a.displayOrder - b.displayOrder)
+                      .map((sec) => {
+                        const activeCount = aboutSections.filter((s) => !s.isDeleted).length;
+                        return (
+                          <div
+                            key={sec.localId}
+                            ref={(el) => {
+                              if (el) aboutSectionRefs.current[sec.localId] = el;
+                            }}
+                            className="admin-about-edit-item"
+                          >
+                            <div className="admin-about-edit-header">
+                              <span className="admin-about-edit-label">
+                                Section {sec.displayOrder}
+                              </span>
+                              <label className="admin-about-order-control">
+                                Position:
+                                <select
+                                  className="input admin-about-order-select"
+                                  value={sec.displayOrder}
+                                  onChange={(e) => {
+                                    applyAboutOrderChange(sec.localId, e.target.value);
+                                    setAboutScrollTarget(sec.localId);
+                                  }}
+                                >
+                                  {Array.from({ length: activeCount }, (_, i) => i + 1).map((n) => (
+                                    <option key={n} value={n}>
+                                      {n}
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
+                            </div>
+                            <div className="admin-field admin-about-edit-field">
+                              <label className="admin-field-label">
+                                <span>Section Title</span>
+                              </label>
+                              <input
+                                className="input admin-about-input"
+                                value={sec.title}
+                                onChange={(e) =>
+                                  handleAboutFieldChange(sec.localId, 'title', e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="admin-field admin-about-edit-field">
+                              <label className="admin-field-label">
+                                <span>Section Text</span>
+                              </label>
+                              <textarea
+                                className="input admin-about-textarea"
+                                rows={4}
+                                value={sec.text}
+                                onChange={(e) =>
+                                  handleAboutFieldChange(sec.localId, 'text', e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="admin-about-edit-actions">
+                              <button
+                                type="button"
+                                className="admin-modal-button admin-modal-button--danger"
+                                onClick={() => handleAboutDelete(sec.localId)}
+                              >
+                                Delete Section
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    <div className="admin-about-footer-actions">
+                      <button
+                        type="button"
+                        className="admin-modal-button"
+                        onClick={handleAddAboutSection}
+                      >
+                        Add Section
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button admin-modal-button--ghost"
+                        onClick={handleCancelAboutEdit}
+                        disabled={aboutSaving}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-modal-button"
+                        onClick={handleSaveAboutChanges}
+                        disabled={aboutSaving}
+                      >
+                        {aboutSaving ? 'Saving…' : 'Save Changes'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {aboutError && (
+                  <p className="helper" style={{ color: '#ffb3b3', marginTop: 10 }}>
+                    {aboutError}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+          {/* end admin-tab-content */}
         </div>
       )}
 

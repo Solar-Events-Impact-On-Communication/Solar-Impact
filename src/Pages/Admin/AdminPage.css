@@ -1674,6 +1674,27 @@
   .admin-tab-bar {
     padding: 0 8px;
   }
+
+  /* Panel becomes a flex column — tab bar fixed, content scrolls inside */
+  .admin-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - var(--topbar-h) - 32px);
+    overflow: hidden;
+    padding: 0;
+  }
+  .admin-tab-bar {
+    flex-shrink: 0;
+    margin: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  /* Scrollable content area below tab bar */
+  .admin-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 16px;
+  }
   .admin-tab-button {
     font-size: 0.75rem;
     padding: 14px 14px;
