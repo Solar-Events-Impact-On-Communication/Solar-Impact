@@ -1673,28 +1673,18 @@
   /* Tabs */
   .admin-tab-bar {
     padding: 0 8px;
-    top: 56px;
   }
 
-  /* Panel becomes a flex column — tab bar fixed, content scrolls inside */
-  .admin-panel {
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - var(--topbar-h) - 32px);
-    overflow: hidden;
-    padding: 0;
-  }
-  .admin-tab-bar {
-    flex-shrink: 0;
-    margin: 0;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  }
-  /* Scrollable content area below tab bar */
+  /* Scrollable viewport below tab bar — content cannot scroll above it */
   .admin-tab-content {
-    flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 20px 16px;
+    max-height: calc(100vh - 56px - 52px);
+    padding: 20px 16px 40px;
+  }
+  .admin-panel {
+    padding: 0;
+    padding-bottom: 0;
   }
   .admin-tab-button {
     font-size: 0.75rem;
