@@ -377,7 +377,7 @@
 .ev-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 400;
+  z-index: 11000;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(4px);
   display: flex;
@@ -928,7 +928,7 @@
 .media-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 500;
+  z-index: 11000;
   background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(6px);
   display: flex;
