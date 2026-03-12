@@ -221,10 +221,6 @@
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--text);
-  flex: 1;
-  min-width: 200px;
-  white-space: normal;
-  word-break: break-word;
 }
 .admin-logged-in {
   font-family: var(--font-mono);
@@ -662,30 +658,20 @@
 
 .admin-modal-backdrop--event {
   align-items: center;
-  justify-content: center;
-  padding: 24px 16px 80px;
-  overflow: hidden;
 }
 .admin-event-modal {
   max-width: 900px;
-  width: 100%;
-  max-height: 100%;
-  border-radius: var(--radius-lg);
-  padding: 0;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: cardIn 0.22s ease;
 }
 .admin-event-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
   flex-shrink: 0;
-  padding: 18px 28px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-bright);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 .admin-event-modal-actions {
   display: flex;
@@ -696,10 +682,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   min-height: 0;
-  padding: 24px 28px 32px;
 }
 @media (max-width: 700px) {
   /* Backdrop: full screen, no padding, no flex constraints */
@@ -756,8 +740,8 @@
   }
 }
 .admin-event-modal-form {
-  overflow-y: visible;
-  padding-right: 0;
+  overflow-y: auto;
+  padding-right: 8px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -766,29 +750,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  overflow-y: visible;
-}
-
-/* Mobile: single column */
-@media (max-width: 700px) {
-  .admin-modal-backdrop--event {
-    padding: 16px 0 80px;
-    align-items: flex-start;
-  }
-  .admin-event-modal {
-    max-width: 100%;
-    border-radius: 0;
-    max-height: calc(100vh - 16px - 80px);
-  }
-  .admin-event-modal-header {
-    padding: 14px 16px;
-    border-radius: 0;
-  }
-  .admin-event-modal-body {
-    grid-template-columns: 1fr;
-    padding: 16px 16px 32px;
-    gap: 20px;
-  }
+  overflow-y: auto;
 }
 .admin-event-media-title {
   font-family: var(--font-mono);
@@ -1774,9 +1736,12 @@
     top: 56px;
   }
 
+  /* Scrollable viewport below tab bar — content cannot scroll above it */
   .admin-tab-content {
-    overflow-y: visible;
-    padding: 16px 12px 80px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 56px - 52px - 60px);
+    padding: 20px 16px 80px;
   }
   .admin-panel {
     padding: 0;
@@ -1788,15 +1753,9 @@
   }
 
   /* Table */
-  .admin-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
   .admin-events-table,
   .admin-accounts-table {
     font-size: 0.88rem;
-    min-width: 500px;
   }
   .admin-events-table th,
   .admin-accounts-table th {
@@ -1811,17 +1770,8 @@
   }
 
   /* Modals */
-  .admin-modal-backdrop {
-    padding-top: 64px;
-    padding-bottom: 56px;
-    align-items: flex-start;
-    overflow-y: auto;
-  }
   .admin-modal {
     padding: 20px 16px;
-    max-height: calc(100vh - 64px - 56px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
   .admin-modal-title {
     font-size: 1.1rem;
@@ -1839,25 +1789,10 @@
     padding: 5px 9px;
   }
   .admin-header-top {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: 6px;
   }
   .admin-header-actions {
-    flex-shrink: 0;
     margin-left: 0;
-    display: flex;
-    gap: 6px;
-    flex-wrap: nowrap;
-  }
-  .admin-add-button,
-  .admin-about-edit-button {
-    font-size: 0.75rem;
-    padding: 6px 10px;
-    white-space: nowrap;
   }
   .admin-confirm-title {
     font-size: 1rem;

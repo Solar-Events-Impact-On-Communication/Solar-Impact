@@ -413,8 +413,7 @@ export default function AdminView() {
       setAdminPickerDecade(adminDecades[0]);
     }
   }, [adminDecades, adminPickerDecade, adminTab]);
-
-  // Lock body scroll when any modal is open so content can't scroll behind it
+  // Lock body scroll when any modal is open
   useEffect(() => {
     const anyOpen = eventModalOpen || accountModalOpen;
     if (anyOpen) {
