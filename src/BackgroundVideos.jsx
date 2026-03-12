@@ -34,11 +34,11 @@ const PAGE_CONFIG = {
     earth: { show: false },
   },
   '/live': {
-    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.9 } },
+    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.75 } },
     earth: { show: true, style: { bottom: '20px', left: '-70px', width: '20vw', opacity: 0.85 } },
   },
   '/birthday': {
-    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.9 } },
+    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.75 } },
     earth: { show: true, style: { bottom: '8%', left: '2%', width: '20vw', opacity: 0.85 } },
   },
 };

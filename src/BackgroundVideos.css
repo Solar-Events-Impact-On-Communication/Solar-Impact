@@ -12,7 +12,6 @@
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  isolation: auto;
 }
 
 /* Base video styles shared by sun and earth */

@@ -50,13 +50,6 @@
   padding: 0;
 }
 
-html {
-  background-color: #07090f;
-  color-scheme: dark;
-  /* Forces black overscroll/rubber-band area on all mobile browsers */
-  overflow-x: hidden;
-}
-
 body {
   background: transparent;
   color: var(--text);
@@ -64,8 +57,6 @@ body {
   font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  /* Ensures overscroll bounce area matches app background on iOS/Android */
-  overscroll-behavior: none;
 }
 
 @media (min-width: 1301px) {
@@ -86,17 +77,6 @@ body::before {
   filter: brightness(0.6);
 }
 
-@media (max-width: 600px) {
-  .nav-drawer {
-    padding-top: 68px;
-  }
-  .topbar {
-    background: #07090f;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
 button {
   cursor: pointer;
   font-family: inherit;
@@ -110,13 +90,14 @@ a {
    APP SHELL
    ========================================================= */
 .app {
-  position: relative;
+  position: relative; /* ← add this */
+  z-index: 2; /* ← add this */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: clip;
   padding-top: var(--topbar-h);
-  background: transparent;
+  background: rgba(7, 9, 15, 0.75);
 }
 
 /* =========================================================
@@ -159,7 +140,7 @@ a {
   gap: 8px;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(0.85rem, 1.2vw, 1.4rem);
+  font-size: clamp(1.3rem, 1.8vw, 2rem);
   letter-spacing: 0.04em;
   color: var(--text);
   background: none;
@@ -174,9 +155,6 @@ a {
   font-size: 1.1em;
   color: var(--solar);
   line-height: 1;
-}
-.brand-text--short {
-  display: none;
 }
 
 .topbar-tools-row {
@@ -603,67 +581,46 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
-  /* Brand: 2-line short version */
-  .brand-text--full {
-    display: none;
+  .nav-drawer {
+    padding-top: 68px;
   }
-  .brand-text--short {
-    display: inline;
+  .topbar {
+    background: #07090f;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .brand {
-    font-size: clamp(0.6rem, 2.4vw, 0.72rem);
+    font-size: clamp(0.75rem, 3.8vw, 1rem);
     letter-spacing: 0.06em;
-    text-align: center;
-    line-height: 1.2;
   }
-  .brand-mark {
-    display: none;
-  }
-
-  /* Topbar height for 2-line brand */
-  .topbar:not(.topbar--timeline) {
-    height: 56px;
-  }
-  /* Brand slightly right of center */
-  .topbar:not(.topbar--timeline) .topbar-brand {
-    position: absolute;
-    left: 55%;
-    transform: translateX(-50%);
-  }
-
-  /* Menu button: icon only, MENU text visually hidden for screen readers */
   .menu-button {
-    padding: 6px 8px;
-    font-size: 0.72rem;
+    padding: 8px 12px;
+    font-size: 0.78rem;
   }
   .menu-text {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    font-size: 0.78rem;
   }
   .menu-icon span {
-    width: 13px;
+    width: 14px;
   }
-
-  /* Year search */
   .year-search-input {
-    height: 30px;
-    font-size: 0.76rem;
-    width: 7ch;
-    min-width: 7ch;
-    max-width: 7ch;
+    height: 34px;
+    font-size: 0.82rem;
+    width: 8ch;
+    min-width: 8ch;
+    max-width: 8ch;
   }
   .year-search-button,
   .year-search-browse {
-    height: 30px;
-    font-size: 0.76rem;
-    padding: 0 8px;
+    height: 34px;
+    font-size: 0.82rem;
+    padding: 0 10px;
+  }
+
+  /* On single-line pages, shift brand right so it clears the menu button */
+  .topbar:not(.topbar--timeline) .topbar-brand {
+    left: 60%;
+    transform: translateX(-50%);
   }
 }
 
@@ -679,21 +636,21 @@ a {
     width: 16px;
   }
   .brand {
-    font-size: clamp(0.75rem, 2vw, 1.1rem);
+    font-size: clamp(0.9rem, 2.4vw, 1.3rem);
     letter-spacing: 0.06em;
   }
   .year-search-input {
-    height: 34px;
-    font-size: 0.82rem;
-    width: 8ch;
-    min-width: 8ch;
-    max-width: 8ch;
+    height: 40px;
+    font-size: 0.95rem;
   }
   .year-search-button,
   .year-search-browse {
-    height: 34px;
-    font-size: 0.82rem;
-    padding: 0 10px;
+    height: 40px;
+    font-size: 0.95rem;
+    padding: 0 14px;
+  }
+  .nav-drawer {
+    padding-top: calc(var(--topbar-h) + 12px);
   }
   /* When homepage topbar is double-stacked, nav needs extra clearance */
   .topbar--stacked ~ .nav-drawer {
@@ -721,7 +678,7 @@ a {
     text-align: center;
     align-self: center;
     letter-spacing: 0.12em;
-    font-size: clamp(0.85rem, 2.8vw, 1.2rem);
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
   }
   .topbar--timeline .topbar-tools-row {
     width: 100%;
@@ -729,11 +686,11 @@ a {
   }
   /* Menu button on stacked row */
   .topbar--timeline .menu-button {
-    padding: 7px 14px;
-    font-size: 0.8rem;
+    padding: 10px 22px;
+    font-size: 0.95rem;
   }
   .topbar--timeline .menu-text {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
   }
   .topbar--timeline .menu-icon span {
     width: 18px;
