@@ -52,11 +52,6 @@
 
 html {
   background-color: #07090f;
-  background-image: url('https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Main%20Image/Background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
   color-scheme: dark;
   /* Forces black overscroll/rubber-band area on all mobile browsers */
   overflow-x: hidden;
@@ -88,6 +83,16 @@ body::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+@media (max-width: 600px) {
+  body::before {
+    top: -20%;
+    bottom: -20%;
+    left: 0;
+    right: 0;
+    inset: unset;
+  }
 }
 
 button {
