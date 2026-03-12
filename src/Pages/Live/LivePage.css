@@ -245,19 +245,19 @@
     font-size: 1rem;
   }
   .live-card-label {
-    font-size: 0.72rem;
+    font-size: 0.82rem;
   }
   .live-card-status-label {
-    font-size: 0.75rem;
+    font-size: 0.84rem;
   }
   .live-card-hint {
-    font-size: 0.68rem;
+    font-size: 0.76rem;
   }
   .live-card-back-desc {
-    font-size: 0.7rem;
-    line-height: 1.4;
-    -webkit-line-clamp: 8;
-    line-clamp: 8;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
   }
   .live-notice-text {
     font-size: 0.92rem;
@@ -275,9 +275,9 @@
     font-size: 2.4rem;
   }
   .live-card-back-desc {
-    font-size: 0.65rem;
-    line-height: 1.35;
-    -webkit-line-clamp: 8;
-    line-clamp: 8;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
   }
 }
