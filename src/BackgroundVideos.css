@@ -103,10 +103,10 @@
 @media (max-width: 600px) {
   .space-video--sun {
     width: 65vw !important;
-    opacity: 0.3 !important;
+    opacity: 0.9 !important;
   }
   .space-video--earth {
     width: 55vw !important;
-    opacity: 0.3 !important;
+    opacity: 1 !important;
   }
 }
