@@ -2,13 +2,6 @@
    AdminPage.css — Admin portal
    ========================================================= */
 
-/* Body scroll lock — applied when any full-screen modal is open on mobile */
-body.modal-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-}
-
 /* =========================================================
    BASE PRIMITIVES
    ========================================================= */
@@ -228,7 +221,6 @@ body.modal-open {
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--text);
-  flex: 1; /* push actions to the right */
 }
 .admin-logged-in {
   font-family: var(--font-mono);
@@ -664,95 +656,62 @@ body.modal-open {
    EVENT EDIT MODAL (wide)
    ========================================================= */
 
+/* Backdrop: full-screen fixed overlay, no scroll on backdrop itself */
 .admin-modal-backdrop--event {
-  align-items: center;
+  align-items: flex-start;
+  padding: 0;
+  overflow: hidden;
 }
+
+/* Modal: full viewport height, flex column so header sticks and body scrolls */
 .admin-event-modal {
   max-width: 900px;
-  max-height: 90vh;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0 auto;
+  border-radius: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+
+/* Sticky header — Save/Cancel always visible while scrolling */
 .admin-event-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
   flex-shrink: 0;
+  padding: 18px 28px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-bright);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
+
 .admin-event-modal-actions {
   display: flex;
   gap: 8px;
 }
+
+/* Body: the only scrollable region — two columns on desktop */
 .admin-event-modal-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-@media (max-width: 700px) {
-  /* Backdrop: fixed full-screen overlay so tab bar / page are hidden behind it */
-  .admin-modal-backdrop--event {
-    position: fixed;
-    inset: 0;
-    z-index: 600;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    overflow: hidden;
-  }
-  /* Modal: full screen column, with its own internal scroll */
-  .admin-modal-backdrop--event .admin-modal.admin-event-modal {
-    max-width: 100%;
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
-    min-height: 0;
-    border-radius: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin: 0;
-    flex: 1;
-  }
-  /* Sticky header — Save/Cancel always visible at top */
-  .admin-event-modal-header {
-    position: static;
-    z-index: 100;
-    background: var(--bg-surface);
-    border-bottom: 1px solid var(--border-bright);
-    padding: 14px 16px;
-    margin-bottom: 0;
-    flex-shrink: 0;
-  }
-  /* Body: single column, scrollable */
-  .admin-event-modal-body {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    flex: 1;
-    min-height: 0;
-    padding: 16px 16px 80px;
-    gap: 20px;
-  }
-  /* Form and media: natural height, no internal scroll (parent scrolls) */
-  .admin-event-modal-form {
-    overflow-y: visible;
-    padding-right: 0;
-    height: auto;
-  }
-  .admin-event-modal-media {
-    overflow-y: visible;
-    height: auto;
-  }
-}
-.admin-event-modal-form {
   overflow-y: auto;
-  padding-right: 8px;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  padding: 24px 28px 60px;
+}
+
+/* Form and media: natural height, parent body handles scrolling */
+.admin-event-modal-form {
+  overflow-y: visible;
+  padding-right: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -761,7 +720,26 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  overflow-y: auto;
+  overflow-y: visible;
+}
+
+/* Mobile: single column */
+@media (max-width: 700px) {
+  .admin-modal-backdrop--event {
+    padding: 0;
+  }
+  .admin-event-modal {
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .admin-event-modal-header {
+    padding: 14px 16px;
+  }
+  .admin-event-modal-body {
+    grid-template-columns: 1fr;
+    padding: 16px 16px 80px;
+    gap: 20px;
+  }
 }
 .admin-event-media-title {
   font-family: var(--font-mono);
@@ -1657,180 +1635,14 @@ body.modal-open {
 
 @media (max-width: 640px) {
   /* Panel padding */
+  .admin-panel,
   .admin-confirm-modal,
   .delete-media-dialog,
   .avatar-modal {
     padding: 20px 16px;
   }
 
-  /* ---- Tabs ---- */
-  /* Sits right at top of scrollable area; margin reset so it spans full width */
-  .admin-tab-bar {
-    margin: 0;
-    padding: 0 4px;
-    border-radius: 0;
-    top: 56px; /* mobile topbar height */
-  }
-  .admin-tab-button {
-    font-size: 0.75rem;
-    padding: 14px 10px;
-    letter-spacing: 0.06em;
-  }
-
-  /* ---- Tab content area ---- */
-  /* Remove max-height constraint; let the page scroll naturally */
-  .admin-panel {
-    padding: 0;
-  }
-  .admin-tab-content {
-    overflow-y: visible;
-    padding: 16px 12px 80px; /* 80px clears the fixed footer */
-  }
-
-  /* ---- Header: title + button always inline on same row ---- */
-  .admin-header-top {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-  .admin-events-title {
-    font-size: 1.1rem;
-    flex: 1;
-    min-width: 0; /* allow text to truncate rather than push button off screen */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .admin-header-actions {
-    flex-shrink: 0;
-    margin-left: 0;
-    display: flex;
-    gap: 6px;
-    flex-wrap: nowrap;
-  }
-  .admin-add-button,
-  .admin-about-edit-button {
-    font-size: 0.75rem;
-    padding: 6px 10px;
-    white-space: nowrap;
-  }
-
-  /* ---- Tables ---- */
-  .admin-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .admin-events-table,
-  .admin-accounts-table {
-    font-size: 0.88rem;
-    min-width: 500px; /* prevent column crush; wrapper scrolls horizontally */
-  }
-  .admin-events-table th,
-  .admin-accounts-table th {
-    font-size: 0.72rem;
-  }
-  .admin-empty-cell {
-    font-size: 0.8rem;
-  }
-  .admin-edit-button {
-    font-size: 0.78rem;
-    padding: 4px 8px;
-  }
-
-  /* ---- Account / article modals (non-event) ----
-     Fixed overlay, scroll within modal, never overlaps topbar or footer */
-  .admin-modal-backdrop {
-    padding-top: 64px; /* clears 56px topbar + breathing room */
-    padding-bottom: 56px; /* clears fixed footer */
-    align-items: flex-start;
-    overflow-y: auto;
-  }
-  .admin-modal {
-    padding: 20px 16px;
-    max-height: calc(100vh - 64px - 56px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .admin-modal-title {
-    font-size: 1.1rem;
-  }
-  .admin-modal-button {
-    font-size: 0.8rem;
-    padding: 7px 14px;
-  }
-
-  /* ---- Confirm / delete dialogs ---- */
-  .admin-confirm-title {
-    font-size: 1rem;
-  }
-  .admin-confirm-text {
-    font-size: 0.88rem;
-  }
-  .delete-media-title {
-    font-size: 1.05rem;
-  }
-  .delete-media-text {
-    font-size: 0.88rem;
-  }
-  .delete-dialog-btn {
-    font-size: 0.82rem;
-    padding: 8px 14px;
-  }
-
-  /* ---- Form fields ---- */
-  .input {
-    font-size: 0.92rem;
-  }
-  .primary {
-    font-size: 0.88rem;
-    padding: 9px 16px;
-  }
-  .primary-button {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-  .danger-button {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-  .cancel-button {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-  .helper,
-  .error {
-    font-size: 0.85rem;
-  }
-  .admin-field-label {
-    font-size: 0.72rem;
-  }
-  .admin-field-label--big {
-    font-size: 0.8rem;
-  }
-  .admin-field-note {
-    font-size: 0.72rem;
-  }
-  .admin-field-error-text {
-    font-size: 0.75rem;
-  }
-
-  /* ---- Panel headings ---- */
-  .panel h1 {
-    font-size: 1.4rem;
-  }
-  .panel h2 {
-    font-size: 1.1rem;
-  }
-  .admin-subpanel h2,
-  .admin-panel-section h2 {
-    font-size: 1rem;
-  }
-
-  /* ---- Media viewer inside event modal ---- */
+  /* Media viewer — keep horizontal, shrink side panels */
   .admin-event-media-side {
     min-width: 44px;
     padding: 8px 4px;
@@ -1863,6 +1675,141 @@ body.modal-open {
   .admin-event-caption-actions .primary-button,
   .admin-event-caption-actions .cancel-button {
     flex: 1;
+  }
+
+  /* Inputs and buttons */
+  .input {
+    font-size: 0.92rem;
+  }
+  .primary {
+    font-size: 0.88rem;
+    padding: 9px 16px;
+  }
+  .primary-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .danger-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .cancel-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .helper,
+  .error {
+    font-size: 0.85rem;
+  }
+
+  /* Panel headings */
+  .panel h1 {
+    font-size: 1.4rem;
+  }
+  .panel h2 {
+    font-size: 1.1rem;
+  }
+  .admin-events-title {
+    font-size: 1.15rem;
+  }
+  .admin-subpanel h2,
+  .admin-panel-section h2 {
+    font-size: 1rem;
+  }
+
+  /* Tabs */
+  .admin-tab-bar {
+    padding: 0 8px;
+    top: 56px;
+  }
+
+  /* Scrollable viewport below tab bar — content cannot scroll above it */
+  .admin-tab-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 56px - 52px - 60px);
+    padding: 20px 16px 80px;
+  }
+  .admin-panel {
+    padding: 0;
+  }
+  .admin-tab-button {
+    font-size: 0.75rem;
+    padding: 14px 14px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Table */
+  .admin-events-table,
+  .admin-accounts-table {
+    font-size: 0.88rem;
+  }
+  .admin-events-table th,
+  .admin-accounts-table th {
+    font-size: 0.72rem;
+  }
+  .admin-empty-cell {
+    font-size: 0.8rem;
+  }
+  .admin-edit-button {
+    font-size: 0.78rem;
+    padding: 4px 8px;
+  }
+
+  /* Modals */
+  .admin-modal {
+    padding: 20px 16px;
+  }
+  .admin-modal-title {
+    font-size: 1.1rem;
+  }
+  .admin-modal-button {
+    font-size: 0.8rem;
+    padding: 7px 14px;
+  }
+  .admin-add-button {
+    font-size: 0.72rem;
+    padding: 5px 9px;
+  }
+  .admin-about-edit-button {
+    font-size: 0.72rem;
+    padding: 5px 9px;
+  }
+  .admin-header-top {
+    gap: 6px;
+  }
+  .admin-header-actions {
+    margin-left: 0;
+  }
+  .admin-confirm-title {
+    font-size: 1rem;
+  }
+  .admin-confirm-text {
+    font-size: 0.88rem;
+  }
+  .delete-media-title {
+    font-size: 1.05rem;
+  }
+  .delete-media-text {
+    font-size: 0.88rem;
+  }
+  .delete-dialog-btn {
+    font-size: 0.82rem;
+    padding: 8px 14px;
+  }
+
+  /* Form fields */
+  .admin-field-label {
+    font-size: 0.72rem;
+  }
+  .admin-field-label--big {
+    font-size: 0.8rem;
+  }
+  .admin-field-note {
+    font-size: 0.72rem;
+  }
+  .admin-field-error-text {
+    font-size: 0.75rem;
   }
 
   /* Year search */
