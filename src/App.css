@@ -613,10 +613,10 @@ a {
   .topbar:not(.topbar--timeline) {
     height: 56px;
   }
-  /* Shift brand right to clear menu button */
+  /* Brand centered */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
-    left: 62%;
+    left: 50%;
     transform: translateX(-50%);
   }
 
