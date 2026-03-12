@@ -83,6 +83,7 @@ body::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0.6);
 }
 
 @media (max-width: 600px) {
@@ -621,7 +622,7 @@ a {
   /* Brand slightly right of center */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
-    left: 55%;
+    left: 50%;
     transform: translateX(-50%);
   }
 
