@@ -12,6 +12,7 @@
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  isolation: auto;
 }
 
 /* Base video styles shared by sun and earth */
@@ -19,6 +20,8 @@
   position: absolute;
   mix-blend-mode: screen; /* removes black background cleanly */
   border-radius: 50%; /* keeps circular shape */
+  -webkit-mask-image: radial-gradient(circle, black 55%, transparent 75%);
+  mask-image: radial-gradient(circle, black 55%, transparent 75%);
 }
 
 /* Sun — slightly brighter, slower float */
