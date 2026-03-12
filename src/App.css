@@ -749,7 +749,7 @@ a {
   /* Non-timeline pages: keep absolute center (no right-side tools) */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
-    left: 50%;
+    left: 55%;
     transform: translateX(-50%);
   }
   /* Timeline desktop: brand at true center */
