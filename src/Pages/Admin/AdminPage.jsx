@@ -413,30 +413,6 @@ export default function AdminView() {
       setAdminPickerDecade(adminDecades[0]);
     }
   }, [adminDecades, adminPickerDecade, adminTab]);
-  // Lock body scroll when any modal is open
-  useEffect(() => {
-    const anyOpen = eventModalOpen || accountModalOpen;
-    if (anyOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${scrollY}px`;
-    } else {
-      const top = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      if (top) window.scrollTo(0, -parseInt(top || '0'));
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-    };
-  }, [eventModalOpen, accountModalOpen]);
 
   // --- About page state ---
   const [aboutSections, setAboutSections] = useState([]);
@@ -682,6 +658,31 @@ export default function AdminView() {
 
   // --- Account modal ---
   const [accountModalOpen, setAccountModalOpen] = useState(false);
+
+  // Lock body scroll when any modal is open
+  useEffect(() => {
+    const anyOpen = eventModalOpen || accountModalOpen;
+    if (anyOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+    } else {
+      const top = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (top) window.scrollTo(0, -parseInt(top || '0'));
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    };
+  }, [eventModalOpen, accountModalOpen]);
   const [accountModalMode, setAccountModalMode] = useState('edit');
   const [editingAccount, setEditingAccount] = useState(null);
   const [accountForm, setAccountForm] = useState({
