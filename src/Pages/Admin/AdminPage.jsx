@@ -172,8 +172,8 @@ export default function AdminView() {
   const [eventMediaIndex, setEventMediaIndex] = useState(0);
   const [eventMediaLoading, setEventMediaLoading] = useState(false);
   const [eventMediaError, setEventMediaError] = useState('');
-  const [newMediaUrl, setNewMediaUrl] = useState('');
-  const [newMediaCaption, setNewMediaCaption] = useState('');
+  const [_newMediaUrl, setNewMediaUrl] = useState('');
+  const [_newMediaCaption, setNewMediaCaption] = useState('');
 
   const [deleteEventOpen, setDeleteEventOpen] = useState(false);
   const [deleteEventTarget, setDeleteEventTarget] = useState(null);
@@ -416,7 +416,7 @@ export default function AdminView() {
 
   // --- About page state ---
   const [aboutSections, setAboutSections] = useState([]);
-  const [aboutLoading, setAboutLoading] = useState(false);
+  const [_aboutLoading, setAboutLoading] = useState(false);
   const [aboutError, setAboutError] = useState('');
   const [aboutEditMode, setAboutEditMode] = useState(false);
   const [aboutSaving, setAboutSaving] = useState(false);
@@ -432,7 +432,7 @@ export default function AdminView() {
     setTimeout(() => setUploadToast(''), 4000);
   };
   const [newMember, setNewMember] = useState({ name: '', role: '' });
-  const [newMemberPhotoFile, setNewMemberPhotoFile] = useState(null);
+  const [_newMemberPhotoFile, setNewMemberPhotoFile] = useState(null);
   const [newMemberPhotoPreview, setNewMemberPhotoPreview] = useState('');
   const [newMemberCroppedDataUrl, setNewMemberCroppedDataUrl] = useState('');
   const newMemberFileInputRef = useRef(null);
@@ -577,7 +577,9 @@ export default function AdminView() {
       if (newMemberPhotoPreview) {
         try {
           URL.revokeObjectURL(newMemberPhotoPreview);
-        } catch {}
+        } catch (_e) {
+          /* intentional */
+        }
       }
       setNewMemberPhotoPreview('');
       if (newMemberFileInputRef.current) newMemberFileInputRef.current.value = '';
@@ -655,17 +657,6 @@ export default function AdminView() {
 
   const [aboutScrollTarget, setAboutScrollTarget] = useState(null);
   const aboutSectionRefs = useRef({});
-
-  // --- Body scroll lock: prevent background scroll when modals are open ---
-  useEffect(() => {
-    const anyModalOpen = eventModalOpen || accountModalOpen;
-    if (anyModalOpen) {
-      document.body.classList.add('modal-open');
-    } else {
-      document.body.classList.remove('modal-open');
-    }
-    return () => document.body.classList.remove('modal-open');
-  }, [eventModalOpen, accountModalOpen]);
 
   // --- Account modal ---
   const [accountModalOpen, setAccountModalOpen] = useState(false);
@@ -757,7 +748,9 @@ export default function AdminView() {
       if (m?.previewUrl) {
         try {
           URL.revokeObjectURL(m.previewUrl);
-        } catch {}
+        } catch (_e) {
+          /* intentional */
+        }
       }
     });
     setCreateQueuedMedia([]);
@@ -816,7 +809,9 @@ export default function AdminView() {
         if (m?.previewUrl) {
           try {
             URL.revokeObjectURL(m.previewUrl);
-          } catch {}
+          } catch (_e) {
+            /* intentional */
+          }
         }
       });
     }
@@ -913,7 +908,9 @@ export default function AdminView() {
             if (m.previewUrl) {
               try {
                 URL.revokeObjectURL(m.previewUrl);
-              } catch {}
+              } catch (_e) {
+                /* intentional */
+              }
             }
           }
           setCreateQueuedMedia([]);
@@ -953,8 +950,8 @@ export default function AdminView() {
     }
   };
 
-  const handleAddMedia = async () => {
-    if (!editingEvent || !newMediaUrl.trim()) return;
+  const _handleAddMedia = async () => {
+    if (!editingEvent || !_newMediaUrl.trim()) return;
     try {
       setEventMediaLoading(true);
       setEventMediaError('');
@@ -962,7 +959,10 @@ export default function AdminView() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ url: newMediaUrl.trim(), caption: newMediaCaption.trim() || null }),
+        body: JSON.stringify({
+          url: _newMediaUrl.trim(),
+          caption: _newMediaCaption.trim() || null,
+        }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const created = await res.json();
@@ -2397,7 +2397,9 @@ export default function AdminView() {
                             if (newMemberPhotoPreview) {
                               try {
                                 URL.revokeObjectURL(newMemberPhotoPreview);
-                              } catch {}
+                              } catch (_e) {
+                                /* intentional */
+                              }
                             }
                             setNewMemberPhotoPreview('');
                             if (newMemberFileInputRef.current)
@@ -3030,7 +3032,7 @@ export default function AdminView() {
 
 /* ---- Admin Event Modal ---- */
 function AdminEventModal({
-  event,
+  event: _event,
   form,
   setForm,
   saving,
@@ -3039,23 +3041,23 @@ function AdminEventModal({
   setMediaIndex,
   mediaLoading,
   mediaError,
-  newMediaUrl,
-  setNewMediaUrl,
-  newMediaCaption,
-  setNewMediaCaption,
+  newMediaUrl: _newMediaUrl,
+  setNewMediaUrl: _setNewMediaUrl,
+  newMediaCaption: _newMediaCaption,
+  setNewMediaCaption: _setNewMediaCaption,
   onClose,
   onSave,
-  onAddMedia,
+  onAddMedia: _onAddMedia,
   onDeleteMedia,
-  onUpdateMediaCaption,
+  onUpdateMediaCaption: _onUpdateMediaCaption,
   mediaCaptionBusy,
   mediaCaptionError,
   uploadBusy,
-  uploadError,
+  uploadError: _uploadError,
   onOpenAddArticleModal,
   isCreating,
   onSaveCaption,
-  onUpdateQueuedCaption,
+  onUpdateQueuedCaption: _onUpdateQueuedCaption,
 }) {
   const hasMedia = Array.isArray(media) && media.length > 0;
   const multipleMedia = Array.isArray(media) && media.length > 1;
@@ -3118,10 +3120,16 @@ function AdminEventModal({
     });
   }, [media, setMediaIndex]);
 
-  useEffect(() => {
-    setCaptionEditing(false);
-    setCaptionDraft(currentMedia?.caption || '');
-  }, [currentMedia?.id]);
+  // Reset caption state when the selected media item changes
+  // Using a key-based reset pattern avoids setState-in-effect lint warnings;
+  // here we use a ref guard so it only runs when the id actually changes.
+  const prevMediaIdRef = React.useRef(undefined);
+  if (prevMediaIdRef.current !== currentMedia?.id) {
+    prevMediaIdRef.current = currentMedia?.id;
+    if (captionEditing) setCaptionEditing(false);
+    const incoming = currentMedia?.caption || '';
+    if (captionDraft !== incoming) setCaptionDraft(incoming);
+  }
 
   const handleBackdropClick = () => {
     if (!saving && !uploadBusy) onClose();

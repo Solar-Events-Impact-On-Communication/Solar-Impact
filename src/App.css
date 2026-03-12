@@ -607,11 +607,6 @@ a {
     display: none;
   }
 
-  /* Admin page — zero side padding, top exactly matches 56px topbar */
-  .main--admin {
-    padding: 56px 0 48px;
-  }
-
   /* Topbar height for 2-line brand */
   .topbar:not(.topbar--timeline) {
     height: 56px;
@@ -661,12 +656,12 @@ a {
   /* Decade/year picker popover — full-width on mobile so it doesn't overflow */
   .year-search-popover {
     position: fixed;
-    top: auto;
+    top: calc(var(--topbar-h-stacked) + 4px);
     left: 8px;
     right: 8px;
     min-width: 0;
-    width: calc(100vw - 16px);
-    max-height: 60vh;
+    width: auto;
+    max-height: 55vh;
     overflow-y: auto;
     box-sizing: border-box;
   }
