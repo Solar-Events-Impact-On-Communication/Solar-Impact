@@ -894,6 +894,64 @@
 }
 
 /* =========================================================
+   UPLOAD ERROR TOAST
+   ========================================================= */
+.admin-upload-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #c0392b;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  animation:
+    toastIn 0.2s ease,
+    toastOut 0.3s ease 3.7s forwards;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+}
+.admin-upload-toast-icon {
+  font-size: 1rem;
+  font-weight: bold;
+}
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes toastOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@media (max-width: 640px) {
+  .admin-upload-toast {
+    top: 66px;
+    font-size: 0.8rem;
+    padding: 10px 14px;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* =========================================================
    FORM FIELDS
    ========================================================= */
 
@@ -1680,8 +1738,8 @@
   .admin-tab-content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    max-height: calc(100vh - 56px - 52px);
-    padding: 20px 16px 40px;
+    max-height: calc(100vh - 56px - 52px - 60px);
+    padding: 20px 16px 24px;
   }
   .admin-panel {
     padding: 0;
@@ -1721,8 +1779,18 @@
     padding: 7px 14px;
   }
   .admin-add-button {
-    font-size: 0.78rem;
-    padding: 7px 12px;
+    font-size: 0.72rem;
+    padding: 5px 9px;
+  }
+  .admin-about-edit-button {
+    font-size: 0.72rem;
+    padding: 5px 9px;
+  }
+  .admin-header-top {
+    gap: 6px;
+  }
+  .admin-header-actions {
+    margin-left: 0;
   }
   .admin-confirm-title {
     font-size: 1rem;

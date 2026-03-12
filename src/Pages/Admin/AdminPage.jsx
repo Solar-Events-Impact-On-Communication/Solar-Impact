@@ -59,7 +59,8 @@ function AvatarCropModal({ isOpen, imageSrc, onClose, onSave, onLoaded }) {
       image.onerror = reject;
     });
 
-    const diameter = Math.min(croppedAreaPixels.width, croppedAreaPixels.height);
+    const rawDiameter = Math.min(croppedAreaPixels.width, croppedAreaPixels.height);
+    const diameter = Math.min(rawDiameter, 400); // cap at 400px — sufficient for circular avatars
     const canvas = document.createElement('canvas');
     canvas.width = diameter;
     canvas.height = diameter;
@@ -425,6 +426,11 @@ export default function AdminView() {
   const [teamLoading, setTeamLoading] = useState(false);
   const [teamError, setTeamError] = useState('');
   const [teamPhotoError, setTeamPhotoError] = useState('');
+  const [uploadToast, setUploadToast] = useState('');
+  const showUploadToast = (msg) => {
+    setUploadToast(msg);
+    setTimeout(() => setUploadToast(''), 4000);
+  };
   const [newMember, setNewMember] = useState({ name: '', role: '' });
   const [newMemberPhotoFile, setNewMemberPhotoFile] = useState(null);
   const [newMemberPhotoPreview, setNewMemberPhotoPreview] = useState('');
@@ -445,6 +451,7 @@ export default function AdminView() {
     if (!file) return;
     if (file.size > MAX_PHOTO_BYTES) {
       setTeamPhotoError('Images must be 10 MB or smaller.');
+      showUploadToast('Images must be 10 MB or smaller.');
       return;
     }
     const reader = new FileReader();
@@ -483,6 +490,7 @@ export default function AdminView() {
     } catch (err) {
       console.error('Error uploading team photo:', err);
       setTeamPhotoError('Failed to upload photo. Please try again.');
+      showUploadToast('Failed to upload photo. Please try again.');
     } finally {
       setTeamBlocking(false);
       setTeamBlockingText('');
@@ -2347,6 +2355,7 @@ export default function AdminView() {
                             if (!file) return;
                             if (file.size > MAX_PHOTO_BYTES) {
                               setTeamPhotoError('Images must be 10 MB or smaller.');
+                              showUploadToast('Images must be 10 MB or smaller.');
                               if (newMemberFileInputRef.current)
                                 newMemberFileInputRef.current.value = '';
                               return;
@@ -2947,6 +2956,14 @@ export default function AdminView() {
                                     : 'Working…'}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ---- UPLOAD ERROR TOAST ---- */}
+      {uploadToast && (
+        <div className="admin-upload-toast">
+          <span className="admin-upload-toast-icon">✕</span>
+          {uploadToast}
         </div>
       )}
 
