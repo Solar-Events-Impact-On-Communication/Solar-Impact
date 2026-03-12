@@ -686,9 +686,48 @@
   min-height: 0;
 }
 @media (max-width: 700px) {
+  /* Full-screen scrollable modal on mobile */
+  .admin-modal-backdrop--event {
+    align-items: flex-start;
+    padding: 0;
+  }
+  .admin-event-modal {
+    max-width: 100%;
+    width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  /* Sticky header with save/cancel */
+  .admin-event-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-bright);
+    padding: 14px 16px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  /* Single scrollable column for all content */
   .admin-event-modal-body {
     grid-template-columns: 1fr;
     overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding: 16px;
+    gap: 20px;
+  }
+  /* Each section scrolls naturally — no internal scroll */
+  .admin-event-modal-form {
+    overflow-y: visible;
+    padding-right: 0;
+  }
+  .admin-event-modal-media {
+    overflow-y: visible;
   }
 }
 .admin-event-modal-form {
