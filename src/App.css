@@ -591,6 +591,9 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
+  :root {
+    --topbar-h: 56px;
+  }
   /* Brand: 2-line short version */
   .brand-text--full {
     display: none;

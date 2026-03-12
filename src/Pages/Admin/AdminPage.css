@@ -245,7 +245,7 @@
   padding: 0 28px;
   position: sticky;
   top: var(--topbar-h);
-  z-index: auto;
+  z-index: 50;
 }
 .admin-tab-button {
   padding: 18px 28px;
@@ -1673,6 +1673,7 @@
   /* Tabs */
   .admin-tab-bar {
     padding: 0 8px;
+    top: 56px;
   }
 
   /* Panel becomes a flex column — tab bar fixed, content scrolls inside */
