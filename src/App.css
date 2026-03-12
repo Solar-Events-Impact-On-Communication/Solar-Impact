@@ -592,6 +592,13 @@ a {
 }
 
 @media (max-width: 600px) {
+  body {
+    background-image: url('https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Main%20Image/Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+  }
   .app {
     background: transparent;
   }
