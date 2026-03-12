@@ -414,7 +414,7 @@ export default function AdminView() {
     }
   }, [adminDecades, adminPickerDecade, adminTab]);
 
-  // Lock body scroll when any modal is open so the table can't scroll behind it
+  // Lock body scroll when any modal is open so content can't scroll behind it
   useEffect(() => {
     const anyOpen = eventModalOpen || accountModalOpen;
     if (anyOpen) {
@@ -1935,140 +1935,6 @@ export default function AdminView() {
               </div>
             )}
 
-            {/* ---- EDIT EVENT MODAL ---- */}
-            {eventModalOpen && (
-              <ErrorBoundary>
-                <AdminEventModal
-                  event={editingEvent}
-                  form={eventForm}
-                  setForm={setEventForm}
-                  saving={eventSaving}
-                  media={isCreatingEvent ? createQueuedMedia : eventMedia}
-                  mediaIndex={isCreatingEvent ? createMediaIndex : eventMediaIndex}
-                  setMediaIndex={isCreatingEvent ? setCreateMediaIndex : setEventMediaIndex}
-                  mediaLoading={eventMediaLoading}
-                  mediaError={eventMediaError}
-                  onClose={closeEventModal}
-                  onSave={handleSaveEvent}
-                  uploadBusy={mediaUploadBusy}
-                  uploadError={mediaUploadError}
-                  onUpdateMediaCaption={handleUpdateMediaCaption}
-                  mediaCaptionBusy={mediaCaptionBusy}
-                  mediaCaptionError={mediaCaptionError}
-                  onOpenAddArticleModal={openAddArticleModal}
-                  isCreating={isCreatingEvent}
-                  onUpdateQueuedCaption={(localId, newCaption) => {
-                    setCreateQueuedMedia((prev) =>
-                      prev.map((m) => (m.localId === localId ? { ...m, caption: newCaption } : m))
-                    );
-                  }}
-                  onDeleteMedia={(item) => {
-                    if (isCreatingEvent) {
-                      setCreateQueuedMedia((prev) => {
-                        const next = prev.filter((m) => m.localId !== item.localId);
-                        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
-                        setCreateMediaIndex((idx) =>
-                          next.length ? Math.min(idx, next.length - 1) : 0
-                        );
-                        return next;
-                      });
-                      return;
-                    }
-                    requestDeleteCurrentMedia(item);
-                  }}
-                  onSaveCaption={handleCaptionSaveForModal}
-                />
-              </ErrorBoundary>
-            )}
-
-            {/* ---- ADD ARTICLE MODAL ---- */}
-            {addArticleOpen && (
-              <div className="admin-modal-backdrop" onClick={closeAddArticleModal}>
-                <div
-                  className="admin-modal admin-modal--add-article"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="admin-modal-header">
-                    <h2 className="admin-modal-title admin-modal-title--small">
-                      Add Newspaper Article
-                    </h2>
-                    <div className="admin-modal-actions">
-                      <button
-                        type="button"
-                        className="admin-modal-button admin-modal-button--ghost"
-                        onClick={closeAddArticleModal}
-                        disabled={mediaUploadBusy}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        className="admin-modal-button"
-                        onClick={uploadAddArticle}
-                        disabled={mediaUploadBusy}
-                      >
-                        {mediaUploadBusy ? 'Uploading…' : 'Upload'}
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      'admin-field admin-field--large ' +
-                      (addArticleTriedSubmit && addArticleErrors.file ? 'admin-field--error' : '')
-                    }
-                  >
-                    <label className="admin-field-label admin-field-label--big">
-                      Article Image <span className="admin-field-required">*</span>
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="admin-file-input-large"
-                      onChange={(e) => {
-                        setAddArticleFile(e.target.files?.[0] || null);
-                        setAddArticleErrors((prev) => ({ ...prev, file: '' }));
-                      }}
-                      disabled={mediaUploadBusy}
-                    />
-                    {addArticleTriedSubmit && addArticleErrors.file && (
-                      <span className="admin-field-error-text">{addArticleErrors.file}</span>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      'admin-field admin-field--large ' +
-                      (addArticleTriedSubmit && addArticleErrors.caption
-                        ? 'admin-field--error'
-                        : '')
-                    }
-                  >
-                    <label className="admin-field-label admin-field-label--big">
-                      Caption <span className="admin-field-required">*</span>
-                    </label>
-                    <textarea
-                      className={
-                        'admin-textarea admin-textarea--caption ' +
-                        (addArticleTriedSubmit && addArticleErrors.caption ? 'input--error' : '')
-                      }
-                      value={addArticleCaption}
-                      onChange={(e) => {
-                        setAddArticleCaption(e.target.value);
-                        setAddArticleErrors((prev) => ({ ...prev, caption: '' }));
-                        e.target.style.height = 'auto';
-                        e.target.style.height = `${e.target.scrollHeight}px`;
-                      }}
-                      placeholder="Enter a caption for this article"
-                      rows={2}
-                      disabled={mediaUploadBusy}
-                    />
-                    {addArticleTriedSubmit && addArticleErrors.caption && (
-                      <span className="admin-field-error-text">{addArticleErrors.caption}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* ---- ACCOUNTS TAB ---- */}
             {adminTab === 'accounts' && isSuperAdmin && (
               <>
@@ -2746,6 +2612,134 @@ export default function AdminView() {
             )}
           </div>
           {/* end admin-tab-content */}
+        </div>
+      )}
+
+      {/* ---- EDIT EVENT MODAL ---- */}
+      {eventModalOpen && (
+        <ErrorBoundary>
+          <AdminEventModal
+            event={editingEvent}
+            form={eventForm}
+            setForm={setEventForm}
+            saving={eventSaving}
+            media={isCreatingEvent ? createQueuedMedia : eventMedia}
+            mediaIndex={isCreatingEvent ? createMediaIndex : eventMediaIndex}
+            setMediaIndex={isCreatingEvent ? setCreateMediaIndex : setEventMediaIndex}
+            mediaLoading={eventMediaLoading}
+            mediaError={eventMediaError}
+            onClose={closeEventModal}
+            onSave={handleSaveEvent}
+            uploadBusy={mediaUploadBusy}
+            uploadError={mediaUploadError}
+            onUpdateMediaCaption={handleUpdateMediaCaption}
+            mediaCaptionBusy={mediaCaptionBusy}
+            mediaCaptionError={mediaCaptionError}
+            onOpenAddArticleModal={openAddArticleModal}
+            isCreating={isCreatingEvent}
+            onUpdateQueuedCaption={(localId, newCaption) => {
+              setCreateQueuedMedia((prev) =>
+                prev.map((m) => (m.localId === localId ? { ...m, caption: newCaption } : m))
+              );
+            }}
+            onDeleteMedia={(item) => {
+              if (isCreatingEvent) {
+                setCreateQueuedMedia((prev) => {
+                  const next = prev.filter((m) => m.localId !== item.localId);
+                  if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+                  setCreateMediaIndex((idx) => (next.length ? Math.min(idx, next.length - 1) : 0));
+                  return next;
+                });
+                return;
+              }
+              requestDeleteCurrentMedia(item);
+            }}
+            onSaveCaption={handleCaptionSaveForModal}
+          />
+        </ErrorBoundary>
+      )}
+
+      {/* ---- ADD ARTICLE MODAL ---- */}
+      {addArticleOpen && (
+        <div className="admin-modal-backdrop" onClick={closeAddArticleModal}>
+          <div
+            className="admin-modal admin-modal--add-article"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="admin-modal-header">
+              <h2 className="admin-modal-title admin-modal-title--small">Add Newspaper Article</h2>
+              <div className="admin-modal-actions">
+                <button
+                  type="button"
+                  className="admin-modal-button admin-modal-button--ghost"
+                  onClick={closeAddArticleModal}
+                  disabled={mediaUploadBusy}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="admin-modal-button"
+                  onClick={uploadAddArticle}
+                  disabled={mediaUploadBusy}
+                >
+                  {mediaUploadBusy ? 'Uploading…' : 'Upload'}
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                'admin-field admin-field--large ' +
+                (addArticleTriedSubmit && addArticleErrors.file ? 'admin-field--error' : '')
+              }
+            >
+              <label className="admin-field-label admin-field-label--big">
+                Article Image <span className="admin-field-required">*</span>
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="admin-file-input-large"
+                onChange={(e) => {
+                  setAddArticleFile(e.target.files?.[0] || null);
+                  setAddArticleErrors((prev) => ({ ...prev, file: '' }));
+                }}
+                disabled={mediaUploadBusy}
+              />
+              {addArticleTriedSubmit && addArticleErrors.file && (
+                <span className="admin-field-error-text">{addArticleErrors.file}</span>
+              )}
+            </div>
+            <div
+              className={
+                'admin-field admin-field--large ' +
+                (addArticleTriedSubmit && addArticleErrors.caption ? 'admin-field--error' : '')
+              }
+            >
+              <label className="admin-field-label admin-field-label--big">
+                Caption <span className="admin-field-required">*</span>
+              </label>
+              <textarea
+                className={
+                  'admin-textarea admin-textarea--caption ' +
+                  (addArticleTriedSubmit && addArticleErrors.caption ? 'input--error' : '')
+                }
+                value={addArticleCaption}
+                onChange={(e) => {
+                  setAddArticleCaption(e.target.value);
+                  setAddArticleErrors((prev) => ({ ...prev, caption: '' }));
+                  e.target.style.height = 'auto';
+                  e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
+                placeholder="Enter a caption for this article"
+                rows={2}
+                disabled={mediaUploadBusy}
+              />
+              {addArticleTriedSubmit && addArticleErrors.caption && (
+                <span className="admin-field-error-text">{addArticleErrors.caption}</span>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
