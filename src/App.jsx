@@ -5,7 +5,6 @@
 
 import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { API_BASE, extractYear, formatEventDateLabel, formatFullDateLong } from './utils';
 
@@ -361,6 +360,68 @@ export default function App() {
         </div>
       )}
 
+      {/* ---- NAV DRAWER ---- */}
+      <nav ref={navDrawerRef} className={`nav-drawer ${menuOpen ? 'nav-drawer--open' : ''}`}>
+        <button className="nav-item" onClick={() => handleNavClick('/')} type="button">
+          <span className="nav-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M2 6L8 1L14 6V14H10V10H6V14H2V6Z"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                fill="none"
+              />
+            </svg>
+          </span>
+          <span>Home</span>
+        </button>
+        <button className="nav-item" onClick={() => handleNavClick('/live')} type="button">
+          <span className="nav-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2" />
+              <path
+                d="M8 1V3M8 13V15M1 8H3M13 8H15M3.22 3.22L4.64 4.64M11.36 11.36L12.78 12.78M3.22 12.78L4.64 11.36M11.36 4.64L12.78 3.22"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+            </svg>
+          </span>
+          <span>Live Data</span>
+        </button>
+        <button className="nav-item" onClick={() => handleNavClick('/birthday')} type="button">
+          <span className="nav-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect
+                x="2"
+                y="5"
+                width="12"
+                height="9"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+              <path d="M5 5V4A3 3 0 0 1 11 4V5" stroke="currentColor" strokeWidth="1.2" />
+              <path d="M8 2V5" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </span>
+          <span>Events on My Birthday</span>
+        </button>
+        <button className="nav-item" onClick={() => handleNavClick('/about')} type="button">
+          <span className="nav-icon-wrap">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
+              <path
+                d="M8 7V11M8 5.5V5"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
+          <span>About</span>
+        </button>
+      </nav>
+
       {/* ---- MAIN CONTENT ---- */}
       <main
         className={`main ${isTimeline ? 'main--timeline' : ''} ${isAbout ? 'main--about' : ''} ${isAdmin ? 'main--admin' : ''}`}
@@ -384,71 +445,6 @@ export default function App() {
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
-
-      {/* ---- NAV DRAWER (portal — renders outside app stacking context) ---- */}
-      {createPortal(
-        <nav ref={navDrawerRef} className={`nav-drawer ${menuOpen ? 'nav-drawer--open' : ''}`}>
-          <button className="nav-item" onClick={() => handleNavClick('/')} type="button">
-            <span className="nav-icon-wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M2 6L8 1L14 6V14H10V10H6V14H2V6Z"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  fill="none"
-                />
-              </svg>
-            </span>
-            <span>Home</span>
-          </button>
-          <button className="nav-item" onClick={() => handleNavClick('/live')} type="button">
-            <span className="nav-icon-wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.2" />
-                <path
-                  d="M8 1V3M8 13V15M1 8H3M13 8H15M3.22 3.22L4.64 4.64M11.36 11.36L12.78 12.78M3.22 12.78L4.64 11.36M11.36 4.64L12.78 3.22"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-              </svg>
-            </span>
-            <span>Live Data</span>
-          </button>
-          <button className="nav-item" onClick={() => handleNavClick('/birthday')} type="button">
-            <span className="nav-icon-wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect
-                  x="2"
-                  y="5"
-                  width="12"
-                  height="9"
-                  rx="1"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-                <path d="M5 5V4A3 3 0 0 1 11 4V5" stroke="currentColor" strokeWidth="1.2" />
-                <path d="M8 2V5" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </span>
-            <span>Events on My Birthday</span>
-          </button>
-          <button className="nav-item" onClick={() => handleNavClick('/about')} type="button">
-            <span className="nav-icon-wrap">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
-                <path
-                  d="M8 7V11M8 5.5V5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            <span>About</span>
-          </button>
-        </nav>,
-        document.body
-      )}
 
       {/* ---- FOOTER ---- */}
       <footer className="footer">

@@ -245,8 +245,7 @@
   padding: 0 28px;
   position: sticky;
   top: var(--topbar-h);
-  z-index: 50;
-  isolation: auto;
+  z-index: auto;
 }
 .admin-tab-button {
   padding: 18px 28px;

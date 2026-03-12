@@ -247,7 +247,6 @@ a {
   width: 260px;
   height: auto;
   z-index: 9000;
-  isolation: isolate;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
   padding-top: calc(var(--topbar-h) + 12px);
