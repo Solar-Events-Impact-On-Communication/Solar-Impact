@@ -660,28 +660,28 @@
    EVENT EDIT MODAL (wide)
    ========================================================= */
 
-/* Backdrop: full-screen fixed overlay, no scroll on backdrop itself */
+/* Backdrop: full-screen fixed overlay — blocks all interaction beneath */
 .admin-modal-backdrop--event {
-  align-items: flex-start;
-  padding: 0;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 80px; /* 80px bottom clears the footer */
+  overflow: hidden; /* backdrop does NOT scroll */
 }
 
-/* Modal: full viewport height, flex column so header sticks and body scrolls */
+/* Modal: floating card, fills available space between top padding and footer */
 .admin-event-modal {
   max-width: 900px;
   width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-  margin: 0 auto;
-  border-radius: 0;
+  max-height: 100%; /* constrained by backdrop padding */
+  border-radius: var(--radius-lg);
   padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: cardIn 0.22s ease;
 }
 
-/* Sticky header — Save/Cancel always visible while scrolling */
+/* Sticky header — Save/Cancel always visible while body scrolls */
 .admin-event-modal-header {
   display: flex;
   align-items: center;
@@ -690,9 +690,7 @@
   padding: 18px 28px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-bright);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .admin-event-modal-actions {
@@ -709,7 +707,7 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   min-height: 0;
-  padding: 24px 28px 60px;
+  padding: 24px 28px 32px;
 }
 
 /* Form and media: natural height, parent body handles scrolling */
@@ -727,21 +725,24 @@
   overflow-y: visible;
 }
 
-/* Mobile: single column */
+/* Mobile: single column, full-width card */
 @media (max-width: 700px) {
   .admin-modal-backdrop--event {
-    padding: 0;
+    padding: 16px 0 80px;
+    align-items: flex-start;
   }
   .admin-event-modal {
     max-width: 100%;
     border-radius: 0;
+    max-height: calc(100vh - 16px - 80px);
   }
   .admin-event-modal-header {
     padding: 14px 16px;
+    border-radius: 0;
   }
   .admin-event-modal-body {
     grid-template-columns: 1fr;
-    padding: 16px 16px 80px;
+    padding: 16px 16px 32px;
     gap: 20px;
   }
 }

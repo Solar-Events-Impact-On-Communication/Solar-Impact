@@ -414,6 +414,31 @@ export default function AdminView() {
     }
   }, [adminDecades, adminPickerDecade, adminTab]);
 
+  // Lock body scroll whenever any modal is open
+  useEffect(() => {
+    const anyOpen = eventModalOpen || accountModalOpen;
+    if (anyOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = \`-\${scrollY}px\`;
+    } else {
+      const top = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (top) window.scrollTo(0, -parseInt(top || '0'));
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    };
+  }, [eventModalOpen, accountModalOpen]);
+
   // --- About page state ---
   const [aboutSections, setAboutSections] = useState([]);
   const [_aboutLoading, setAboutLoading] = useState(false);
@@ -577,9 +602,7 @@ export default function AdminView() {
       if (newMemberPhotoPreview) {
         try {
           URL.revokeObjectURL(newMemberPhotoPreview);
-        } catch (_e) {
-          /* intentional */
-        }
+        } catch (_e) { /* intentional */ }
       }
       setNewMemberPhotoPreview('');
       if (newMemberFileInputRef.current) newMemberFileInputRef.current.value = '';
@@ -748,9 +771,7 @@ export default function AdminView() {
       if (m?.previewUrl) {
         try {
           URL.revokeObjectURL(m.previewUrl);
-        } catch (_e) {
-          /* intentional */
-        }
+        } catch (_e) { /* intentional */ }
       }
     });
     setCreateQueuedMedia([]);
@@ -809,9 +830,7 @@ export default function AdminView() {
         if (m?.previewUrl) {
           try {
             URL.revokeObjectURL(m.previewUrl);
-          } catch (_e) {
-            /* intentional */
-          }
+          } catch (_e) { /* intentional */ }
         }
       });
     }
@@ -908,9 +927,7 @@ export default function AdminView() {
             if (m.previewUrl) {
               try {
                 URL.revokeObjectURL(m.previewUrl);
-              } catch (_e) {
-                /* intentional */
-              }
+              } catch (_e) { /* intentional */ }
             }
           }
           setCreateQueuedMedia([]);
@@ -959,10 +976,7 @@ export default function AdminView() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({
-          url: _newMediaUrl.trim(),
-          caption: _newMediaCaption.trim() || null,
-        }),
+        body: JSON.stringify({ url: _newMediaUrl.trim(), caption: _newMediaCaption.trim() || null }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const created = await res.json();
@@ -2397,9 +2411,7 @@ export default function AdminView() {
                             if (newMemberPhotoPreview) {
                               try {
                                 URL.revokeObjectURL(newMemberPhotoPreview);
-                              } catch (_e) {
-                                /* intentional */
-                              }
+                              } catch (_e) { /* intentional */ }
                             }
                             setNewMemberPhotoPreview('');
                             if (newMemberFileInputRef.current)
@@ -3121,15 +3133,11 @@ function AdminEventModal({
   }, [media, setMediaIndex]);
 
   // Reset caption state when the selected media item changes
-  // Using a key-based reset pattern avoids setState-in-effect lint warnings;
-  // here we use a ref guard so it only runs when the id actually changes.
-  const prevMediaIdRef = React.useRef(undefined);
-  if (prevMediaIdRef.current !== currentMedia?.id) {
-    prevMediaIdRef.current = currentMedia?.id;
-    if (captionEditing) setCaptionEditing(false);
-    const incoming = currentMedia?.caption || '';
-    if (captionDraft !== incoming) setCaptionDraft(incoming);
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setCaptionEditing(false);
+    setCaptionDraft(currentMedia?.caption || '');
+  }, [currentMedia?.id]); // intentionally omitting caption to avoid re-running on caption saves
 
   const handleBackdropClick = () => {
     if (!saving && !uploadBusy) onClose();
