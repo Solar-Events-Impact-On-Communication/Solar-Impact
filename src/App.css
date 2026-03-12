@@ -591,13 +591,6 @@ a {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 600px) {
-  /* Lock page scroll on admin page — only tab-content scrolls */
-  body.admin-page {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-  }
-
   /* Brand: 2-line short version */
   .brand-text--full {
     display: none;

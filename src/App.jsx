@@ -92,11 +92,6 @@ export default function App() {
 
   useEffect(() => {
     document.title = isAdmin ? 'Solar Impacts Admin' : 'Solar Impacts';
-    // Toggle class so CSS can lock scroll on mobile only
-    document.body.classList.toggle('admin-page', isAdmin);
-    return () => {
-      document.body.classList.remove('admin-page');
-    };
   }, [isAdmin]);
 
   // ---- Fetch events ----

@@ -1673,24 +1673,17 @@
   /* Tabs */
   .admin-tab-bar {
     padding: 0 8px;
+    top: 56px;
   }
 
   /* Scrollable viewport below tab bar — content cannot scroll above it */
   .admin-tab-content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    height: calc(100vh - 56px - 52px);
     max-height: calc(100vh - 56px - 52px);
     padding: 20px 16px 40px;
-    overscroll-behavior: contain;
   }
   .admin-panel {
-    padding: 0;
-    overflow: hidden;
-  }
-  /* Prevent page body scroll — only the viewport scrolls */
-  .main--admin {
-    overflow: hidden;
     padding: 0;
   }
   .admin-tab-button {
