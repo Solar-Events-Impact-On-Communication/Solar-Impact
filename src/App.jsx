@@ -92,6 +92,11 @@ export default function App() {
 
   useEffect(() => {
     document.title = isAdmin ? 'Solar Impacts Admin' : 'Solar Impacts';
+    // Lock page scroll on admin — only the tab content viewport scrolls
+    document.body.style.overflow = isAdmin ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isAdmin]);
 
   // ---- Fetch events ----
