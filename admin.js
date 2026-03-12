@@ -71,8 +71,6 @@ app.use(
 
 app.options(/.*/, cors());
 
-app.use(express.json({ limit: '2mb' }));
-
 const BCRYPT_ROUNDS = 12;
 
 // ESM-friendly __dirname
@@ -772,7 +770,7 @@ function registerMediaRoutes(appInstance, pool, uploadInstance) {
             [eventId, url, caption]
           );
 
-          return res.status(201).json({ success: true, id: result.insertId, url });
+          return res.status(201).json({ success: true, id: result.insertId, url, caption });
         }
 
         // JSON { url, caption } path
