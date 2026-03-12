@@ -98,8 +98,7 @@ a {
    APP SHELL
    ========================================================= */
 .app {
-  position: relative; /* ← add this */
-  z-index: 2; /* ← add this */
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
