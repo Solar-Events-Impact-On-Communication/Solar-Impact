@@ -607,6 +607,11 @@ a {
     display: none;
   }
 
+  /* Admin page — reduce top padding so tab bar sits right below topbar */
+  .main--admin {
+    padding: 56px 0 48px;
+  }
+
   /* Topbar height for 2-line brand */
   .topbar:not(.topbar--timeline) {
     height: 56px;
@@ -651,6 +656,19 @@ a {
     height: 30px;
     font-size: 0.76rem;
     padding: 0 8px;
+  }
+
+  /* Decade/year picker popover — full-width on mobile so it doesn't overflow */
+  .year-search-popover {
+    position: fixed;
+    top: auto;
+    left: 8px;
+    right: 8px;
+    min-width: 0;
+    width: calc(100vw - 16px);
+    max-height: 60vh;
+    overflow-y: auto;
+    box-sizing: border-box;
   }
 }
 

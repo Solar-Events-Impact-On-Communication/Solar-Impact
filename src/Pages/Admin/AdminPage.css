@@ -1728,32 +1728,40 @@
     font-size: 1rem;
   }
 
-  /* Tabs */
+  /* Tabs — align with panel which has no padding on mobile */
   .admin-tab-bar {
     padding: 0 8px;
     top: 56px;
+    /* Remove negative margins that rely on the 28px desktop panel padding */
+    margin: 0;
+    border-radius: 0;
   }
 
-  /* Scrollable viewport below tab bar — content cannot scroll above it */
+  /* Tab content: scrollable, respects fixed footer (~48px) */
   .admin-tab-content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    max-height: calc(100vh - 56px - 52px - 60px);
-    padding: 20px 16px 80px;
+    padding: 16px 12px 80px;
   }
   .admin-panel {
     padding: 0;
   }
   .admin-tab-button {
     font-size: 0.75rem;
-    padding: 14px 14px;
+    padding: 14px 10px;
     letter-spacing: 0.08em;
   }
 
-  /* Table */
+  /* Table — full width, scrollable horizontally */
+  .admin-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .admin-events-table,
   .admin-accounts-table {
     font-size: 0.88rem;
+    min-width: 480px;
   }
   .admin-events-table th,
   .admin-accounts-table th {
@@ -1767,9 +1775,32 @@
     padding: 4px 8px;
   }
 
-  /* Modals */
+  /* Header top row — stack title above action buttons */
+  .admin-header-top {
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .admin-header-actions {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .admin-add-button,
+  .admin-about-edit-button {
+    font-size: 0.78rem;
+    padding: 7px 12px;
+  }
+
+  /* Account/add modals — push below topbar, scrollable, clear footer */
+  .admin-modal-backdrop {
+    padding-top: 64px;
+    align-items: flex-start;
+  }
   .admin-modal {
     padding: 20px 16px;
+    margin-bottom: 56px;
   }
   .admin-modal-title {
     font-size: 1.1rem;
@@ -1777,20 +1808,6 @@
   .admin-modal-button {
     font-size: 0.8rem;
     padding: 7px 14px;
-  }
-  .admin-add-button {
-    font-size: 0.72rem;
-    padding: 5px 9px;
-  }
-  .admin-about-edit-button {
-    font-size: 0.72rem;
-    padding: 5px 9px;
-  }
-  .admin-header-top {
-    gap: 6px;
-  }
-  .admin-header-actions {
-    margin-left: 0;
   }
   .admin-confirm-title {
     font-size: 1rem;
