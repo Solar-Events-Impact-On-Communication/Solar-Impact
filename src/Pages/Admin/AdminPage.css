@@ -1793,7 +1793,7 @@
     gap: 6px;
   }
   .admin-header-actions {
-    margin-left: 0;
+    margin-left: auto;
   }
   .admin-confirm-title {
     font-size: 1rem;

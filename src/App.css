@@ -396,7 +396,7 @@ a {
 }
 .year-search-popover-label {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 1.05rem;
   letter-spacing: 0.1em;
   color: var(--text-dim);
   margin-bottom: 8px;
@@ -410,14 +410,14 @@ a {
 
 .year-search-decade,
 .year-search-year {
-  height: 32px;
-  padding: 0 14px;
+  height: 38px;
+  padding: 0 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 1rem;
   transition: all 0.15s;
 }
 .year-search-decade:hover,

@@ -192,7 +192,7 @@
   flex-shrink: 0;
 }
 .live-card-back-desc {
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: var(--text);
   line-height: 1.45;
   overflow: hidden;
