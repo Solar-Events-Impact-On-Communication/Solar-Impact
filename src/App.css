@@ -89,14 +89,6 @@ body::before {
   .nav-drawer {
     padding-top: 68px;
   }
-  body::before {
-    position: fixed;
-    top: -20%;
-    left: 0;
-    right: 0;
-    bottom: -20%;
-    width: 100%;
-  }
 }
 
 button {
@@ -589,32 +581,6 @@ a {
   background: transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-}
-
-@media (max-width: 600px) {
-  body {
-    background-image: url('https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Main%20Image/Background.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-  }
-  .app {
-    background: transparent;
-  }
-  .main {
-    padding-bottom: 20px;
-  }
-  .footer {
-    position: static;
-    background: transparent;
-    border-top: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    padding: 24px 16px;
-    margin-top: auto;
-    opacity: 0.6;
-  }
 }
 
 .footer-divider {
