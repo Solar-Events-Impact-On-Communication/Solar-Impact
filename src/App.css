@@ -90,6 +90,11 @@ body::before {
   .nav-drawer {
     padding-top: 68px;
   }
+  .topbar {
+    background: #07090f;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 button {
@@ -622,7 +627,7 @@ a {
   /* Brand slightly right of center */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
-    left: 50%;
+    left: 55%;
     transform: translateX(-50%);
   }
 
