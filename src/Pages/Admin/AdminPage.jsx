@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const MAX_PHOTO_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_PHOTO_BYTES = 10 * 1024 * 1024; // 10 MB
 
 /* ---- Avatar Crop Modal ---- */
 function AvatarCropModal({ isOpen, imageSrc, onClose, onSave, onLoaded }) {
@@ -444,7 +444,7 @@ export default function AdminView() {
   const openAvatarModalFor = (memberId, file) => {
     if (!file) return;
     if (file.size > MAX_PHOTO_BYTES) {
-      setTeamPhotoError('Images must be 2 MB or smaller.');
+      setTeamPhotoError('Images must be 10 MB or smaller.');
       return;
     }
     const reader = new FileReader();
@@ -2331,7 +2331,7 @@ export default function AdminView() {
                           const file = e.target.files?.[0];
                           if (!file) return;
                           if (file.size > MAX_PHOTO_BYTES) {
-                            setTeamPhotoError('Images must be 2 MB or smaller.');
+                            setTeamPhotoError('Images must be 10 MB or smaller.');
                             if (newMemberFileInputRef.current)
                               newMemberFileInputRef.current.value = '';
                             return;

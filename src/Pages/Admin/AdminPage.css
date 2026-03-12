@@ -1547,42 +1547,39 @@
     padding: 20px 16px;
   }
 
-  /* Media viewer — stack vertically on mobile */
-  .admin-event-media-viewer {
-    flex-direction: column;
-  }
+  /* Media viewer — keep horizontal, shrink side panels */
   .admin-event-media-side {
-    flex-direction: row;
-    justify-content: space-around;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    min-width: unset;
-    padding: 8px 12px;
-  }
-  .admin-event-media-side--right {
-    border-left: none;
-    border-top: 1px solid var(--border);
-    border-bottom: none;
+    min-width: 44px;
+    padding: 8px 4px;
+    gap: 8px;
   }
   .admin-event-media-side-label {
-    font-size: 0.7rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.02em;
   }
   .admin-event-media-circle {
-    width: 30px;
-    height: 30px;
-    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
   }
   .admin-event-media-image-wrap {
     min-height: 120px;
   }
 
-  /* Caption section — wrap buttons on small screens */
+  /* Caption section — stack title and buttons vertically */
   .admin-event-caption-header {
-    flex-wrap: wrap;
-    gap: 6px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
   .admin-event-caption-actions {
-    flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    gap: 6px;
+  }
+  .admin-event-caption-actions .primary-button,
+  .admin-event-caption-actions .cancel-button {
+    flex: 1;
   }
 
   /* Inputs and buttons */
