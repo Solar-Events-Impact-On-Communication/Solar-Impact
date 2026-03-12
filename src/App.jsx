@@ -92,10 +92,10 @@ export default function App() {
 
   useEffect(() => {
     document.title = isAdmin ? 'Solar Impacts Admin' : 'Solar Impacts';
-    // Lock page scroll on admin — only the tab content viewport scrolls
-    document.body.style.overflow = isAdmin ? 'hidden' : '';
+    // Toggle class so CSS can lock scroll on mobile only
+    document.body.classList.toggle('admin-page', isAdmin);
     return () => {
-      document.body.style.overflow = '';
+      document.body.classList.remove('admin-page');
     };
   }, [isAdmin]);
 
