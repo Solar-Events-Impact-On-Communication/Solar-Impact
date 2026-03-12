@@ -56,7 +56,7 @@ html {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
   color-scheme: dark;
   /* Forces black overscroll/rubber-band area on all mobile browsers */
   overflow-x: hidden;
