@@ -65,7 +65,6 @@ html {
 body {
   background: transparent;
   color: var(--text);
-  padding-bottom: env(safe-area-inset-bottom);
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.6;
@@ -565,6 +564,7 @@ a {
 .footer {
   position: fixed;
   bottom: 0;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
   left: 0;
   right: 0;
   z-index: 100;
