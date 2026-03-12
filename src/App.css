@@ -614,7 +614,7 @@ a {
   /* Brand slightly right of center */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
-    left: 55%;
+    left: 50%;
     transform: translateX(-50%);
   }
 
