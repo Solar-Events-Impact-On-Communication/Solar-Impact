@@ -656,6 +656,17 @@ export default function AdminView() {
   const [aboutScrollTarget, setAboutScrollTarget] = useState(null);
   const aboutSectionRefs = useRef({});
 
+  // --- Body scroll lock: prevent background scroll when modals are open ---
+  useEffect(() => {
+    const anyModalOpen = eventModalOpen || accountModalOpen;
+    if (anyModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => document.body.classList.remove('modal-open');
+  }, [eventModalOpen, accountModalOpen]);
+
   // --- Account modal ---
   const [accountModalOpen, setAccountModalOpen] = useState(false);
   const [accountModalMode, setAccountModalMode] = useState('edit');

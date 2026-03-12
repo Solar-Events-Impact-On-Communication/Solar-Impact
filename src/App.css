@@ -607,7 +607,7 @@ a {
     display: none;
   }
 
-  /* Admin page — reduce top padding so tab bar sits right below topbar */
+  /* Admin page — zero side padding, top exactly matches 56px topbar */
   .main--admin {
     padding: 56px 0 48px;
   }
