@@ -242,18 +242,15 @@ a {
    ========================================================= */
 .nav-drawer {
   position: fixed;
-  top: 0;
+  top: var(--topbar-h);
   left: 0;
   width: 260px;
   height: auto;
   z-index: 9000;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding-top: calc(var(--topbar-h) + 12px);
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  transform: translateY(-100%);
+  padding: 12px 20px 20px;
+  transform: translateY(-110%);
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
@@ -683,12 +680,9 @@ a {
     font-size: 0.82rem;
     padding: 0 10px;
   }
-  .nav-drawer {
-    padding-top: calc(var(--topbar-h) + 12px);
-  }
-  /* When homepage topbar is double-stacked, nav needs extra clearance */
+  /* When homepage topbar is double-stacked, nav drops further */
   .topbar--stacked ~ .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 12px);
+    top: var(--topbar-h-stacked);
   }
   .global-banner {
     top: var(--topbar-h-stacked);
