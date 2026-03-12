@@ -19,8 +19,6 @@
   position: absolute;
   mix-blend-mode: screen; /* removes black background cleanly */
   border-radius: 50%; /* keeps circular shape */
-  -webkit-mask-image: radial-gradient(circle, black 55%, transparent 75%);
-  mask-image: radial-gradient(circle, black 55%, transparent 75%);
 }
 
 /* Sun — slightly brighter, slower float */
@@ -105,8 +103,10 @@
 @media (max-width: 600px) {
   .space-video--sun {
     width: 65vw !important;
+    opacity: 0.3 !important;
   }
   .space-video--earth {
     width: 55vw !important;
+    opacity: 0.3 !important;
   }
 }

@@ -27,19 +27,19 @@ const PAGE_CONFIG = {
         top: '20px',
         right: '-15%',
         width: '55vw',
-        opacity: 0.75,
+        opacity: 0.5,
         transform: 'rotate(180deg)',
       },
     },
     earth: { show: false },
   },
   '/live': {
-    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.75 } },
-    earth: { show: true, style: { bottom: '20px', left: '-70px', width: '20vw', opacity: 0.85 } },
+    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.6 } },
+    earth: { show: true, style: { bottom: '20px', left: '-70px', width: '20vw', opacity: 0.6 } },
   },
   '/birthday': {
-    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.75 } },
-    earth: { show: true, style: { bottom: '8%', left: '2%', width: '20vw', opacity: 0.85 } },
+    sun: { show: true, style: { top: '20px', right: '-10%', width: '28vw', opacity: 0.6 } },
+    earth: { show: true, style: { bottom: '8%', left: '2%', width: '20vw', opacity: 0.6 } },
   },
 };
 

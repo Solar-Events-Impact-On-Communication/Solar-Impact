@@ -52,11 +52,6 @@
 
 html {
   background-color: #07090f;
-  background-image: url('https://newspaper-articles.nyc3.cdn.digitaloceanspaces.com/Background/Main%20Image/Background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   color-scheme: dark;
   /* Forces black overscroll/rubber-band area on all mobile browsers */
   overflow-x: hidden;
