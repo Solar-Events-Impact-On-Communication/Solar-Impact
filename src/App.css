@@ -619,9 +619,17 @@ a {
   .topbar:not(.topbar--timeline) {
     height: 56px;
   }
-  /* Nav drawer starts flush below the shorter mobile topbar */
+
+  /* ── Single-line topbar (all pages except homepage) ──
+     56px tall on mobile; drawer starts right below */
   .topbar:not(.topbar--timeline) ~ .nav-drawer {
     top: 56px;
+  }
+
+  /* ── Double-line topbar (homepage only) ──
+     Stacks brand row + tools row; ~112px tall on mobile */
+  .topbar--timeline ~ .nav-drawer {
+    top: 112px;
   }
   /* Brand slightly right of center */
   .topbar:not(.topbar--timeline) .topbar-brand {
