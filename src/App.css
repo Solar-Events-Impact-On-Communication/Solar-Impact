@@ -619,6 +619,10 @@ a {
   .topbar:not(.topbar--timeline) {
     height: 56px;
   }
+  /* Nav drawer starts flush below the shorter mobile topbar */
+  .topbar:not(.topbar--timeline) ~ .nav-drawer {
+    top: 56px;
+  }
   /* Brand slightly right of center */
   .topbar:not(.topbar--timeline) .topbar-brand {
     position: absolute;
@@ -659,6 +663,29 @@ a {
     height: 30px;
     font-size: 0.76rem;
     padding: 0 8px;
+  }
+
+  /* Nav drawer — compact sizing for mobile */
+  .nav-drawer {
+    width: 220px;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    gap: 0;
+  }
+  .nav-item {
+    font-size: 1rem;
+    padding: 8px 10px;
+    gap: 10px;
+  }
+  .nav-icon-wrap,
+  .nav-icon-wrap svg {
+    width: 20px;
+    height: 20px;
+  }
+  .nav-divider {
+    margin: 4px 0;
   }
 
   /* Decade/year picker popover — full-width on mobile so it doesn't overflow */
