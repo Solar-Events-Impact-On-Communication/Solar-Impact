@@ -51,29 +51,35 @@ export default function SpaceVideos() {
   if (!config) return null;
 
   return (
-    <div className="space-videos" aria-hidden="true">
+    <>
+      {/* Sun renders above the .app dark overlay so it isn't dimmed */}
       {config.sun?.show && (
-        <video
-          className="space-video space-video--sun"
-          style={config.sun.style}
-          src={SUN_URL}
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
+        <div className="space-videos space-videos--sun-layer" aria-hidden="true">
+          <video
+            className="space-video space-video--sun"
+            style={config.sun.style}
+            src={SUN_URL}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
       )}
+      {/* Earth and any other elements stay in the normal background layer */}
       {config.earth?.show && (
-        <video
-          className="space-video space-video--earth"
-          style={config.earth.style}
-          src={EARTH_URL}
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
+        <div className="space-videos" aria-hidden="true">
+          <video
+            className="space-video space-video--earth"
+            style={config.earth.style}
+            src={EARTH_URL}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 }

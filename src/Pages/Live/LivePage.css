@@ -61,7 +61,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  height: 220px;
+  height: clamp(180px, 20vw, 260px);
   position: relative;
   overflow: hidden;
   transition:
@@ -102,10 +102,10 @@
 .live-card-back {
   position: absolute;
   inset: 0;
-  padding: 22px 22px 16px;
+  padding: 16px 18px 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   opacity: 0;
   transform: translateY(8px);
   transition:
@@ -186,21 +186,17 @@
 /* Back content */
 .live-card-back-label {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: clamp(0.72rem, 1vw, 0.86rem);
   letter-spacing: 0.12em;
   color: var(--solar);
   flex-shrink: 0;
 }
 .live-card-back-desc {
-  font-size: 0.82rem;
+  font-size: clamp(0.78rem, 1.4vw, 1rem);
   color: var(--text);
-  line-height: 1.45;
+  line-height: 1.5;
   overflow: hidden;
   flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
-  -webkit-box-orient: vertical;
 }
 
 .live-notice {
@@ -254,10 +250,8 @@
     font-size: 0.76rem;
   }
   .live-card-back-desc {
-    font-size: 0.82rem;
+    font-size: clamp(0.82rem, 3vw, 1rem);
     line-height: 1.45;
-    -webkit-line-clamp: 7;
-    line-clamp: 7;
   }
   .live-notice-text {
     font-size: 0.92rem;
@@ -275,9 +269,7 @@
     font-size: 2.4rem;
   }
   .live-card-back-desc {
-    font-size: 0.75rem;
+    font-size: clamp(0.78rem, 2.6vw, 0.92rem);
     line-height: 1.4;
-    -webkit-line-clamp: 7;
-    line-clamp: 7;
   }
 }

@@ -1,8 +1,8 @@
 /* =========================================================
-   Solar Events â€” App.css
+   Solar Events – App.css
    Global: variables, reset, shell, topbar, nav, overlays
    Design: Scientific Minimalism
-   Fonts: Syne Â· DM Mono Â· DM Sans
+   Fonts: Syne · DM Mono · DM Sans
    ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap');
@@ -105,7 +105,15 @@ a {
   flex-direction: column;
   overflow-x: clip;
   padding-top: var(--topbar-h);
+  background: transparent;
+}
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background: rgba(7, 9, 15, 0.75);
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -241,14 +249,14 @@ a {
    ========================================================= */
 .nav-drawer {
   position: fixed;
-  top: 0;
+  top: var(--topbar-h);
   left: 0;
   width: 260px;
   height: auto;
   z-index: 9000;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding-top: calc(var(--topbar-h) + 12px);
+  padding-top: 5px;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
@@ -396,7 +404,7 @@ a {
 }
 .year-search-popover-label {
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 1rem;
   letter-spacing: 0.1em;
   color: var(--text-dim);
   margin-bottom: 8px;
@@ -410,14 +418,14 @@ a {
 
 .year-search-decade,
 .year-search-year {
-  height: 38px;
-  padding: 0 16px;
+  height: 32px;
+  padding: 0 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 0.85rem;
   transition: all 0.15s;
 }
 .year-search-decade:hover,
@@ -695,12 +703,10 @@ a {
     font-size: 0.82rem;
     padding: 0 10px;
   }
-  .nav-drawer {
-    padding-top: 68px;
-  }
-  /* When homepage topbar is double-stacked, nav needs extra clearance */
-  .topbar--stacked ~ .nav-drawer {
-    padding-top: calc(var(--topbar-h-stacked) + 12px);
+  /* When homepage topbar is double-stacked, nav starts below the taller topbar */
+  .topbar--stacked ~ .nav-drawer,
+  .topbar--timeline ~ .nav-drawer {
+    top: var(--topbar-h-stacked);
   }
   .global-banner {
     top: var(--topbar-h-stacked);

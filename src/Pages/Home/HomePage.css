@@ -3,7 +3,7 @@
    ========================================================= */
 
 .tl-screen {
-  padding: 0px 24px 80px 40px;
+  padding: 32px 24px 80px 40px;
   min-height: 100vh;
 }
 
@@ -164,7 +164,7 @@
 }
 .tl-year-num {
   font-family: var(--font-mono);
-  font-size: 3rem;
+  font-size: 2.4rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text);
